@@ -46,5 +46,10 @@ public class MainController {
 		return "shop-cart";
 	}
 	
+	@RequestMapping(value = "/login")
+	public String loginController() {				
+		return "login";
+	}
+	
 	
 }
