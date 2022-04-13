@@ -5,9 +5,11 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.example.model.order.Order;
@@ -30,7 +32,7 @@ public class User {
 	private String password;
 	private long phone;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Collection<UserAddress> userAddresses;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -39,9 +41,14 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Collection<Order>orders;
 	
+	@ManyToMany(mappedBy = "users",fetch = FetchType.EAGER)
+	private Collection<Role>roles;
+	
 	private String createdAt;
 	
 	private String updatedAt;
 	
 	private String deletedAt;
+	
+	private int active;
 }
