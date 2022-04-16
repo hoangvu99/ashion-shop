@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="navbar navbar-light navbar-vertical navbar-vibrant navbar-expand-lg" th:fragment="navbar-left">
+          <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
+            <div class="navbar-vertical-content scrollbar">
+              <ul class="navbar-nav flex-column" id="navbarVerticalNav">
+                <li class="nav-item"><a class="nav-link active" href="index.html">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="cast"></span></span><span class="nav-link-text">Dashbboard</span></div>
+                  </a></li>
+                <li class="nav-item">
+                  <p class="navbar-vertical-label">Quản lí</p>
+                  
+                  <a class="nav-link dropdown-indicator" href="#errors" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="errors">
+                    <div class="d-flex align-items-center">
+                      <div class="dropdown-indicator-icon d-flex flex-center"><span class="fas fa-caret-right fs-0"></span></div><span class="nav-link-icon"><span data-feather="alert-triangle"></span></span><span class="nav-link-text">Quản lí khách hàng</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse parent" id="errors">
+                    <li class="nav-item"><a class="nav-link" href="pages/errors/404.html" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text">404</span></div>
+                      </a></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/errors/500.html" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text">500</span></div>
+                      </a></li>
+                  </ul><a class="nav-link dropdown-indicator" href="#authentication" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="authentication">
+                    <div class="d-flex align-items-center">
+                      <div class="dropdown-indicator-icon d-flex flex-center"><span class="fas fa-caret-right fs-0"></span></div><span class="nav-link-icon"><span data-feather="lock"></span></span><span class="nav-link-text">Quản lí đơn hàng</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse parent" id="authentication">
+                    <li class="nav-item"><a class="nav-link" href="pages/authentication/simple/sign-in.html" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text">Danh sách đơn hàng</span></div>
+                      </a></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/authentication/simple/sign-up.html" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text">Phê duyệt đơn hàng</span></div>
+                      </a></li>
+                    
+                  </ul>
+                  <a class="nav-link dropdown-indicator" href="#forms" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="forms">
+                    <div class="d-flex align-items-center">
+                      <div class="dropdown-indicator-icon d-flex flex-center"><span class="fas fa-caret-right fs-0"></span></div><span class="nav-link-icon"><span data-feather="file-text"></span></span><span class="nav-link-text">Quản lí sản phẩm</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse parent" id="forms">
+                    <li class="nav-item"><a class="nav-link" href="/list-product" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text">Danh sách sản phẩm</span></div>
+                      </a>
+                  </li>
+                    <li class="nav-item"><a class="nav-link" href="modules/forms/input-group.html" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text">Thêm sản phẩm mới</span></div>
+                      </a></li>
+                    <li class="nav-item"><a class="nav-link" href="modules/forms/select.html" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text">Cập nhập sản phẩm</span></div>
+                      </a></li>
+                    
+                  </ul>
+                </li>
+                   
+                
+              </ul>
+            </div>
+            <div class="navbar-vertical-footer"><a class="btn btn-link border-0 fw-semi-bold d-flex ps-0" href="#!"><span class="navbar-vertical-footer-icon" data-feather="log-out"></span><span>Settings</span></a></div>
+          </div>
+        </nav>
+</body>
+</html>

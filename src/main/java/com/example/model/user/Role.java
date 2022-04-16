@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,8 +27,6 @@ public class Role {
 	private int id;
 	private String roleName;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name="role_id"),
-	inverseJoinColumns = @JoinColumn(name="user_id"))
-	private Collection<User>users;
+	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+	private Collection<UserRole>userRoles;
 }

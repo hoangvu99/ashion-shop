@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <body>
 	<header class="header" id="header" th:fragment="header">
         <div class="container-fluid" th:fragment="header">
@@ -32,10 +33,21 @@
                 <div class="col-lg-3">
                     <div class="header__right">
                         <div class="header__right__auth">
-                            <a href="#">Login</a>
-                            <a href="#">Register</a>
+                            <a sec:authorize="isAuthenticated() == false" href="http://localhost:8080/login">Login</a>
+                            	
+					
+				        	<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+        <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+				        
+				            
+				        
+				       					        
+						        
                         </div>
                         <ul class="header__right__widget">
+                        		
+               
+            				<li sec:authorize="isAuthenticated() == true"><span class="icon_profile"></span></li>
                             <li><span class="icon_search search-switch"></span></li>
                             <li><a href="#"><span class="icon_heart_alt"></span>
                                 <div class="tip">2</div>

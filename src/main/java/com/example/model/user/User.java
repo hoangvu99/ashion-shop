@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -41,14 +43,17 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Collection<Order>orders;
 	
-	@ManyToMany(mappedBy = "users",fetch = FetchType.EAGER)
-	private Collection<Role>roles;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Collection<UserRole>userRoles;
 	
 	private String createdAt;
 	
 	private String updatedAt;
 	
 	private String deletedAt;
+	
+	private String avatarURL;
 	
 	private int active;
 }

@@ -8,9 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.example.model.category.Category;
 import com.example.model.order.OrderItem;
 import com.example.model.promotion.ProductPromotion;
 import com.example.model.size.ProductSize;
@@ -53,6 +56,10 @@ public class Product {
 	
 	@OneToMany(mappedBy =  "product", cascade = CascadeType.ALL)
 	private Collection<OrderItem>orderItems;
+	
+	@ManyToOne
+	@JoinColumn(name = "category_Id")
+	private Category category;
 	
 
 }

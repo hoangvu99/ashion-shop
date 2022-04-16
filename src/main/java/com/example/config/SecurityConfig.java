@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,19 +44,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		
+		
 		http
         .authorizeRequests()
-        .antMatchers("/", "/home").permitAll() // Cho phép tất cả mọi người truy cập vào 2 địa chỉ này
-        .anyRequest().authenticated() // Tất cả các request khác đều cần phải xác thực mới được truy cập
+        .antMatchers("/", "/shop","/blog","/blog-details/**","/contact","/product-details/**","/sign-up","/user/confirm-email").permitAll()       
         .and()
-        .formLogin() // Cho phép người dùng xác thực bằng form login
-        .defaultSuccessUrl("/hello")
-        .permitAll() // Tất cả đều được truy cập vào địa chỉ này
+        .authorizeRequests().antMatchers("/account").hasAnyRole("USER","ADMIN")
         .and()
-        .logout() // Cho phép logout
+        .authorizeHttpRequests().antMatchers("/admin","/list-product").hasRole("ADMIN")             
+        .and()
+        .formLogin()
+        .loginPage("/login")
+        .defaultSuccessUrl("/")
+        .permitAll() 
+        .and()
+        .logout() 
         .permitAll();
+		
+		
 		
 			
 		
+	}
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/resources/**", "/static/**","/css/**", "/js/**","/img/**","/fonts/**","/sass/**");
 	}
 }

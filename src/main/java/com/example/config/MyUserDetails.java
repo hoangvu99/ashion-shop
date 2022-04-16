@@ -3,11 +3,17 @@ package com.example.config;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.example.dao.RoleDao;
+import com.example.dao.UserDao;
+import com.example.dao.UserRoleDao;
 import com.example.model.user.Role;
 import com.example.model.user.User;
 
@@ -22,11 +28,14 @@ public class MyUserDetails implements UserDetails{
 	
 	private User user;
 	
+	private List<String>roleNames;
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority>grantedAuthorities = new ArrayList<>();
-		for(Role r: user.getRoles()) {
-			GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(r.getRoleName());
+		
+		for(String r: roleNames) {
+			GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(r);
 			grantedAuthorities.add(grantedAuthority);
 		}
 		return grantedAuthorities;
