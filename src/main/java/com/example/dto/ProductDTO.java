@@ -15,9 +15,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductDTO {
 	private String category;
-	private User user;
-	private MultipartFile file;
-	private MultipartFile[] multipartFile;
+	private String productName;
+	private String description;
+	private MultipartFile thumnail;
+	private MultipartFile[] images;
+	private int price;
+	private String detail;
 	
 	
 }

@@ -7,4 +7,6 @@ import com.example.model.category.Category;
 public interface CategoryService {
 	
 	public List<Category> listCategories();
+	
+	public Category findCategoryById(int id);
 }

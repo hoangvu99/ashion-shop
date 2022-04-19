@@ -1,5 +1,9 @@
 package com.example.controller;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.dto.ProductDTO;
+import com.example.model.category.Category;
 import com.example.model.product.Product;
+import com.example.model.product.ProductImages;
 import com.example.model.user.User;
 import com.example.service.CategoryService;
+import com.example.service.UploadFileService;
 import com.example.service.UserService;
 
 @Controller
@@ -27,6 +36,9 @@ public class MainController {
 	
 	@Autowired
 	CategoryService categoryService;
+	
+	@Autowired
+	UploadFileService uploadFileService;
 	
 	@RequestMapping(value = "/")
 	public String homeController() {
@@ -121,11 +133,41 @@ public class MainController {
 		return"list-product";
 	}
 	
-	@RequestMapping(value = "/add-product", method = RequestMethod.GET, consumes = "multipart/form-data" )
+	@RequestMapping(value = "/add-product", method = RequestMethod.GET )
 	public String addProductView(Model model) {
 		model.addAttribute("listCategory", categoryService.listCategories());
-		model.addAttribute("product", new Product());
+		model.addAttribute("product", new ProductDTO());
 		return"add-product";
+	}
+	
+	@RequestMapping(value ="/add-product", method = RequestMethod.POST, consumes = "multipart/form-data")
+	@ResponseBody
+	public String addPr(@ModelAttribute ProductDTO productDTO) {
+		
+		Category category = categoryService.findCategoryById(Integer.valueOf(productDTO.getCategory()));
+		Product product = new Product();
+		
+		product.setCategory(category);
+		product.setName(productDTO.getProductName());
+		product.setPrice(Double.valueOf(productDTO.getPrice()*1000));
+		product.setThumnail(productDTO.getThumnail().getOriginalFilename());
+		
+		Collection<ProductImages>images = new ArrayList<ProductImages>();
+		
+		for(MultipartFile f: productDTO.getImages()) {
+			ProductImages productImages = new ProductImages();
+			productImages.setUrl(f.getOriginalFilename());
+			images.add(productImages);
+		}
+		
+		product.setProductImages(images);
+		
+		try {
+			uploadFileService.saveUploadFile(productDTO.getThumnail());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return "redirect:/add-product";
 	}
 	
 	

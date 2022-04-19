@@ -14,9 +14,16 @@ public class CategoryServiceIml implements CategoryService{
 
 	@Autowired
 	private CategoryDao categoryDao;
+	
 	@Override
 	public List<Category> listCategories() {
 		return categoryDao.findAll();
+	}
+
+	@Override
+	public Category findCategoryById(int id) {
+		
+		return categoryDao.findCategoryById(id);
 	}
 
 }
