@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +42,10 @@ public class Product {
 	private String createdBy;				
 	private String updatedAt;
 	private String deletedAt;
+	
+	@Column(columnDefinition = "varchar(2000)")
 	private String detailsContent;
+	
 	private double price;
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Collection<ProductPromotion> productPromotions;
@@ -48,7 +53,7 @@ public class Product {
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Collection<ProductSize>productSizes;
 	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.EAGER )
 	private Collection<ProductImages> productImages;
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
@@ -57,7 +62,7 @@ public class Product {
 	@OneToMany(mappedBy =  "product", cascade = CascadeType.ALL)
 	private Collection<OrderItem>orderItems;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_Id")
 	private Category category;
 	

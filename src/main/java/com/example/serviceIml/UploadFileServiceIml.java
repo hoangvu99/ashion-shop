@@ -18,13 +18,15 @@ public class UploadFileServiceIml implements UploadFileService{
 	public void saveUploadFile(MultipartFile file) throws IOException {
 		
 		try {
-			String fileLocation = new File("src\\main\\resources\\static\\img").getAbsolutePath() + "\\" + file.getOriginalFilename();
-			System.out.println(fileLocation);
-			FileOutputStream output = new FileOutputStream(fileLocation);
+			if(file != null) {
+				String fileLocation = new File("src\\main\\resources\\static\\img\\products").getAbsolutePath() + "\\" + file.getOriginalFilename();
+				
+				FileOutputStream output = new FileOutputStream(fileLocation);
 
-			output.write(file.getBytes());
+				output.write(file.getBytes());
 
-			output.close();
+				output.close();
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

@@ -3,6 +3,7 @@ package com.example.controller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.mail.MessagingException;
 
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,8 +25,11 @@ import com.example.dto.ProductDTO;
 import com.example.model.category.Category;
 import com.example.model.product.Product;
 import com.example.model.product.ProductImages;
+import com.example.model.size.ProductSize;
 import com.example.model.user.User;
 import com.example.service.CategoryService;
+import com.example.service.ProductService;
+import com.example.service.ProductSizeService;
 import com.example.service.UploadFileService;
 import com.example.service.UserService;
 
@@ -39,6 +44,12 @@ public class MainController {
 	
 	@Autowired
 	UploadFileService uploadFileService;
+	
+	@Autowired
+	ProductService productService;
+	
+	@Autowired
+	ProductSizeService productSizeService;
 	
 	@RequestMapping(value = "/")
 	public String homeController() {
@@ -128,47 +139,7 @@ public class MainController {
 		return "redirect:http://localhost:8080/login";
 	}
 	
-	@RequestMapping("/list-product")
-	public String listProductView() {
-		return"list-product";
-	}
 	
-	@RequestMapping(value = "/add-product", method = RequestMethod.GET )
-	public String addProductView(Model model) {
-		model.addAttribute("listCategory", categoryService.listCategories());
-		model.addAttribute("product", new ProductDTO());
-		return"add-product";
-	}
-	
-	@RequestMapping(value ="/add-product", method = RequestMethod.POST, consumes = "multipart/form-data")
-	@ResponseBody
-	public String addPr(@ModelAttribute ProductDTO productDTO) {
-		
-		Category category = categoryService.findCategoryById(Integer.valueOf(productDTO.getCategory()));
-		Product product = new Product();
-		
-		product.setCategory(category);
-		product.setName(productDTO.getProductName());
-		product.setPrice(Double.valueOf(productDTO.getPrice()*1000));
-		product.setThumnail(productDTO.getThumnail().getOriginalFilename());
-		
-		Collection<ProductImages>images = new ArrayList<ProductImages>();
-		
-		for(MultipartFile f: productDTO.getImages()) {
-			ProductImages productImages = new ProductImages();
-			productImages.setUrl(f.getOriginalFilename());
-			images.add(productImages);
-		}
-		
-		product.setProductImages(images);
-		
-		try {
-			uploadFileService.saveUploadFile(productDTO.getThumnail());
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return "redirect:/add-product";
-	}
 	
 	
 	

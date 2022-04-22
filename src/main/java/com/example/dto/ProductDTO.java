@@ -21,6 +21,12 @@ public class ProductDTO {
 	private MultipartFile[] images;
 	private int price;
 	private String detail;
+	private int xsSize;
+	private int sSize;
+	private int mSize;
+	private int lSize;
+	private int xlSize;
+	
 	
 	
 }

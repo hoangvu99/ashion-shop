@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         .and()
         .authorizeRequests().antMatchers("/account").hasAnyRole("USER","ADMIN")
         .and()
-        .authorizeHttpRequests().antMatchers("/admin","/list-product").hasRole("ADMIN")             
+        .authorizeHttpRequests().antMatchers("/admin","/list-product","/view-product/*").hasRole("ADMIN")             
         .and()
         .formLogin()
         .loginPage("/login")
@@ -70,6 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/resources/**", "/static/**","/css/**", "/js/**","/img/**","/fonts/**","/sass/**");
+		web.ignoring().antMatchers("/resources/**", "/static/**","/css/**", "/js/**","/img/**","/fonts/**","/sass/**","/assets/**","/vendor/**","/ckeditor/**");
 	}
 }

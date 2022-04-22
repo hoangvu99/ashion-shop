@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Phoenix</title>
+    <title>Ashion Shop</title>
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicons/favicon-16x16.png">
@@ -16,8 +16,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
-    <link href="assets/css/phoenix.min.css" rel="stylesheet" id="style-default">
-    <link href="assets/css/user.min.css" rel="stylesheet" id="user-style-default">
+    <link href="/assets/css/phoenix.min.css" rel="stylesheet" id="style-default">
+    <link href="/assets/css/user.min.css" rel="stylesheet" id="user-style-default">
     <style>
       body {
         opacity: 0;
@@ -34,22 +34,63 @@
         <div class="content pt-5">
           <div class="pb-5">
             <div class="row g-5">
-              <div class="col-12 col-xxl-6">
+              <div class="col-12 col-xxl-6 table-responsive">
                 <div class="mb-8">
                   <h2 class="mb-2">Danh sách sản phẩm</h2>
                   
                 </div>
                 
                 <hr class="bg-200 mb-6 mt-4">
-                <table class="table table-striped table-bordered">
-                	<thead>
-                		<tr>
-                			<th>STT</th>
-                			<th>Tên sản phẩm</th>
-                			<th>Loại sản phẩm</th>
+                <form  class="form" style="margin-left: 15px;">
+                	<div class="form-group row ">
+                		<input  id="search-inp"class="form-control" type="search" style="width: 200px;" placeholder="Tìm sản phẩm" th:value="${s}">
+                		<button type="button" id="search-btn" style="width: 50px; display: flex;justify-content: center;align-items: center;" class="form-control"> <span class="fa fa-search"></span> </button>
+                	</div>
+                </form>
+                <br>
+                <table class="table table-bordered " >
+                	<thead class="table-dark">
+                		
+                			<th >ID</th>
+                			<th >Tên</th>
+                			<th >Loại</th>
+                			<th >Giá tiền</th>
+                			<th >Giới thiệu</th>
+                			<th >Size XS</th>
+                			<th >Size S</th>
+                			<th >Size M</th>
+                			<th >Size L</th>
+                			<th >Size XL</th>
+                			<th > Ngày thêm </th>
+                			
+                			<th> Ảnh </th>
+                			<th> Xem hoặc chỉnh sửa</th>
                 			
                 	</thead>
+                	<tbody>
+                		<tr th:each="product : ${listProduct}">
+                			<td th:utext="${product.id}"></td>
+                			<td th:utext="${product.name}"></td>
+                			<td th:utext="${product.category.categoryName}"></td>
+                			<td th:utext="${product.price}"></td>
+                			<td th:utext="${product.description}"></td>
+                			<td th:each="size : ${product.productSizes}" th:utext="${size.quantity}" ></td>
+                			<td th:utext="${product.createdAt}"></td>
+                			<td > <img th:src="@{${'img/products/'+ product.thumnail}}" width="120"/>  </td>
+                			<td> <a th:href="@{${'/view-product?id='+ product.id}}"> <span class="fa fa-eye"></span></a> </td>
+                		</tr>
+                		
+                	</tbody>
+                	
+                	
                 </table>
+                <div class="page-button">
+                	<button class="btn btn-danger"> <a style="color:white"  th:href="@{${'list-product?page='+ lastPage}}"> <span class="fa fa-arrow-left"></span></a> </button>
+                	<input class="page-number"  id="page-number" th:value="${page}" style="width: 30px;"></input>
+                	<button class="go btn btn-danger" id="go">Go</button>
+                	<button class="btn btn-danger"> <a style="color:white" th:href="@{${'list-product?page='+ nextPage}}"> <span class="fa fa-arrow-right"></span></a> </button>
+                	
+                 </div>
                 
               </div>
               
@@ -59,7 +100,7 @@
                  
                 
               </div>
-            </nav>
+            
           
           
           
@@ -68,6 +109,7 @@
     </main>
     <script src="assets/js/phoenix.js"></script>
     <script src="assets/js/ecommerce-dashboard.js"></script>
+    <script src="js/list-product.js" > </script>
   </body>
 
 </html>
