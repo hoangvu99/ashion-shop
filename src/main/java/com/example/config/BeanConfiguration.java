@@ -1,6 +1,8 @@
 package com.example.config;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,16 @@ public class BeanConfiguration {
 		return simpleDateFormat;
 	}
 	
+	@Bean
+	public Locale locale() {
+		return new Locale("vn", "VN");
+		
+	}
 	
+	@Bean
+	public NumberFormat numberFormat(Locale locale) {
+		NumberFormat numberFormat = NumberFormat.getInstance(locale);
+		return numberFormat;
+	}
 	
 }

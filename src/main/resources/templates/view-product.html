@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
     <link href="assets/css/phoenix.min.css" rel="stylesheet" id="style-default">
     <link href="assets/css/user.min.css" rel="stylesheet" id="user-style-default">
-    <link href="css/add-product.css" rel="stylesheet">
+    <link href="css/view-product.css" rel="stylesheet">
     <style>
       body {
         opacity: 0;
@@ -42,24 +42,116 @@
                 </div>
                 
                 <hr class="bg-200 mb-6 mt-4">
-                <form id="" class="form" th:method="POST" enctype="multipart/form-data" th:action="@{/add-product}">
-                <div class="form-group">
-				   	<label for="catetories">Loại sản phẩm</label>
-				    <select name="caterogy" class="form-select" id="category" form="add-product" >
-					  <option th:each="c : ${listCategory}" th:value="${c.id}" th:name="${c.id}" th:utext="${c.categoryName}" th:selected="${c.categoryName == product.category.categoryName}" ></option>
-					  
-					</select>
+                <form id="" class="form" th:method="POST" enctype="multipart/form-data" th:object="${productDTO}" th:action="@{${'/update-product?id='+id}}" >
+                <div class="form-group row ">
+				   	<div class="form-group-item">
+				   		<label for="catetories">Loại sản phẩm</label>
+				    	<input class="form-control" readonly th:value="${productDTO.category}" >
+				   	</div>
+					<div class="form-group-item">
+						<label for="catetories">Thay đổi loại sản phẩm</label>
 					
+					<select name="caterogy" class="form-select" id="category"  th:field="*{category}">
+						<option th:value="0" th:name="0">Chọn loại khác</option>
+					  <option th:each="c : ${listCategory}" th:value="${c.id}"  th:utext="${c.categoryName}"></option>
+					</select>
+					</div>
 				  </div>
 				  
-				  <div class="form-group">
-				  	 <label>Tên sản phẩm</label>
-			   			<intput class="form-control" type="text" th:text="${product.name}" ></intput>
+				  <div class="form-group row">
+				  	<div class="form-group-item">
+				  		<label>Tên sản phẩm</label>
+				  		<input class="form-control"  th:field="*{productName}">
+				  	</div>
+				  	<div class="form-group-item">
+				  		
+				  	</div>
+				  	
+				  </div>
+				  <div>
+				  	<label>Mô tả</label>
+				  	<input class="form-control" th:field="*{description}">
+				  </div>
+				  
+				  <div class="form-group row">
+				  	<div class="form-group-item">
+				  		<label>Giá</label>
+				  		<input class="form-control" th:field="*{price}">
+				  	</div>
+				  	<div class="form-group-item">
+				  		
+				  	</div>
+				  	
 				  </div>
 				  
 				  
+				  <div class="form-group row">
+				  		<label>Nhập số lượng theo size</label>
+				  		<br>
+						<div class="sub-group-form">
+							<div class="sub-item">
+								<label>Size XS</label>
+								<input type="number" th:field="*{xsSize}" class="form-control"></input>
+							</div>
+							<div class="sub-item">
+								<label>Size S</label>
+								<input type="number" class="form-control" th:field="*{sSize}"></input>
+							</div>
+							<div class="sub-item">
+								<label>Size M</label>
+								<input type="number" class="form-control" th:field="*{mSize}"></input>
+							</div>
+							<div class="sub-item">
+								<label>Size L</label>
+								<input type="number" class="form-control" th:field="*{lSize}"></input>
+							</div>
+							<div class="sub-item">
+								<label>Size XL</label>
+								<input type="number" class="form-control" th:field="*{xlSize}"></input>
+							</div>
+						</div>
+						
+				</div>
+				  <div class="form-group row">
+				  	<div class="form-group-item">
+				  		<label>Ảnh đại diện</label>
+				  		<br>
+				  		<img th:src="@{${'img/products/' + product.thumnail}}">
+				  	</div>
+				  	<div class="form-group-item">
+				  		<label>Thay đổi ảnh đại diện</label>
+				  		
+				  		<input type="file" class="form-control" th:field="*{thumnail}">
+				  	</div>
+				  	
+				  </div>
+				  <label>Ảnh chi tiết</label>
+				  <div class="form-group row" th:each="image : ${product.productImages}" >
+				  	<div class="form-group-item" >
+				  		<img  th:src="@{${'img/products/'+image.url}}">
+				  	</div>
+				  	
+				  	<div class="form-group-item" >
+				  		<label>Đổi ảnh</label>
+				  		<input type="file" th:field="*{images}" class="form-control">
+				  	</div>
+				  	
+				  	
+				  	
+				  </div>
+				  
+				 
 				  <div class="form-group">
-				  	<button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+				  	<label>Thêm chi tiết cho sản phẩm</label>
+				  	<textarea name="detail" th:field="*{detail}">Chi tiết sản phẩm</textarea>
+				  </div>
+				  	
+				  </div>
+				  
+				  
+				  
+				  <div class="form-group">
+				  	<button type="submit" class="btn btn-primary">Cập nhập sản phẩm</button>
 				  </div>
 				</form>
                 

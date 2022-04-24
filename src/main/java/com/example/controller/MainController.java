@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.io.File;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -51,8 +52,12 @@ public class MainController {
 	@Autowired
 	ProductSizeService productSizeService;
 	
+	@Autowired
+	NumberFormat numberFormat;
+	
 	@RequestMapping(value = "/")
 	public String homeController() {
+		
 		
 		
 		return "index";

@@ -1,0 +1,11 @@
+.form-group{
+	margin-bottom: 15px;
+}
+.sub-item{
+	width: 19%;
+	margin-left: 0;
+	display: inline-block;
+}
+.form-group-item{
+	width: 50%;
+}

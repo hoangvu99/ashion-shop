@@ -46,7 +46,8 @@ public class Product {
 	@Column(columnDefinition = "varchar(2000)")
 	private String detailsContent;
 	
-	private double price;
+	private String price;
+	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Collection<ProductPromotion> productPromotions;
 	

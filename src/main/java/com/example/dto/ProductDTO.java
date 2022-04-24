@@ -19,7 +19,7 @@ public class ProductDTO {
 	private String description;
 	private MultipartFile thumnail;
 	private MultipartFile[] images;
-	private int price;
+	private String price;
 	private String detail;
 	private int xsSize;
 	private int sSize;
