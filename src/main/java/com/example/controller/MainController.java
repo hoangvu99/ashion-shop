@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.dao.SizeDao;
+import com.example.dto.CartDTO;
 import com.example.dto.CartItemDTO;
 import com.example.dto.ProductDTO;
 import com.example.model.category.Category;
@@ -70,10 +72,7 @@ public class MainController {
 	public String homeController(HttpSession httpSession, Model model) {
 		
 		
-		List<CartItemDTO>cartItemDTOs = (List<CartItemDTO>) httpSession.getAttribute("listCartItems");
-		if(cartItemDTOs ==null) {
-			httpSession.setAttribute("numberOfCartItem", 0);
-		}
+		
 		List<Product>lastestProducts = productService.lastestProducts();
 		
 		model.addAttribute("lastestProducts", lastestProducts);
@@ -84,10 +83,7 @@ public class MainController {
 	
 	@RequestMapping(value = "/shop")
 	public String shopController(HttpSession httpSession) {	
-		List<CartItemDTO>cartItemDTOs = (List<CartItemDTO>) httpSession.getAttribute("listCartItems");
-		if(cartItemDTOs ==null) {
-			httpSession.setAttribute("numberOfCartItem", 0);
-		}
+		
 		return "shop";
 	}
 	
@@ -102,18 +98,12 @@ public class MainController {
 	}
 	@RequestMapping(value = "/checkout")
 	public String checkoutDetailsController(HttpSession httpSession) {	
-		List<CartItemDTO>cartItemDTOs = (List<CartItemDTO>) httpSession.getAttribute("listCartItems");
-		if(cartItemDTOs ==null) {
-			httpSession.setAttribute("numberOfCartItem", 0);
-		}
+		
 		return "checkout";
 	}
 	@RequestMapping(value = "/contact")
 	public String contactDetailsController( HttpSession httpSession) {		
-		List<CartItemDTO>cartItemDTOs = (List<CartItemDTO>) httpSession.getAttribute("listCartItems");
-		if(cartItemDTOs ==null) {
-			httpSession.setAttribute("numberOfCartItem", 0);
-		}
+		
 		return "contact";
 	}
 	
@@ -121,25 +111,24 @@ public class MainController {
 	public String productDetailsController(@RequestParam(name="id")long id, Model model, HttpSession httpSession) {			
 		
 		model.addAttribute("product", productService.findProductById(id));
-		List<CartItemDTO>cartItemDTOs = (List<CartItemDTO>) httpSession.getAttribute("cartItems");
-		if(cartItemDTOs == null) {
-			
-			httpSession.setAttribute("numberOfCartItem", 0);
-		}
+		
 		return "product-details";
 	}
 	
 	@RequestMapping(value = "/cart")
 	public String cartController(HttpSession httpSession, Model model) {	
 		
-		List<CartItemDTO> cartItemDTOs = (List<CartItemDTO>) httpSession.getAttribute("listCartItems");
-		if(cartItemDTOs == null) {
-			httpSession.setAttribute("numberOfCartItem", 0);
+		
+		
+		CartDTO cartDTO = (CartDTO) httpSession.getAttribute("CartDTO");
+		
+		
+		if(cartDTO == null) {
+			model.addAttribute("message","Bạn chư thêm sản phẩm nào vào giỏ hàng");
+		}else {
+			model.addAttribute("cartDTO", cartDTO);
 		}
 		
-		System.out.println(convertTotalTextToNumber(cartItemDTOs.get(0).getTotal().split(",")));
-		
-		model.addAttribute("listCartItems", cartItemDTOs);
 		return "shop-cart";
 	}
 	
@@ -205,17 +194,41 @@ public class MainController {
 		if( principal instanceof UserDetails) {
 			userName = ((UserDetails) principal).getUsername();
 		}else {
-			List<CartItemDTO>cartItemDTOs = (List<CartItemDTO>) httpSession.getAttribute("listCartItems");
-			int numberOfCartItem = (int) httpSession.getAttribute("numberOfCartItem");
-			if(cartItemDTOs == null) {
-				cartItemDTOs = new ArrayList<>();
+			
+			long productId = Long.valueOf(data[0]);
+			int sizeId = Integer.valueOf(data[1]);
+			Product p = productService.findProductById(productId);
+			Size size = sizeService.findSizeById(sizeId);
+			
+			CartDTO cartDTO = (CartDTO) httpSession.getAttribute("CartDTO");
+			List<CartItemDTO>itemDTOs = new ArrayList<CartItemDTO>();
+			if(cartDTO == null) {
+				cartDTO = new CartDTO();
+				
+									
+			}else {
+				itemDTOs = cartDTO.getCartItemDTOs();
+			}
+						
+			
+			
+			boolean checkExist = false;
+			int index=0;
+			for (int i = 0; i < itemDTOs.size(); i++) {
+				if(itemDTOs.get(i).getProductId() == productId) {
+					checkExist = true;
+					index =i;
+					break;
+				}
+			}
+			
+			if(checkExist == true) {
+				itemDTOs.get(index).setQuantity(itemDTOs.get(index).getQuantity()+1);
+				itemDTOs.get(index).convertTotal(p.getPrice(),	 numberFormat);
+				
+				return 1;
+			}else {
 				CartItemDTO cartItemDTO = new CartItemDTO();
-				long productId = Long.valueOf(data[0]);
-				int sizeId = Integer.valueOf(data[1]);
-				
-				Product p = productService.findProductById(productId);
-				Size size = sizeService.findSizeById(sizeId);
-				
 				cartItemDTO.setImageName(p.getThumnail());
 				cartItemDTO.setProductId(p.getId());
 				cartItemDTO.setProductName(p.getName());
@@ -224,12 +237,19 @@ public class MainController {
 				cartItemDTO.setSizeName(size.getSizeName());
 				cartItemDTO.convertTotal(p.getPrice(), numberFormat);
 				cartItemDTO.setPrice(p.getPrice());
-				cartItemDTOs.add(cartItemDTO);
-				
-				httpSession.setAttribute("listCartItems", cartItemDTOs);
-				httpSession.setAttribute("numberOfCartItem", cartItemDTOs.size());
-				
+				itemDTOs.add(cartItemDTO);
+				cartDTO.setCounter(cartDTO.getCounter()+1);
 			}
+			cartDTO.setCartItemDTOs(itemDTOs);
+			cartDTO.calculatorCartTotal(numberFormat);
+			httpSession.setAttribute("CartDTO", cartDTO);
+			
+			
+			
+			
+			
+			
+			
 		}
 		
 		
