@@ -17,4 +17,7 @@ public interface ProductDao extends JpaRepository<Product, Long>{
 	
 	@Query(value = "select * from product where name like %?1% ", nativeQuery = true)
 	public List<Product>searchProductByName(String name);
+	
+	@Query(value = "select * from product order by id desc limit 8", nativeQuery = true)
+	public List<Product> listLastestProduct();
 }

@@ -25,4 +25,6 @@ public interface ProductService {
 	List<Product> searchProductByName(String name);
 	
 	void saveProduct(Product p);
+	
+	List<Product> lastestProducts();
 }

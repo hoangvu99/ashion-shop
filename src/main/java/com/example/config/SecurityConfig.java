@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -45,23 +46,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		
+		http.csrf().disable().cors();
 		
 		http
         .authorizeRequests()
-        .antMatchers("/", "/shop","/blog","/blog-details/**","/contact","/product-details/**","/sign-up","/user/confirm-email").permitAll()       
+        .antMatchers("/", "/shop","/blog","/blog-details/**","/contact","/product-details/**","/sign-up","/user/confirm-email","/cart").permitAll()       
         .and()
         .authorizeRequests().antMatchers("/account").hasAnyRole("USER","ADMIN")
         .and()
         .authorizeHttpRequests().antMatchers("/admin","/list-product","/view-product/*").hasRole("ADMIN")             
         .and()
         .formLogin()
-        .loginPage("/login")
+        .loginPage("/login").permitAll()
         .defaultSuccessUrl("/")
-        .permitAll() 
         .and()
-        .logout() 
-        .permitAll();
+        .exceptionHandling().accessDeniedPage("/403")
+        .and()
+        .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+        .logoutSuccessUrl("/")
+        .invalidateHttpSession(true);
+   
+       
 		
 		
 		

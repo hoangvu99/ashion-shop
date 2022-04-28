@@ -46,13 +46,17 @@
                         <ul class="header__right__widget">
                         		
                
-            				<li sec:authorize="isAuthenticated() == true"><span class="icon_profile"></span></li>
+            				<li sec:authorize="isAuthenticated() == true"><span class="icon_profile"></span>
+            					
+            				</li>
+            				<li sec:authorize="isAuthenticated() == true"><span class="fa fa-sign-out"></span>
+            					
+            				</li>
+            				
                             <li><span class="icon_search search-switch"></span></li>
-                            <li><a href="#"><span class="icon_heart_alt"></span>
-                                <div class="tip">2</div>
-                            </a></li>
-                            <li><a href="#"><span class="icon_bag_alt"></span>
-                                <div class="tip">2</div>
+                            
+                            <li><a href="/cart"><span class="icon_bag_alt"></span>
+                                <div class="tip" id="cart-item-count" th:text="${session.numberOfCartItem == null} ? 0 : ${session.numberOfCartItem}"></div>
                             </a></li>
                         </ul>
                     </div>

@@ -42,6 +42,7 @@
                 </div>
                 
                 <hr class="bg-200 mb-6 mt-4">
+                <h4  class="text-danger" th:text="${messageUpdate != null} ? ${messageUpdate}"></h4>
                 <form id="" class="form" th:method="POST" enctype="multipart/form-data" th:object="${productDTO}" th:action="@{${'/update-product?id='+id}}" >
                 <div class="form-group row ">
 				   	<div class="form-group-item">
@@ -89,34 +90,21 @@
 				  		<label>Nhập số lượng theo size</label>
 				  		<br>
 						<div class="sub-group-form">
-							<div class="sub-item">
-								<label>Size XS</label>
-								<input type="number" th:field="*{xsSize}" class="form-control"></input>
+							<div class="sub-group-form">
+							<div class="sub-item" th:each="s, itemStat : *{sizes}">
+								<label th:field="*{sizes[__${itemStat.index}__].sizeName}" th:text="${s.sizeName}"></label>
+								<input type="number" th:field="*{sizes[__${itemStat.index}__].quantity}"  class="form-control"></input>
 							</div>
-							<div class="sub-item">
-								<label>Size S</label>
-								<input type="number" class="form-control" th:field="*{sSize}"></input>
-							</div>
-							<div class="sub-item">
-								<label>Size M</label>
-								<input type="number" class="form-control" th:field="*{mSize}"></input>
-							</div>
-							<div class="sub-item">
-								<label>Size L</label>
-								<input type="number" class="form-control" th:field="*{lSize}"></input>
-							</div>
-							<div class="sub-item">
-								<label>Size XL</label>
-								<input type="number" class="form-control" th:field="*{xlSize}"></input>
-							</div>
+							
+						</div>
 						</div>
 						
 				</div>
 				  <div class="form-group row">
 				  	<div class="form-group-item">
-				  		<label>Ảnh đại diện</label>
+				  		<label>Ảnh đại diện:  F5 nếu chưa thấy ảnh sau khi thay đổi</label>
 				  		<br>
-				  		<img th:src="@{${'img/products/' + product.thumnail}}">
+				  		<img style="width: 100px; height: 100px;" th:src="@{${'img/products/' + product.thumnail}}">
 				  	</div>
 				  	<div class="form-group-item">
 				  		<label>Thay đổi ảnh đại diện</label>
@@ -128,7 +116,7 @@
 				  <label>Ảnh chi tiết</label>
 				  <div class="form-group row" th:each="image : ${product.productImages}" >
 				  	<div class="form-group-item" >
-				  		<img  th:src="@{${'img/products/'+image.url}}">
+				  		<img style="width: 100px; height: 100px;" th:src="@{${'img/products/'+image.url}}">
 				  	</div>
 				  	
 				  	<div class="form-group-item" >

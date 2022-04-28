@@ -47,6 +47,7 @@ public class Product {
 	private String detailsContent;
 	
 	private String price;
+	private String oldPrice;
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Collection<ProductPromotion> productPromotions;
@@ -54,7 +55,7 @@ public class Product {
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Collection<ProductSize>productSizes;
 	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.EAGER )
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Collection<ProductImages> productImages;
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
@@ -63,7 +64,7 @@ public class Product {
 	@OneToMany(mappedBy =  "product", cascade = CascadeType.ALL)
 	private Collection<OrderItem>orderItems;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne()
 	@JoinColumn(name = "category_Id")
 	private Category category;
 	

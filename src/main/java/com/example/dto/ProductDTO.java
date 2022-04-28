@@ -1,6 +1,7 @@
 package com.example.dto;
 
 import java.io.File;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,14 +19,10 @@ public class ProductDTO {
 	private String productName;
 	private String description;
 	private MultipartFile thumnail;
-	private MultipartFile[] images;
+	private List<MultipartFile> images;
 	private String price;
 	private String detail;
-	private int xsSize;
-	private int sSize;
-	private int mSize;
-	private int lSize;
-	private int xlSize;
+	private List<SizeDTO>sizes;
 	
 	
 	

@@ -1,4 +1,4 @@
-package com.example.serviceIml;
+	package com.example.serviceIml;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.dao.ProductDao;
+import com.example.dao.ProductImageDao;
 import com.example.dao.ProductSizeDao;
 import com.example.dao.SizeDao;
 import com.example.dto.ProductDTO;
@@ -50,6 +51,11 @@ public class ProductServiceIml implements ProductService{
 	
 	@Autowired
 	SimpleDateFormat simpleDateFormat;
+	
+	@Autowired
+	ProductImageDao productImageDao;
+	
+	
 	@Override
 	public Product findProductById(long id) {
 		Product product = productDao.findProductById(id);
@@ -59,72 +65,74 @@ public class ProductServiceIml implements ProductService{
 
 	@Override
 	public void saveProduct(ProductDTO productDTO) {
-		Category category = categoryService.findCategoryById(Integer.valueOf(productDTO.getCategory()));
-		Product product = new Product();
+		String fomattedDate = simpleDateFormat.format(new Date());
+		String fileName = fomattedDate.replaceAll("[:\\s]+", "-");
 		
+		Category category = categoryService.findCategoryById(Integer.valueOf(productDTO.getCategory()));
+		
+		Product product = new Product();		
 		product.setCategory(category);
 		product.setName(productDTO.getProductName());
 		product.setPrice(productDTO.getPrice());
-		product.setThumnail(productDTO.getThumnail().getOriginalFilename());
+		
+		
+		if(productDTO.getThumnail().getOriginalFilename() != "") {
+			product.setThumnail(fileName+".jpg");
+			try {
+				uploadFileService.saveUploadFile(productDTO.getThumnail(),fileName+".jpg");
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}else {
+			product.setThumnail("null.jpg");
+		}
 		
 		Collection<ProductImages>images = new ArrayList<ProductImages>();
 		
-		for(MultipartFile f: productDTO.getImages()) {
-			if(f.getOriginalFilename() != "") {
-				
-				ProductImages productImages = new ProductImages();
-				productImages.setUrl(f.getOriginalFilename());
-				productImages.setProduct(product);
-				images.add(productImages);
+
+		List<MultipartFile>filesDTO = productDTO.getImages();
+		for (int i = 0; i < 4; i++) {
+			ProductImages productImages = new ProductImages();
+			productImages.setCreatedAt(fomattedDate);
+			productImages.setProduct(product);
+			
+			if(filesDTO.get(i).getOriginalFilename() =="") {
+				System.out.println("ảnh chi tiết null");
+				productImages.setUrl("null.jpg");
+			}else {
+				productImages.setUrl(fileName+"dt-"+i+".jpg");
 				try {
-					uploadFileService.saveUploadFile(f);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					uploadFileService.saveUploadFile(filesDTO.get(i), fileName+"dt-"+i+".jpg");
+				} catch (Exception e) {
+					// TODO: handle exception
 				}
 			}
+			
+			images.add(productImages);
 		}
 		
-		product.setCreatedAt(simpleDateFormat.format(new Date()));
+		product.setCreatedAt(fomattedDate);
 		product.setCreatedBy("ADMIN");
 		
 		product.setProductImages(images);
 		
 		List<Size> sizes = sizeDao.findAll();
 		List<ProductSize>productSizes = new ArrayList<ProductSize>();
-		sizes.stream().forEach(s ->{
+		
+		
+		
+		for (int i = 0; i < sizes.size(); i++) {
 			ProductSize productSize = new ProductSize();
 			productSize.setProduct(product);
-			productSize.setSize(s);
-			productSize.setCreatedAt(simpleDateFormat.format(new Date()));
-			switch (s.getSizeName()) {
-			case "XS":
-				productSize.setQuantity(productDTO.getXsSize());
-				break;
-			case "S":
-				productSize.setQuantity(productDTO.getSSize());
-				break;
-			case "M":
-				productSize.setQuantity(productDTO.getMSize());
-				break;
-			case "L":
-				productSize.setQuantity(productDTO.getLSize());
-				break;
-			case "XL":
-				productSize.setQuantity(productDTO.getXlSize());
-				break;
-
-			default:
-				break;
-			}
+			productSize.setSize(sizes.get(i));
+			productSize.setCreatedAt(fomattedDate);
+			productSize.setQuantity(productDTO.getSizes().get(i).getQuantity());
 			productSizes.add(productSize);
-		});
-		product.setProductSizes(productSizes);
-		try {
-			uploadFileService.saveUploadFile(productDTO.getThumnail());
-		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
+		
+		product.setProductSizes(productSizes);
+		
 		product.setDescription(productDTO.getDescription());
 		product.setDetailsContent(productDTO.getDetail());
 		productDao.save(product);
@@ -160,88 +168,85 @@ public class ProductServiceIml implements ProductService{
 	
 	@Override
 	public void updateProduct(ProductDTO productDTO, long id) {
-		
-		Product product = productDao.findProductById(id);
-		
-		
-		if(productDTO.getCategory()!="0") {
-			Category category = categoryService.findCategoryById(Integer.valueOf(productDTO.getCategory()));
-			product.setCategory(category);
-		}
+		try {
+			String fomattedDate = simpleDateFormat.format(new Date());
+			String fileName = fomattedDate.replaceAll("[:\\s]+", "-");
+			Product product = productDao.findProductById(id);
 			
-		
-		
-		product.setName(productDTO.getProductName());
-		product.setPrice(productDTO.getPrice());
-		if(productDTO.getThumnail().getOriginalFilename() !="") {
-			product.setThumnail(productDTO.getThumnail().getOriginalFilename());
-			try {
-				uploadFileService.saveUploadFile(productDTO.getThumnail());
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-		}
-		
-		Collection<ProductImages>images = new ArrayList<ProductImages>();
-		
-		for(MultipartFile f: productDTO.getImages()) {
-			if(f.getOriginalFilename() != "") {
+			
+			if(productDTO.getCategory().equalsIgnoreCase("0") != true) {
 				
-				ProductImages productImages = new ProductImages();
-				productImages.setUrl(f.getOriginalFilename());
-				productImages.setProduct(product);
-				images.add(productImages);
+				
+				Category category = categoryService.findCategoryById(Integer.valueOf(productDTO.getCategory()));
+				product.setCategory(category);
+			}
+				
+			
+			
+			product.setName(productDTO.getProductName());
+			product.setPrice(productDTO.getPrice());
+			if(productDTO.getThumnail().getOriginalFilename() !="") {
+				product.setThumnail(fileName+".jpg");
 				try {
-					uploadFileService.saveUploadFile(f);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					uploadFileService.saveUploadFile(productDTO.getThumnail(),fileName+".jpg");
+				} catch (Exception e) {
+					// TODO: handle exception
 				}
 			}
-		}
-		
-		product.setUpdatedAt(simpleDateFormat.format(new Date()));
-		product.setCreatedBy("ADMIN");
-		
-		if(images.size() !=0) {
-			product.setProductImages(images);
-		}
-		
-		List<Size> sizes = sizeDao.findAll();
-		List<ProductSize>productSizes = new ArrayList<ProductSize>();
-		sizes.stream().forEach(s ->{
-			ProductSize productSize = new ProductSize();
-			productSize.setProduct(product);
-			productSize.setSize(s);
-			productSize.setCreatedAt(simpleDateFormat.format(new Date()));
-			switch (s.getSizeName()) {
-			case "XS":
-				productSize.setQuantity(productDTO.getXsSize());
-				break;
-			case "S":
-				productSize.setQuantity(productDTO.getSSize());
-				break;
-			case "M":
-				productSize.setQuantity(productDTO.getMSize());
-				break;
-			case "L":
-				productSize.setQuantity(productDTO.getLSize());
-				break;
-			case "XL":
-				productSize.setQuantity(productDTO.getXlSize());
-				break;
-
-			default:
-				break;
+//			
+			List<ProductImages>images = productImageDao.findByProductId(id);
+			List<MultipartFile>filesDTO = productDTO.getImages();
+			for (int i = 0; i < 4; i++) {
+				if(filesDTO.get(i).getOriginalFilename() != "") {
+					images.get(i).setUrl(fileName+"dt-"+i+".jpg");
+					images.get(i).setCreatedAt(fomattedDate);
+					try {
+						uploadFileService.saveUploadFile(filesDTO.get(i), fileName+"dt-"+i+".jpg");
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+//				
+//					
+//					
+				}
+				
+				
 			}
-			productSizes.add(productSize);
-		});
-		product.setProductSizes(productSizes);
+			
+			
+			product.setUpdatedAt(fomattedDate);
+//			
+//			
+//			
+			product.setProductImages(images);
+//			
+//			
+			List<Size> sizes = sizeDao.findAll();
+			List<ProductSize>productSizes = new ArrayList<ProductSize>();
+			for (int i = 0; i < sizes.size(); i++) {
+				ProductSize productSize = productSizeDao.findProductSize(id,i+1);
+				
+				productSize.setUpdatedAt(fomattedDate);
+				productSize.setQuantity(productDTO.getSizes().get(i).getQuantity());
+				productSizes.add(productSize);
+				
+			}
+			product.setProductSizes(productSizes);
+			
+			product.setDescription(productDTO.getDescription());
+			product.setDetailsContent(productDTO.getDetail());
+			
+			productDao.saveAndFlush(product);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		product.setDescription(productDTO.getDescription());
-		product.setDetailsContent(productDTO.getDetail());
-		productDao.saveAndFlush(product);
-		
+	}
+
+	@Override
+	public List<Product> lastestProducts() {
+		// TODO Auto-generated method stub
+		return productDao.listLastestProduct();
 	}
 
 }

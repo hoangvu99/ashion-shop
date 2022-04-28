@@ -40,6 +40,6 @@ public class Cart {
 	
 	private String createdAt;
 	private String updatedAt;
-	private double cartTotal;
+	
 	
 }

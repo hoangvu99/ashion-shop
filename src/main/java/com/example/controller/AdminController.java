@@ -1,5 +1,8 @@
 package com.example.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,20 +11,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dto.ProductDTO;
+import com.example.dto.SizeDTO;
 import com.example.model.product.Product;
+import com.example.model.size.Size;
 import com.example.service.CategoryService;
 import com.example.service.ProductService;
 import com.example.service.ProductSizeService;
+import com.example.service.SizeService;
 import com.example.service.UploadFileService;
 import com.example.service.UserService;
 
 @Controller
 public class AdminController {
 	
-	@Autowired
-	UserService userService;
+	
 	
 	@Autowired
 	CategoryService categoryService;
@@ -34,6 +41,9 @@ public class AdminController {
 	
 	@Autowired
 	ProductSizeService productSizeService;
+	
+	@Autowired
+	SizeService sizeService;
 	
 	@RequestMapping("/list-product")
 	public String listProductView(Model model, @RequestParam(name = "s", defaultValue = "") String s, @RequestParam(name="page", defaultValue = "1") int page) {
@@ -58,17 +68,27 @@ public class AdminController {
 	@RequestMapping(value = "/add-product", method = RequestMethod.GET )
 	public String addProductView(Model model) {
 		model.addAttribute("listCategory", categoryService.listCategories());
-		model.addAttribute("product", new ProductDTO());
+		List<SizeDTO>sizeDTOs = new ArrayList<SizeDTO>();
+		List<String>sizes = sizeService.listSizeName();
+		
+		sizes.stream().forEach(i -> {
+			
+			SizeDTO sizeDTO = new SizeDTO(i, 0);
+			sizeDTOs.add(sizeDTO);
+		});
+		ProductDTO productDTO = new ProductDTO();
+		productDTO.setSizes(sizeDTOs);
+		model.addAttribute("product", productDTO);
 		return"add-product";
 	}
 	
 	@RequestMapping(value ="/add-product", method = RequestMethod.POST, consumes = "multipart/form-data")
-	public String addPr(@ModelAttribute ProductDTO productDTO) {
+	public String addPr(@ModelAttribute ProductDTO productDTO, RedirectAttributes redirectAttributes) {
 		
 		
 		productService.saveProduct(productDTO);
 		
-		
+		redirectAttributes.addFlashAttribute("message", "Thêm sản phẩm thành công");
 		return "redirect:/add-product";
 	}
 	
@@ -84,30 +104,12 @@ public class AdminController {
 		productDTO.setDetail(p.getDetailsContent());	
 		productDTO.setPrice(p.getPrice());
 		
+		List<SizeDTO> sizeDTOs = new ArrayList<SizeDTO>();
 		p.getProductSizes().stream().forEach(s -> {
-			
-			switch (s.getSize().getSizeName()) {
-			case "XS":
-				productDTO.setXsSize(s.getQuantity());
-				break;
-			case "S":
-				productDTO.setSSize(s.getQuantity());
-				break;
-			case "M":
-				productDTO.setMSize(s.getQuantity());
-				break;
-			case "L":
-				productDTO.setLSize(s.getQuantity());
-				break;
-			case "XL":
-				productDTO.setXlSize(s.getQuantity());
-				break;
-
-			default:
-				break;
-			}
+			SizeDTO sizeDTO = new SizeDTO(s.getSize().getSizeName(), s.getQuantity());
+			sizeDTOs.add(sizeDTO);
 		});
-		
+		productDTO.setSizes(sizeDTOs);
 		model.addAttribute("product", p);
 		model.addAttribute("productDTO", productDTO);
 		model.addAttribute("id", id);
@@ -117,11 +119,19 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/update-product", method = RequestMethod.POST , consumes = "multipart/form-data")
-	@ResponseBody
-	public String upload(@RequestParam(name="id") long id, @ModelAttribute ProductDTO productDTO) {
+	public ModelAndView upload(@RequestParam(name="id") long id, @ModelAttribute ProductDTO productDTO, RedirectAttributes redirectAttributes) {
 		
 		 productService.updateProduct(productDTO, id);
 		
-		return "cap nhap san pham thanh cong";
+		 ModelAndView modelAndView = new ModelAndView("redirect:/view-product?id="+id);
+		redirectAttributes.addFlashAttribute("messageUpdate", "Cập nhập thành công");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/findProductById")
+	@ResponseBody
+	public String findById(@RequestParam(name ="id")long id) {
+		Product p = productService.findProductById(id);
+		return p.getCategory().getCategoryName();
 	}
 }

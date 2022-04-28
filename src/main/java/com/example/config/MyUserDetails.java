@@ -50,7 +50,7 @@ public class MyUserDetails implements UserDetails{
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return this.user.getUserName();
+		return this.user.getEmail();
 	}
 
 	@Override

@@ -14,4 +14,7 @@ public interface ProductSizeDao extends JpaRepository<ProductSize, Long>{
 	
 	@Query(value =" select * from product_size where product_id = ?1", nativeQuery  = true)
 	public List<ProductSize> findProductSizeByProductId(long productId);
+	
+	@Query(value ="select * from product_size where product_id = ?1 and size_id = ?2", nativeQuery = true)
+	public ProductSize findProductSize(long productId, int sizeId);
 }

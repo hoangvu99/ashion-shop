@@ -38,10 +38,11 @@
               <div class="col-12 col-xxl-6">
                 <div class="mb-8">
                   <h2 class="mb-2">Thêm sản phẩm</h2>
-                  
+                 
                 </div>
                 
                 <hr class="bg-200 mb-6 mt-4">
+                 <h4 th:text="${message != null}? ${message}" class="text-danger"></h4>
                 <form id="add-product" class="form" th:object="${product}" th:method="POST" enctype="multipart/form-data" th:action="@{/add-product}">
                 <div class="form-group">
 				   	<label for="catetories">Chọn loại sản phẩm</label>
@@ -68,40 +69,25 @@
 				  		<label>Nhập số lượng theo size</label>
 				  		<br>
 						<div class="sub-group-form">
-							<div class="sub-item">
-								<label>Size XS</label>
-								<input type="number" th:field="*{xsSize}" class="form-control"></input>
+							<div class="sub-item" th:each="s, itemStat : *{sizes}">
+								<label th:field="*{sizes[__${itemStat.index}__].sizeName}" th:text="${s.sizeName}" ></label>
+								<input type="number" th:field="*{sizes[__${itemStat.index}__].quantity}"  class="form-control"></input>
 							</div>
-							<div class="sub-item">
-								<label>Size S</label>
-								<input type="number" class="form-control" th:field="*{sSize}"></input>
-							</div>
-							<div class="sub-item">
-								<label>Size M</label>
-								<input type="number" class="form-control" th:field="*{mSize}"></input>
-							</div>
-							<div class="sub-item">
-								<label>Size L</label>
-								<input type="number" class="form-control" th:field="*{lSize}"></input>
-							</div>
-							<div class="sub-item">
-								<label>Size XL</label>
-								<input type="number" class="form-control" th:field="*{xlSize}"></input>
-							</div>
+							
 						</div>
 						
 				</div>
 				  
 				  <div class="form-group">
 				    <label>Chọn ảnh đại diện cho sản phẩm</label>
-				    <input type="file" class="form-control" id="" name="thumnail" placeholder="Chọn ảnh đại diện" th:field="*{thumnail}">
+				    <input type="file" class="form-control" id="" accept=".jpg" name="thumnail" placeholder="Chọn ảnh đại diện" th:field="*{thumnail}">
 				  </div>
 				  <div class="form-group" id="image-group">
 				   	<label>Chọn thêm ảnh chi tiết</label>
-				    <input type="file" class="form-control" id="" name="images" th:field="*{images}">
-				    <input type="file" class="form-control" id="" name="images" th:field="*{images}">
-				    <input type="file" class="form-control" id="" name="images" th:field="*{images}">
-				    <input type="file" class="form-control" id="" name="images" th:field="*{images}">
+				    <input type="file" class="form-control" accept=".jpg" id="" name="images" th:field="*{images}">
+				    <input type="file" class="form-control" accept=".jpg" id="" name="images" th:field="*{images}">
+				    <input type="file" class="form-control" accept=".jpg" id="" name="images" th:field="*{images}">
+				    <input type="file" class="form-control"accept=".jpg" id="" name="images" th:field="*{images}">
 				  </div>
 				  
 				  <div class="form-group">

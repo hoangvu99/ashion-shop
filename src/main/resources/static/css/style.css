@@ -1298,7 +1298,7 @@ ol {
 }
 
 .product__item__text .product__price {
-	color: #111111;
+	color: red;
 	font-weight: 600;
 }
 
