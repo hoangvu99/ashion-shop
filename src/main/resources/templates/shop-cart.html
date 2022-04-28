@@ -85,6 +85,7 @@
                             <thead>
                                 <tr>
                                     <th>Product</th>
+                                    <th>Size</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
@@ -100,14 +101,15 @@
                                             
                                         </div>
                                     </td>
+                                     <td class="cart__price" th:text="${c.sizeName}"></td>
                                     <td class="cart__price" th:text="${c.price}"></td>
                                     <td class="cart__quantity">
                                         <div class="pro-qty">
-                                            <input type="text" th:value="${c.quantity}">
+                                            <input min="1"  type="number" class="cart-quantity-input" th:value="${c.quantity}">
                                         </div>
                                     </td>
                                     <td class="cart__total" th:text="${c.total}"></td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
+                                    <td class="cart__close"> <a th:href="@{${'/deleteProductFromCart?id='+c.productId}}"><span class="icon_close"></span></a> </td>
                                 </tr>
                                 
                             </tbody>
@@ -123,7 +125,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="cart__btn update__btn">
-                        <a href="#"><span class="icon_loading"></span> Update cart</a>
+                        <a href="#" onclick="return updateCart()"><span class="icon_loading"></span> Update cart</a>
                     </div>
                 </div>
             </div>
@@ -135,8 +137,8 @@
                     <div class="cart__total__procced">
                         <h6>Cart total</h6>
                         <ul>
-                            <li>Subtotal <span>$ 750.0</span></li>
-                            <li>Total <span>$ 750.0</span></li>
+                            
+                            <li>Total <span th:text="${session.CartDTO == null} ? 0  : ${cartDTO.cartTotal}" ></span></li>
                         </ul>
                         <a href="#" class="primary-btn">Proceed to checkout</a>
                     </div>
@@ -178,6 +180,7 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/jquery.nicescroll.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
 </body>
 
 </html>

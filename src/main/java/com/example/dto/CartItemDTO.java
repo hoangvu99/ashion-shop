@@ -24,8 +24,8 @@ public class CartItemDTO {
 
 	
 	
-	public void convertTotal(String price, NumberFormat numberFormat) {
-		String[] priceArr = price.split(",");
+	public void convertTotal( NumberFormat numberFormat) {
+		String[] priceArr = this.price.split(",");
 		String priceText="";
 		for (int i = 0; i < priceArr.length; i++) {
 			priceText+=priceArr[i];

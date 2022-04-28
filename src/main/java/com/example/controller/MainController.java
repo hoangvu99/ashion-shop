@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
@@ -215,7 +216,7 @@ public class MainController {
 			boolean checkExist = false;
 			int index=0;
 			for (int i = 0; i < itemDTOs.size(); i++) {
-				if(itemDTOs.get(i).getProductId() == productId) {
+				if(itemDTOs.get(i).getProductId() == productId && itemDTOs.get(i).getSizeId() == sizeId) {
 					checkExist = true;
 					index =i;
 					break;
@@ -223,10 +224,10 @@ public class MainController {
 			}
 			
 			if(checkExist == true) {
-				itemDTOs.get(index).setQuantity(itemDTOs.get(index).getQuantity()+1);
-				itemDTOs.get(index).convertTotal(p.getPrice(),	 numberFormat);
+				itemDTOs.get(index).setQuantity(itemDTOs.get(index).getQuantity()+Integer.valueOf(data[2]));
+				itemDTOs.get(index).convertTotal(numberFormat);
 				
-				return 1;
+				
 			}else {
 				CartItemDTO cartItemDTO = new CartItemDTO();
 				cartItemDTO.setImageName(p.getThumnail());
@@ -235,8 +236,9 @@ public class MainController {
 				cartItemDTO.setQuantity(Integer.valueOf(data[2]));
 				cartItemDTO.setSizeId(sizeId);
 				cartItemDTO.setSizeName(size.getSizeName());
-				cartItemDTO.convertTotal(p.getPrice(), numberFormat);
 				cartItemDTO.setPrice(p.getPrice());
+				cartItemDTO.convertTotal( numberFormat);
+				
 				itemDTOs.add(cartItemDTO);
 				cartDTO.setCounter(cartDTO.getCounter()+1);
 			}
@@ -256,6 +258,38 @@ public class MainController {
 		return 1;
 	}
 	
+	@RequestMapping(value="/deleteProductFromCart")
+	public String deleteProductFromCart(@RequestParam(name = "id")long id, HttpSession httpSession) {
+		
+		CartDTO cartDTO = (CartDTO) httpSession.getAttribute("CartDTO");
+		List<CartItemDTO>itemDTOs = cartDTO.getCartItemDTOs();
+		CartItemDTO cartItemDTO = itemDTOs.stream().filter(i -> i.getProductId() == id).collect(Collectors.toList()).get(0);
+		itemDTOs.remove(cartItemDTO);
+		cartDTO.setCounter(cartDTO.getCounter()-1);
+		cartDTO.calculatorCartTotal(numberFormat);
+		
+		httpSession.setAttribute("CartDTO", cartDTO);
+		
+		return "redirect:/cart";
+	}
+	
+	@RequestMapping(value="/updateCart", method = RequestMethod.POST)
+	@ResponseBody
+	public String updateCart(@RequestBody String[] data, HttpSession httpSession, Model model) {
+		CartDTO cartDTO = (CartDTO) httpSession.getAttribute("CartDTO");
+		List<CartItemDTO>itemDTOs = cartDTO.getCartItemDTOs();
+		for (int i = 0; i < data.length; i++) {
+			int quantity = Integer.valueOf(data[i]);
+			if(quantity != itemDTOs.get(i).getQuantity()) {
+				itemDTOs.get(i).setQuantity(quantity);
+				itemDTOs.get(i).convertTotal(numberFormat);
+			}
+		}
+		cartDTO.calculatorCartTotal(numberFormat);
+		httpSession.setAttribute("CartDTO", cartDTO);
+		
+		return "success";
+	}
 	
 	public long convertTotalTextToNumber(String[] arr) {
 		
