@@ -11,4 +11,6 @@ public interface UserService {
 	public void sendVerifyEmail(String email) throws MessagingException;
 	
 	public void updateUserConfirmEmail(String email);
+	
+	public User findUserByEmail(String email);
 }

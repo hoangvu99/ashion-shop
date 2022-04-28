@@ -98,5 +98,9 @@ public class UserServiceIml  implements UserService{
 		userDao.save(user);
 		
 	}
-
+	
+	@Override
+	public User findUserByEmail(String email) {
+		return userDao.findUserByEmail(email);
+	}
 }

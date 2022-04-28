@@ -56,7 +56,8 @@
                             <li><span class="icon_search search-switch"></span></li>
                             
                             <li><a href="/cart"><span class="icon_bag_alt"></span>
-                                <div class="tip" id="cart-item-count" th:text="${session.CartDTO == null} ? 0 : ${session.CartDTO.counter}"></div>
+                                <div class="tip" id="cart-item-count" th:text="${session.CartDTO != null} ? ${session.CartDTO.counter}"></div>
+                                <div class="tip" id="cart-item-count" sec:authorize="isAuthenticated() == true"></div>
                             </a></li>
                         </ul>
                     </div>

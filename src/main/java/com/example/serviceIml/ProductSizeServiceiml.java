@@ -20,5 +20,10 @@ public class ProductSizeServiceiml implements ProductSizeService{
 		// TODO Auto-generated method stub
 		return productSizeDao.findProductSizeByProductId(id);
 	}
-
+	
+	@Override
+	public ProductSize findProductSizeByProductId(long userId, int sizeId) {
+		// TODO Auto-generated method stub
+		return productSizeDao.findProductSize(userId, sizeId);
+	}
 }

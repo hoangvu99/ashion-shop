@@ -1,6 +1,8 @@
 package com.example.model.cart;
 
+import java.text.NumberFormat;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -38,8 +40,24 @@ public class Cart {
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
 	private Collection<CartItem> cartItems;
 	
+	private String total;
 	private String createdAt;
 	private String updatedAt;
 	
+	private int counter;
 	
+	public void calculatorCartTotal(NumberFormat numberFormat) {
+		String cartTotalText = "";
+		long cartTotalNum =0;
+		for (int i = 0; i < this.cartItems.size(); i++) {
+			String[] arr = ((List<CartItem>) this.cartItems).get(i).getSubTotal().split(",");
+			String t = "";
+			for (int j = 0; j < arr.length; j++) {
+				t +=arr[j];
+			} 
+			cartTotalNum += Long.valueOf(t);
+		}
+		this.total = numberFormat.format(cartTotalNum);
+		
+	}
 }
