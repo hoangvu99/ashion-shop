@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import com.example.model.category.Category;
 import com.example.model.order.OrderItem;
+import com.example.model.order.OrderItems;
 import com.example.model.promotion.ProductPromotion;
 import com.example.model.size.ProductSize;
 import com.example.model.user.UserReview;
@@ -62,7 +63,7 @@ public class Product {
 	private Collection<UserReview>userReviews;
 	
 	@OneToMany(mappedBy =  "product", cascade = CascadeType.ALL)
-	private Collection<OrderItem>orderItems;
+	private Collection<OrderItems>orderItems;
 	
 	@ManyToOne()
 	@JoinColumn(name = "category_Id")

@@ -38,14 +38,18 @@ import com.example.model.cart.CartItem;
 import com.example.model.category.Category;
 import com.example.model.order.Order;
 import com.example.model.order.OrderItem;
+import com.example.model.order.OrderItems;
+import com.example.model.order.Orders;
 import com.example.model.product.Product;
 import com.example.model.product.ProductImages;
 import com.example.model.size.ProductSize;
 import com.example.model.size.Size;
 import com.example.model.user.User;
+import com.example.model.user.UserAddress;
 import com.example.service.CartItemService;
 import com.example.service.CartService;
 import com.example.service.CategoryService;
+import com.example.service.OrderService;
 import com.example.service.ProductService;
 import com.example.service.ProductSizeService;
 import com.example.service.SizeService;
@@ -84,6 +88,9 @@ public class MainController {
 	
 	@Autowired
 	SimpleDateFormat dateFormat;
+	
+	@Autowired
+	OrderService orderService;
 	
 	@RequestMapping(value = "/")
 	public String homeController(HttpSession httpSession, Model model) {
@@ -162,14 +169,19 @@ public class MainController {
 	}
 	@RequestMapping(value = "/checkout")
 	public String checkoutDetailsController(HttpSession httpSession, Model model) {	
+		
+		
 		String date = dateFormat.format(new Date());
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userService.findUserByEmail(((UserDetails) principal).getUsername());
 		Cart cart = cartService.findUserCart(user.getId());
 		List<CartItem> cartItems =  (List<CartItem>) cart.getCartItems();
 		
-		model.addAttribute("user",user);
+		
+		
+		
 		model.addAttribute("cart", cart);
+		model.addAttribute("user", user);
 		
 		return "checkout";
 	}
@@ -490,30 +502,44 @@ public class MainController {
 		return l;
 	}
 	
-	public int placeOrder() {
+	@RequestMapping(value="/place-order")
+	@ResponseBody
+	public String placeOrder() {
 		String date = dateFormat.format(new Date());
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userService.findUserByEmail(((UserDetails) principal).getUsername());
 		Cart cart = cartService.findUserCart(user.getId());
 		List<CartItem> cartItems =  (List<CartItem>) cart.getCartItems();
 		
-		Order order = new Order();
+		Orders order = new Orders();
 		order.setUser(user);
-		List<OrderItem>orderItems = new ArrayList<OrderItem>();
+		List<OrderItems>listItems = new ArrayList<OrderItems>();
 		cartItems.stream().forEach(i -> {
-			OrderItem orderItem = new OrderItem();
-			orderItem.setOrder(order);
+			OrderItems orderItem = new OrderItems();
+			orderItem.setOrders(order);
 			orderItem.setPrice(i.getPrice());
 			orderItem.setCreatedAt(date);
 			orderItem.setProduct(i.getProduct());
 			orderItem.setProductSize(i.getProductSize());
 			orderItem.setQuantity(i.getQuantity());
 			orderItem.setTotal(i.getSubTotal());
-			orderItems.add(orderItem);
+			listItems.add(orderItem);
 		});
-		order.setOrderItems(orderItems);
+		order.setOrderItems(listItems);
 		order.setCreatedAt(date);
-		return 1;
+		order.setStatus(0);
+		order.setNote("Ghi chú");
+		order.setOrderTotal(cart.getTotal());
+		order.setPhoneNumber(user.getPhone());
+		List<UserAddress>addresses = (List<UserAddress>) user.getUserAddresses();
+		order.setDeliveryAddress(addresses.get(0).getAddressName());
+		try {
+			orderService.saveOrder(order);
+			
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return "Đặt hàng thành công";
 	}
 	
 }

@@ -19,9 +19,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dto.ProductDTO;
 import com.example.dto.SizeDTO;
+import com.example.model.order.Order;
+import com.example.model.order.Orders;
 import com.example.model.product.Product;
 import com.example.model.size.Size;
 import com.example.service.CategoryService;
+import com.example.service.OrderService;
 import com.example.service.ProductService;
 import com.example.service.ProductSizeService;
 import com.example.service.SizeService;
@@ -162,4 +165,36 @@ public class AdminController {
 		Product p = productService.findProductById(id);
 		return p.getCategory().getCategoryName();
 	}
+	@Autowired
+	OrderService orderService;
+	@RequestMapping("/list-order")
+	public String listOrder(Model model) {
+		List<Orders>orders = orderService.findAllOrders();
+		model.addAttribute("orders", orders);
+		return "list-order";
+	}
+	
+	
+	
+	@RequestMapping(value ="/view-order")
+	public String viewOrder(@RequestParam(name = "id") long id, Model model) {
+		Orders orders = orderService.findOrderById(id);
+		model.addAttribute("order", orders);
+		return "view-order";
+	}
+	
+	@RequestMapping(value ="/acceptOrder")
+	public String acceptOrder(@RequestParam(name = "id") long id, Model model) {
+		try {
+			orderService.acceptOrder(id);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		Orders orders = orderService.findOrderById(id);
+		model.addAttribute("order", orders);
+		model.addAttribute("message","Phê duyệt thành công");
+		return "view-order";
+	}
+	
+	
 }

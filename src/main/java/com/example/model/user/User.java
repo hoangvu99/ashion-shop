@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.example.model.order.Order;
+import com.example.model.order.Orders;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,7 +42,7 @@ public class User {
 	private Collection<UserReview> userReviews;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Collection<Order>orders;
+	private Collection<Orders>orders;
 	
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
