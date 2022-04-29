@@ -1,6 +1,7 @@
-	package com.example.serviceIml;
+package com.example.serviceIml;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,6 +56,9 @@ public class ProductServiceIml implements ProductService{
 	@Autowired
 	ProductImageDao productImageDao;
 	
+	@Autowired
+	NumberFormat numberFormat;
+	
 	
 	@Override
 	public Product findProductById(long id) {
@@ -73,7 +77,16 @@ public class ProductServiceIml implements ProductService{
 		Product product = new Product();		
 		product.setCategory(category);
 		product.setName(productDTO.getProductName());
-		product.setPrice(productDTO.getPrice());
+		
+		String[] priceInNum = productDTO.getPriceInNum();
+		String text = "";		
+		text +=priceInNum[0];		
+		text+=priceInNum[1];		
+		text+=priceInNum[2];
+		
+		long priceInNumber =Long.valueOf(text);
+		product.setPriceInNum(priceInNumber);
+		product.setPrice(numberFormat.format(priceInNumber));
 		
 		
 		if(productDTO.getThumnail().getOriginalFilename() != "") {
@@ -184,7 +197,19 @@ public class ProductServiceIml implements ProductService{
 			
 			
 			product.setName(productDTO.getProductName());
-			product.setPrice(productDTO.getPrice());
+			
+			String[] priceInNum = productDTO.getPriceInNum();
+			String text = "";	
+			for (int i = 0; i < priceInNum.length; i++) {
+				text+= priceInNum[i];
+			}
+			
+			
+			long priceInNumber =Long.valueOf(text);
+			product.setPriceInNum(priceInNumber);
+			product.setPrice(numberFormat.format(priceInNumber));
+			
+			
 			if(productDTO.getThumnail().getOriginalFilename() !="") {
 				product.setThumnail(fileName+".jpg");
 				try {

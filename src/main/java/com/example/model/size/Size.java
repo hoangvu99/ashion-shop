@@ -38,6 +38,5 @@ public class Size {
 	@OneToMany(mappedBy = "size", cascade = CascadeType.ALL)
 	private Collection<ProductSize>productSizes;
 	
-	@OneToMany(mappedBy = "size", cascade = CascadeType.ALL)
-	private Collection<OrderItem>orderItems;
+	
 }

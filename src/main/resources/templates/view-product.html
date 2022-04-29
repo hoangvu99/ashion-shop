@@ -75,14 +75,31 @@
 				  </div>
 				  
 				  <div class="form-group row">
-				  	<div class="form-group-item">
-				  		<label>Giá</label>
-				  		<input class="form-control" th:field="*{price}">
-				  	</div>
-				  	<div class="form-group-item">
-				  		
-				  	</div>
-				  	
+				    <label>Giá tiền:</label>
+				    <div class="sub-group-form">
+							<div class="sub-item">
+								<label>Hàng Triệu</label>
+							</div>
+							<div class="sub-item">
+								<label>Hàng Trăm</label>
+							</div>
+							<div class="sub-item">
+								<label>Hàng Nghìn</label>
+							</div>
+							
+							
+					</div>
+				    <div class="sub-group-form">
+							<div class="sub-item" th:each="p, itemStat : *{priceInNum}">								
+								<input type="text" class="form-control" min"1" max="999"  th:field="*{priceInNum[__${itemStat.index}__]}"></input>
+								
+							</div>
+							
+							
+					</div>
+				  </div>
+				  <div class="form-group">
+				  	<label th:text="'Thành tiền: '+ *{price} + ' VND'"></label>
 				  </div>
 				  
 				  

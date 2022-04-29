@@ -20,12 +20,14 @@ public class CartDTO {
 		String cartTotalText = "";
 		long cartTotalNum =0;
 		for (int i = 0; i < this.cartItemDTOs.size(); i++) {
-			String[] arr = this.cartItemDTOs.get(i).getTotal().split(",");
-			String t = "";
-			for (int j = 0; j < arr.length; j++) {
-				t +=arr[j];
-			} 
-			cartTotalNum += Long.valueOf(t);
+			if(this.cartItemDTOs.get(i).getTotal() != null) {
+				String[] arr = this.cartItemDTOs.get(i).getTotal().split(",");
+				String t = "";
+				for (int j = 0; j < arr.length; j++) {
+					t +=arr[j];
+				} 
+				cartTotalNum += Long.valueOf(t);
+			}
 		}
 		this.cartTotal = numberFormat.format(cartTotalNum);
 		

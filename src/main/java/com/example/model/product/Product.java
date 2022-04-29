@@ -42,7 +42,7 @@ public class Product {
 	private String createdBy;				
 	private String updatedAt;
 	private String deletedAt;
-	
+	private Long priceInNum;
 	@Column(columnDefinition = "varchar(2000)")
 	private String detailsContent;
 	

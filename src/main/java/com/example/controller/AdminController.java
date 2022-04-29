@@ -1,6 +1,9 @@
 package com.example.controller;
 
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +46,9 @@ public class AdminController {
 	ProductSizeService productSizeService;
 	
 	@Autowired
+	NumberFormat numberFormat;
+	
+	@Autowired
 	SizeService sizeService;
 	
 	@RequestMapping("/list-product")
@@ -76,14 +82,20 @@ public class AdminController {
 			SizeDTO sizeDTO = new SizeDTO(i, 0);
 			sizeDTOs.add(sizeDTO);
 		});
+		String []priceInNum= {"0","100","000"};
 		ProductDTO productDTO = new ProductDTO();
 		productDTO.setSizes(sizeDTOs);
+		productDTO.setPriceInNum(priceInNum);
 		model.addAttribute("product", productDTO);
 		return"add-product";
 	}
 	
 	@RequestMapping(value ="/add-product", method = RequestMethod.POST, consumes = "multipart/form-data")
 	public String addPr(@ModelAttribute ProductDTO productDTO, RedirectAttributes redirectAttributes) {
+		
+		
+		
+		
 		
 		
 		productService.saveProduct(productDTO);
@@ -109,7 +121,23 @@ public class AdminController {
 			SizeDTO sizeDTO = new SizeDTO(s.getSize().getSizeName(), s.getQuantity());
 			sizeDTOs.add(sizeDTO);
 		});
+		
+		String[] priceInNum = new String[3];
+		
+		String[] arr = p.getPrice().split(",");
+		
+		if(arr.length == 2) {
+			priceInNum[0] = "000";
+			priceInNum[1] = arr[0];
+			priceInNum[2] = arr[1];
+		}else {
+			priceInNum[0] = arr[0];
+			priceInNum[1] = arr[1];
+			priceInNum[2] = arr[2];
+		}
+		
 		productDTO.setSizes(sizeDTOs);
+		productDTO.setPriceInNum(priceInNum);
 		model.addAttribute("product", p);
 		model.addAttribute("productDTO", productDTO);
 		model.addAttribute("id", id);

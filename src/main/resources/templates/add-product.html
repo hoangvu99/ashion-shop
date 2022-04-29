@@ -60,11 +60,33 @@
 				   
 				    <input type="text" class="form-control" id="" th:field="*{description}" name="description" placeholder="Mô tả sản phẩm">
 				  </div>
-				  <div class="form-group">
-				    <label>Giá tiền: xxx,xxx</label>
-				    <input type="text" class="form-control"  th:field="*{price}" name="price" min="1" max="99999" >
+				  <div class="form-group row">
+				    <label>Giá tiền:</label>
+				    <div class="sub-group-form">
+							<div class="sub-item">
+								<label>Hàng Triệu</label>
+							</div>
+							<div class="sub-item">
+								<label>Hàng Trăm</label>
+							</div>
+							<div class="sub-item">
+								<label>Hàng Nghìn</label>
+							</div>
+							
+							
+					</div>
+				    <div class="sub-group-form">
+							<div class="sub-item" th:each="p, itemStat : *{priceInNum}">								
+								<input type="text" class="form-control" min"1" max="999"  th:field="*{priceInNum[__${itemStat.index}__]}"></input>
+								
+							</div>
+							
+							
+					</div>
 				  </div>
-				  
+				  <div class="form-group">
+				  	<label>VD: 100,000 VND</label>
+				  </div>
 				  <div class="form-group">
 				  		<label>Nhập số lượng theo size</label>
 				  		<br>

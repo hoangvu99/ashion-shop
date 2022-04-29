@@ -1,5 +1,6 @@
 package com.example.model.order;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -36,14 +37,12 @@ public class Order {
 	private int status;
 	
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-	private Set<OrderItem> orderItems;
+	private Collection<OrderItem> orderItems;
 	private String createdAt;
 	private String updatedAt;
-	private double orderTotal;
+	private String orderTotal;
 	
-	@ManyToOne
-	@JoinColumn(name = "promotion_id")
-	private Promotion promotion;
+	
 	
 	private String deliveryAddress;
 	private long phoneNumber;
