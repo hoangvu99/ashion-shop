@@ -74,6 +74,13 @@ public class AdminController {
 			return"list-product";
 	}
 	
+	@RequestMapping(value = "/admin")
+	public String add() {			
+		
+		
+		return "admin";
+	}
+	
 	@RequestMapping(value = "/add-product", method = RequestMethod.GET )
 	public String addProductView(Model model) {
 		model.addAttribute("listCategory", categoryService.listCategories());
@@ -195,6 +202,8 @@ public class AdminController {
 		model.addAttribute("message","Phê duyệt thành công");
 		return "view-order";
 	}
+	
+	
 	
 	
 }

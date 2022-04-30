@@ -58,8 +58,11 @@
                 			
                 			<th> Tổng tiền</th>
                 			<th > Ngày tạo </th>
-                			<th>Trạng thái</th>
-                			<th>Chi tiết đơn hàng</th>
+                			<th>Trạng thái đơn hàng</th>
+                			
+                			<th>Phương thức thanh toán</th>
+				  			<th>Trạng thái thanh toán</th>
+				  			<th>Chi tiết đơn hàng</th>
                 			
                 			
                 	</thead>
@@ -71,6 +74,9 @@
                 			<td th:text="${o.createdAt}"></td>
                 			<td th:if="${o.status == 0}">Chưa được phê duyệt</td>
                 			<td th:if="${o.status == 1}">Đã phê duyệt</td>
+                			<td th:if="${o.paymentMethod == 0}" >Thanh toán trực tiếp </td>
+                			<td th:if="${o.isPaid == 0}" >Chưa thanh toán </td>
+                			<td th:if="${o.isPaid == 1}" >Đã thanh toán </td>
                 			<td> <a th:href="@{${'/view-order?id='+o.id}}">Xem chi tiết đơn hàng</a> </td>
                 		</tr>
                 		

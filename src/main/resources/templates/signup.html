@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sign Up Form by Colorlib</title>
+    <title>Đăng kí</title>
 
     <!-- Font Icon -->
-    <link rel="stylesheet" href="fonts/material-design-iconic-font.min.css">
-        <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+       
 
     <!-- Main css -->
     <link rel="stylesheet" href="css/signup.css">
@@ -21,32 +21,39 @@
             <!-- <img src="images/signup-bg.jpg" alt=""> -->
             <div class="container">
                 <div class="signup-content">
-                    <form th:if="${isRegistered} == 0" method="POST" id="signup-form" class="signup-form" th:action="@{sign-up}" th:object="${user}">
+                    <form th:if="${isRegistered == 0}" method="POST" id="signup-form" class="signup-form" th:action="@{/sign-up}" th:object="${userDTO}">
                         <h2 class="form-title">Create account</h2>
                         <div class="form-group">
-                            <input type="text" class="form-input" name="name" id="name" placeholder= "Tên" th:field="${user.userName}" />
+                            <input type="text" class="form-input" name="name" id="name" placeholder= "Tên" th:field="*{name}" />
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-input" name="email" id="email" th:field="${user.email}" placeholder="Email"/>
+                            <input type="email" class="form-input" name="email" id="email" th:field="*{email}" placeholder="Email"/>
+                            <label th:if="${emailExistMsg != null}" th:text="${emailExistMsg}" style="color: #ffc107;" id="emailExistMsg"></label>
+                            <label  id="email-error-message"></label>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-input" name="password" th:field="${user.password}" id="password" placeholder="Password"/>
+                            <input type="text" class="form-input" name="password" th:field="*{password}" id="password" placeholder="Password"/>
                             <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-input" name="re_password" id="re_password" placeholder="Repeat your password"/>
+                            <input type="password" class="form-input" name="re_password" id="re_password" th:field="*{rePassword}" placeholder="Repeat your password"/>
+                            <label  class="text-danger" id="rePass-error-message"></label>
                         </div>
                         <div class="form-group">
                             <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
                             <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
                         </div>
                         <div class="form-group">
+                        	<label id="submit-message"></label>
                             <input type="button" name="submit-btn" id="submit-btn" class="form-submit" value="Sign up"/>
                         </div>
                     </form>
-                    <h11 th:if="${isRegistered} == 1">Vui lòng truy cập email để xác thực tài khoản</h1>
-                    <p class="loginhere">
-                        Have already an account ? <a href="#" class="loginhere-link">Login here</a>
+                    <h1 th:if="${isRegistered == 1}" >Bạn đã đăng kí thành công. Vui lòng truy cập email để xác thực tài khoản</h1>
+                    <p class="loginhere" th:if="${isRegistered == 0}">
+                       Đã có tài khoản ? <a href="#" class="loginhere-link">Đăng nhập</a>
+                    </p>
+                    <p class="loginhere" th:if="${isRegistered == 1}">
+                       <a href="/" class="loginhere-link">Quay lại trang chủ</a>
                     </p>
                 </div>
             </div>

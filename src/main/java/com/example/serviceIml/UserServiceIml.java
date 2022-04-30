@@ -20,8 +20,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.dao.RoleDao;
 import com.example.dao.UserDao;
+import com.example.dto.UserDTO;
 import com.example.model.user.Role;
 import com.example.model.user.User;
+import com.example.model.user.UserRole;
 import com.example.service.UserService;
 
 @Service
@@ -44,27 +46,55 @@ public class UserServiceIml  implements UserService{
 	JavaMailSender javaMailSender;
 	
 	@Override
-	public void saveUser(User user) {
-		
+	public void saveUser(UserDTO userDTO) {
+		User user  = new User();
 		user.setActive(0);
+		if(userDTO.getName()=="") {
+			user.setUserName("Unknow");
+		}else {
+			user.setUserName(userDTO.getName());
+		}		
+		user.setEmail(userDTO.getEmail());
 		user.setCreatedAt(simpleDateFormat.format(new Date()));
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
 		
-		List<Role>roles = new ArrayList<Role>();
-		List<User>users = new ArrayList<User>();
 		
-		users.add(user);
+		
+		
 		
 		Role roleUser = new Role();
 		roleUser.setId(2);
 		roleUser.setRoleName("ROLE_USER");
-//		roleUser.setUsers(users);
-		roles.add(roleUser);
+
 		
-//		user.setRoles(roles);
+		
+		UserRole userRole = new UserRole();
+		userRole.setRole(roleUser);
+		userRole.setUser(user);
+		
+		List<UserRole>userRoles = new ArrayList<UserRole>();
+		userRoles.add(userRole);
+		user.setUserRoles(userRoles);
 		
 		
 		userDao.save(user);
+		
+		//send email
+		Thread thread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				try {
+					sendVerifyEmail(userDTO.getEmail());
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		thread.start();
 		
 		
 	}
@@ -94,8 +124,8 @@ public class UserServiceIml  implements UserService{
 	@Override
 	public void updateUserConfirmEmail(String email) {
 		User user = userDao.findUserByEmail(email);
-		user.setActive(1);
-		userDao.save(user);
+		
+		userDao.setActiveUser(user.getId());
 		
 	}
 	

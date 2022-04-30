@@ -36,6 +36,9 @@ public class Orders {
 	private String updatedAt;
 	private String orderTotal;
 	
+	private int paymentMethod;
+	private int isPaid;
+	
 	private String note;
 	
 	

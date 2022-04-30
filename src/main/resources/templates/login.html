@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-  	<title>Login 08</title>
+  	<title>Đăng nhập</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -25,14 +25,15 @@
 		      	<h3 class="text-center mb-4">Đăng nhập</h3>
 				<form th:action="@{/login}" class="login-form" method="POST">
 		      		<div class="form-group">
-		      			<input type="text" class="form-control rounded-left" id ="username" name ="username"placeholder="Username" required>
+		      			<input type="text" class="form-control rounded-left" id ="username" name ="username"placeholder="Email" th:value="${emailRegisted}" required>
 		      		</div>
 	            <div class="form-group d-flex">
 	              <input type="password" class="form-control rounded-left" id ="password" name ="password" placeholder="Password" required>
 	            </div>
+	            <div class="alert" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 	            <div class="form-group d-md-flex">
 	            	<div class="w-50">
-	            		<a href="#">Đăng kí tài khoản</a>
+	            		<a href="/sign-up">Đăng kí tài khoản</a>
 							</div>
 								<div class="w-50 text-md-right">
 									<a href="#">Quên mật khẩu</a>
