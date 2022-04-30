@@ -14,4 +14,8 @@ public interface UserService {
 	public void updateUserConfirmEmail(String email);
 	
 	public User findUserByEmail(String email);
+	
+	public void sendResetPassToMail(String email) throws MessagingException;
+	
+	public void resetPass(String email, String pass);
 }

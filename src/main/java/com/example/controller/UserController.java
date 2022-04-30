@@ -86,4 +86,45 @@ public class UserController {
 		
 		return "redirect:/login?emailRegisted="+ email;
 	}
+	
+	@RequestMapping(value = "/forget-password")
+	public String forgetPass() {
+		return "user/forget-pass";
+	}
+	
+	@RequestMapping(value = "/forget-password", method = RequestMethod.POST)
+	public String forgetPass(@RequestParam(name = "email") String email, Model model) {
+		
+		User user = userService.findUserByEmail(email);
+		if(user == null) {
+			model.addAttribute("emailNotExistMsg", "Email "+email+" không tồn tại!");
+			
+		}else {
+			
+			model.addAttribute("resetMsg", "Chúng tôi đã gởi đường dẫn thiết lập lại mật khẩu cho bạn. Xin vui lòng kiểm tra hòm thư");
+			try {
+				userService.sendResetPassToMail(email);
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return "user/forget-pass";
+	}
+	
+	@RequestMapping(value ="/reset-password")
+	public String resetPass(@RequestParam(name ="email") String email, Model model) {
+		
+		model.addAttribute("email", email);
+		return "user/reset-password";
+	}
+	
+	@RequestMapping(value ="/reset-new-password", method = RequestMethod.POST)
+	public String resetPassSubmit(@RequestParam(name ="email") String email, @RequestParam(name = "pass") String pass,Model model) {
+		
+		userService.resetPass(email, pass);
+		model.addAttribute("msg", "Thay đổi password thành công");
+		return "user/reset-password";
+	}
 }

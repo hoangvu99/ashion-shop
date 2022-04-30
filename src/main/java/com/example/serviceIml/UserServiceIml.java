@@ -107,9 +107,9 @@ public class UserServiceIml  implements UserService{
 			messageHelper = new MimeMessageHelper(mimeMailMessage, true);
 			messageHelper.setFrom("vu40654@donga.edu");
 			messageHelper.setText("<h1 style=\"color: red;\">Cảm ở bạn vì đã đăng kí tài khoản. Vui lòng hoàn thành bước cuối cùng</h1><br>\r\n"
-					+ "<a href=\"http://localhost:8080/user/confirm-email?email="+email+"\">Nhấp vào link để xác thực</a>", true);
+					+ "<a href=\"http://localhost:8080/user/confirm-email?email="+email+"\">Nhấp vào link để đăng nhập</a>", true);
 			messageHelper.setTo(email);
-			messageHelper.setSubject("Xác thực tài khoản");
+			messageHelper.setSubject("Xác thực tài khoản - ASHION SHOP");
 		
 			javaMailSender.send(mimeMailMessage);
 		} catch (Exception e) {
@@ -132,5 +132,41 @@ public class UserServiceIml  implements UserService{
 	@Override
 	public User findUserByEmail(String email) {
 		return userDao.findUserByEmail(email);
+	}
+	
+	@Override
+	public void sendResetPassToMail(String email) throws MessagingException {
+		Thread thread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				MimeMessage mimeMailMessage = javaMailSender.createMimeMessage();
+				MimeMessageHelper messageHelper;
+				try {
+					messageHelper = new MimeMessageHelper(mimeMailMessage, true);
+					messageHelper.setFrom("vu40654@donga.edu");
+					messageHelper.setText("<h1 style=\"color: red;\">Bạn đã gởi yêu cầu thay đổi mật khẩu.</h1><br>\r\n"
+							+ "<a href=\"http://localhost:8080/reset-password?email="+email+"\">Nhấp vào link để hoàn thành bước cuối cùng</a>", true);
+					messageHelper.setTo(email);
+					messageHelper.setSubject("RESET PASSWORD - ASHION SHOP");
+				
+					javaMailSender.send(mimeMailMessage);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		thread.start();
+		
+	}
+	
+	@Override
+	public void resetPass(String email, String pass) {
+		User u = findUserByEmail(email);
+		String encodePass = bCryptPasswordEncoder.encode(pass);
+		userDao.resetPassword(u.getId(), encodePass);
+		
 	}
 }

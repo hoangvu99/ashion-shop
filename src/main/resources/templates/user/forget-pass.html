@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Đăng kí</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+       
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/signup.css">
+</head>
+<body>
+
+    <div class="main">
+
+        <section class="signup">
+            <!-- <img src="images/signup-bg.jpg" alt=""> -->
+            <div class="container">
+                <div class="signup-content">
+                    <form  th:if="${resetMsg == null }" method="POST" id="rePass-form" class="signup-form" th:action="@{/forget-password}">
+                        <h2 class="form-title">Vui lòng nhập email của bạn để thiết lập lại mật khẩu</h2>
+                         <div class="form-group">
+                         
+                         	<input type="email" class="form-input" name="email" id="email" placeholder="Email"/>
+                            <label th:if="${emailNotExistMsg != null}" th:text="${emailNotExistMsg}" style="color: #ffc107;" id="emailNotExistMsg"></label>
+                            <label  id="email-error-message"></label>  
+                         </div> 
+                                               
+                        <div class="form-group">
+                        	<label id="submit-message"></label>
+                            <input type="button" name="submit-btn" id="submit-btn" class="form-submit" value="Sign up"/>
+                        </div>
+                    </form>
+                    
+                     <h1 th:if="${resetMsg != null }" th:text="${resetMsg}" ></h1>
+                     <p class="loginhere" >
+                       <a href="/" class="loginhere-link">Quay lại trang chủ</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="js/forget-pass.js"></script>
+</body>
+</html>
