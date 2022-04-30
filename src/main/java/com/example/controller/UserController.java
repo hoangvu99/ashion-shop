@@ -39,7 +39,7 @@ public class UserController {
 		if(emailRegisted == "") {
 			model.addAttribute("emailRegisted", "");
 		}else {
-			System.out.println("co email");
+			
 			model.addAttribute("emailRegisted", emailRegisted);
 		}
 		return "login";
@@ -53,9 +53,24 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/account")
-	public String acc() {				
+	public String acc(Model model) {
+		
+		String email ="vun64111@gmail.com";
+		User user = userService.findUserByEmail(email);
+		
+		model.addAttribute("user", user);
 		return "user/account";
 	}
+	
+	@RequestMapping(value ="/account/edit")
+	public String editAccountView(Model model) {
+			
+			String email ="vun64111@gmail.com";
+			User user = userService.findUserByEmail(email);
+			
+			model.addAttribute("user", user);
+			return "user/account";
+		}
 	
 	@RequestMapping(value ="/sign-up", method = RequestMethod.POST)
 	public String signUpSubmit(@ModelAttribute UserDTO userDTO, Model model,RedirectAttributes redirectAttributes) {
@@ -127,4 +142,6 @@ public class UserController {
 		model.addAttribute("msg", "Thay đổi password thành công");
 		return "user/reset-password";
 	}
+	
+	
 }

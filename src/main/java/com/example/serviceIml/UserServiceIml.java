@@ -50,7 +50,7 @@ public class UserServiceIml  implements UserService{
 		User user  = new User();
 		user.setActive(0);
 		if(userDTO.getName()=="") {
-			user.setUserName("Unknow");
+			user.setUserName("Unknown");
 		}else {
 			user.setUserName(userDTO.getName());
 		}		
@@ -58,7 +58,7 @@ public class UserServiceIml  implements UserService{
 		user.setCreatedAt(simpleDateFormat.format(new Date()));
 		user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
 		
-		
+		user.setAvatarURL("user-default-img.jpg");
 		
 		
 		
