@@ -78,16 +78,8 @@ public class ProductServiceIml implements ProductService{
 		product.setCategory(category);
 		product.setName(productDTO.getProductName());
 		
-		String[] priceInNum = productDTO.getPriceInNum();
-		String text = "";		
-		text +=priceInNum[0];		
-		text+=priceInNum[1];		
-		text+=priceInNum[2];
-		
-		long priceInNumber =Long.valueOf(text);
-		product.setPriceInNum(priceInNumber);
-		product.setPrice(numberFormat.format(priceInNumber));
-		
+
+		product.setPriceInNum(productDTO.getPrice()*1000);
 		
 		if(productDTO.getThumnail().getOriginalFilename() != "") {
 			product.setThumnail(fileName+".jpg");
@@ -198,16 +190,11 @@ public class ProductServiceIml implements ProductService{
 			
 			product.setName(productDTO.getProductName());
 			
-			String[] priceInNum = productDTO.getPriceInNum();
-			String text = "";	
-			for (int i = 0; i < priceInNum.length; i++) {
-				text+= priceInNum[i];
+			if(product.getPriceInNum() != productDTO.getPrice()) {
+				product.setOldPrice(product.getPriceInNum());
+				product.setPriceInNum(productDTO.getPrice());
+				
 			}
-			
-			
-			long priceInNumber =Long.valueOf(text);
-			product.setPriceInNum(priceInNumber);
-			product.setPrice(numberFormat.format(priceInNumber));
 			
 			
 			if(productDTO.getThumnail().getOriginalFilename() !="") {

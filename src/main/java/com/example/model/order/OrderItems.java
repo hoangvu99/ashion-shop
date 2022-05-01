@@ -38,8 +38,8 @@ public class OrderItems {
 
 	
 	private int quantity;
-	private String total;
-	private String price;
+	private long total;
+	private long price;
 	private String createdAt;
 	private String updatedAt;
 	private String deletedAt;

@@ -148,23 +148,23 @@
 					if(cartItems.get(i).getProduct().getId() == p.getId() &&
 					   cartItems.get(i).getProductSize().getSize().getId() == size.getId()) {
 						checkExist = true;
-						index = i;
+						index = i;;
 						break;
 					}
 				}
 				if(checkExist) {
 					cartItems.get(index).setQuantity(cartItems.get(index).getQuantity()+ quantity);
-					cartItems.get(index).convertTotal(numberFormat);
+					cartItems.get(index).calSubTotal();
 					cartItems.get(index).setUpdatedAt(formatDate);
 				}else {
 					CartItem cartItem = new CartItem();
 					cartItem.setCart(cart);
 					cartItem.setCreatedAt(formatDate);
-					cartItem.setPrice(p.getPrice());
+					cartItem.setPrice(p.getPriceInNum());
 					cartItem.setProduct(p);
 					cartItem.setProductSize(pz);
 					cartItem.setQuantity(quantity);
-					cartItem.convertTotal(numberFormat);
+					cartItem.calSubTotal();
 					cartItems.add(cartItem);
 				}
 				
@@ -191,14 +191,14 @@
 				}			
 				if(checkExist == true) {
 					itemDTOs.get(index).setQuantity(itemDTOs.get(index).getQuantity()+quantity);
-					itemDTOs.get(index).convertTotal(numberFormat);								
+					itemDTOs.get(index).calSubTotal();				
 				}else {
 					CartItemDTO cartItemDTO = createCartItemDTO(p, size, quantity, numberFormat);									
 					itemDTOs.add(cartItemDTO);
 					cartDTO.setCounter(cartDTO.getCounter()+1);
 				}
 				cartDTO.setCartItemDTOs(itemDTOs);
-				cartDTO.calculatorCartTotal(numberFormat);
+				cartDTO.calTotal();
 				httpSession.setAttribute("CartDTO", cartDTO);		
 			}				
 			return 1;
@@ -206,13 +206,13 @@
 			public CartItemDTO createCartItemDTO(Product p, Size s, int quantity, NumberFormat numberFormat) {
 					CartItemDTO cartItemDTO = new CartItemDTO();
 					cartItemDTO.setImageName(p.getThumnail());
-					cartItemDTO.setPrice(p.getPrice());
+					cartItemDTO.setPrice(p.getPriceInNum());
 					cartItemDTO.setProductId(p.getId());
 					cartItemDTO.setProductName(p.getName());
 					cartItemDTO.setQuantity(quantity);
 					cartItemDTO.setSizeId(s.getId());
 					cartItemDTO.setSizeName(s.getSizeName());
-					cartItemDTO.convertTotal(numberFormat);
+					cartItemDTO.calSubTotal();
 					return cartItemDTO;
 					
 				}
@@ -227,7 +227,7 @@
 					CartItem cartItem = cartItemService.findCartItem(productId, productSizeId);
 					
 					cartItemService.deleteCartItem(cartItem.getId());
-					cart.calculatorCartTotal(numberFormat);
+					cart.calTotal();
 					cartService.saveCart(cart);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -238,7 +238,7 @@
 				CartItemDTO cartItemDTO = itemDTOs.stream().filter(i -> i.getProductId() == productId && i.getSizeId() == sizeId).collect(Collectors.toList()).get(0);
 				itemDTOs.remove(cartItemDTO);
 				cartDTO.setCounter(cartDTO.getCounter()-1);
-				cartDTO.calculatorCartTotal(numberFormat);
+				cartDTO.calTotal();
 				
 				httpSession.setAttribute("CartDTO", cartDTO);
 			}
@@ -257,10 +257,10 @@
 					int quantity = Integer.valueOf(data[i]);
 					if(quantity != cartItems.get(i).getQuantity()) {
 						cartItems.get(i).setQuantity(quantity);
-						cartItems.get(i).convertTotal(numberFormat);
+						cartItems.get(i).calSubTotal();
 					}
 				}
-				cart.calculatorCartTotal(numberFormat);
+				cart.calTotal();
 				cartService.saveCart(cart);
 			}else {
 				CartDTO cartDTO = (CartDTO) httpSession.getAttribute("CartDTO");
@@ -269,10 +269,10 @@
 					int quantity = Integer.valueOf(data[i]);
 					if(quantity != itemDTOs.get(i).getQuantity()) {
 						itemDTOs.get(i).setQuantity(quantity);
-						itemDTOs.get(i).convertTotal(numberFormat);
+						itemDTOs.get(i).calSubTotal();
 					}
 				}
-				cartDTO.calculatorCartTotal(numberFormat);
+				cartDTO.calTotal();
 				httpSession.setAttribute("CartDTO", cartDTO);
 			}
 			

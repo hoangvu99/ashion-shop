@@ -34,7 +34,7 @@ public class Orders {
 	private Collection<OrderItems> orderItems;
 	private String createdAt;
 	private String updatedAt;
-	private String orderTotal;
+	private long orderTotal;
 	
 	private int paymentMethod;
 	private int isPaid;

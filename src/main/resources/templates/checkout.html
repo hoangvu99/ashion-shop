@@ -91,7 +91,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Người nhận hàng <span>*</span></p>
-                                    <input type="text" th:value="${user.userName}" readonly>
+                                    <input type="text" th:value="${user.userName}" readOnly>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -100,24 +100,41 @@
                                     <input type="text" th:value="${user.email}" readonly>
                                 </div>
                             </div>
+                            
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Số điện thoại nhận hàng <span>*</span></p>
+                                    <input type="text" th:value="${user.phone}" readOnly>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Sử Số điện thoại nhận hàng khác<span></span></p>
+                                    <input type="number" placeholder="SDT khác" >
+                                </div>
+                            </div>
                             <div class="col-lg-12">
                                
                                 <div class="checkout__form__input">
                                     <p>Địa chỉ nhận hàng <span>*</span></p>
-                                    <input type="text" placeholder="Địa chỉ" th:each="add : ${user.userAddresses}" th:value="${add.addressName}" >
+                                    <input readOnly type="text" placeholder="Địa chỉ" th:value="${address.addressDetail + ' - '+address.commune+' - ' + address.district + ' - ' + address.province}" ></input>
                                     
                                 </div>
                                 
                                 
                               
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="col-lg-12">
+                               
                                 <div class="checkout__form__input">
-                                    <p>Số điện thoại nhận hàng <span>*</span></p>
-                                    <input type="text" th:value="${user.phone}">
+                                    <p>Địa chỉ nhận hàng <span></span></p>
+                                    <input type="text" placeholder="Sử dụng địa chỉ khác" ></input>
+                                    
                                 </div>
+                                
+                                
+                              
                             </div>
-                            
                             <div class="col-lg-12">
                                 
                                     
@@ -145,6 +162,7 @@
                                     		<th>Tên sản phẩm</th>
                                     		<th>Size</th>
                                     		<th>Số lượng</th>
+                                    		<th>Giá</th>
                                     		<th>Thành tiền</th>
                                     	</thead>
                                     	<tbody>
@@ -152,16 +170,17 @@
                                     			<td th:text="${obj.product.name}"></td>
                                     			<td th:text="${obj.productSize.size.sizeName}"></td>
                                     			<td th:text="${obj.quantity}"></td>
-                                    			<td th:text="${obj.subTotal}"></td>
+                                    			<td th:text="${#numbers.formatCurrency(obj.price)}"></td>
+                                    			<td th:text="${#numbers.formatCurrency(obj.subTotal)}"></td>
                                     		</tr>
                                     	</tbody>
                                     </table>
-                                   <a  href="/cart" style="color:black">Chỉnh sửa đơn hàng của bạn</a>
+                                   <a  href="/cart" >Chỉnh sửa đơn hàng của bạn</a>
                                 </div>
                                 <div class="checkout__order__total">
                                     <ul>
                                         
-                                        <li>Total <span th:text="${cart.total +' VND'}" ></span></li>
+                                        <li>Total <span th:text="${#numbers.formatCurrency(cart.total)}" ></span></li>
                                     </ul>
                                 </div>
                                 <div class="checkout__order__widget">

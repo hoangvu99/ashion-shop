@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dto.ProductDTO;
 import com.example.dto.SizeDTO;
-import com.example.model.order.Order;
+
 import com.example.model.order.Orders;
 import com.example.model.product.Product;
 import com.example.model.size.Size;
@@ -92,10 +92,9 @@ public class AdminController {
 			SizeDTO sizeDTO = new SizeDTO(i, 0);
 			sizeDTOs.add(sizeDTO);
 		});
-		String []priceInNum= {"0","100","000"};
+		
 		ProductDTO productDTO = new ProductDTO();
 		productDTO.setSizes(sizeDTOs);
-		productDTO.setPriceInNum(priceInNum);
 		model.addAttribute("product", productDTO);
 		return"add-product";
 	}
@@ -124,7 +123,7 @@ public class AdminController {
 		productDTO.setProductName(p.getName());
 		productDTO.setDescription(p.getDescription());
 		productDTO.setDetail(p.getDetailsContent());	
-		productDTO.setPrice(p.getPrice());
+		
 		
 		List<SizeDTO> sizeDTOs = new ArrayList<SizeDTO>();
 		p.getProductSizes().stream().forEach(s -> {
@@ -132,22 +131,12 @@ public class AdminController {
 			sizeDTOs.add(sizeDTO);
 		});
 		
-		String[] priceInNum = new String[3];
 		
-		String[] arr = p.getPrice().split(",");
 		
-		if(arr.length == 2) {
-			priceInNum[0] = "000";
-			priceInNum[1] = arr[0];
-			priceInNum[2] = arr[1];
-		}else {
-			priceInNum[0] = arr[0];
-			priceInNum[1] = arr[1];
-			priceInNum[2] = arr[2];
-		}
+		
 		
 		productDTO.setSizes(sizeDTOs);
-		productDTO.setPriceInNum(priceInNum);
+		
 		model.addAttribute("product", p);
 		model.addAttribute("productDTO", productDTO);
 		model.addAttribute("id", id);

@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,7 +74,13 @@ public class UserController {
 	@RequestMapping(value = "/account")
 	public String acc(Model model) {
 		
-		String email ="vun64111@gmail.com";
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		String email ="";
+		if(principal instanceof UserDetails) {
+				email =	((UserDetails) principal).getUsername();
+		}
+		
 		User user = userService.findUserByEmail(email);
 		UserAddress address = addressService.findUserAddressByUserId(user.getId());
 		model.addAttribute("user", user);
@@ -83,7 +91,11 @@ public class UserController {
 	@RequestMapping(value ="/edit")
 	public String editAccountView(Model model) {
 			
-			String email ="vun64111@gmail.com";
+			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();			
+			String email ="";
+			if(principal instanceof UserDetails) {
+							email =	((UserDetails) principal).getUsername();
+			}
 			User user = userService.findUserByEmail(email);
 			UserEditDTO editDTO = new UserEditDTO();
 			editDTO.setUserName(user.getUserName());
@@ -108,7 +120,11 @@ public class UserController {
 			
 			
 		
-			String email ="vun64111@gmail.com";
+			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();			
+			String email ="";
+			if(principal instanceof UserDetails) {
+							email =	((UserDetails) principal).getUsername();
+			}
 			User user = userService.findUserByEmail(email);
 			
 			model.addAttribute("userName", user.getUserName());
@@ -121,7 +137,11 @@ public class UserController {
 			
 			
 			
-			String email ="vun64111@gmail.com";
+			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();			
+			String email ="";
+			if(principal instanceof UserDetails) {
+				email =	((UserDetails) principal).getUsername();
+			}
 			User user = userService.findUserByEmail(email);
 			userService.saveUserAvatar(file, user.getId());
 			
@@ -136,7 +156,11 @@ public class UserController {
 	@RequestMapping(value ="/edit", method = RequestMethod.POST)
 	public String editAccountSubmit(@ModelAttribute UserEditDTO u, Model model,RedirectAttributes redirectAttributes) {
 			
-			String email ="vun64111@gmail.com";
+			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();			
+			String email ="";
+			if(principal instanceof UserDetails) {
+				email =	((UserDetails) principal).getUsername();
+			}
 			User user = userService.findUserByEmail(email);
 			UserAddress address = addressService.findUserAddressByUserId(user.getId());
 			

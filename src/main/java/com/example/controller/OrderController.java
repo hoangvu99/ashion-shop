@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,6 +30,7 @@ import com.example.service.ProductService;
 import com.example.service.ProductSizeService;
 import com.example.service.SizeService;
 import com.example.service.UploadFileService;
+import com.example.service.UserAddressService;
 import com.example.service.UserService;
 
 @Controller
@@ -64,6 +68,9 @@ public class OrderController {
 	
 	@Autowired
 	OrderService orderService;
+	
+	@Autowired
+	UserAddressService addressService;
 	
 	@RequestMapping(value="/place-order")
 	@ResponseBody
@@ -103,5 +110,24 @@ public class OrderController {
 			System.out.println(e.getMessage());
 		}
 		return "Đặt hàng thành công";
+	}
+	@RequestMapping(value = "/checkout")
+	public String checkoutDetailsController(HttpSession httpSession, Model model) {	
+		
+		
+		String date = dateFormat.format(new Date());
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userService.findUserByEmail(((UserDetails) principal).getUsername());
+		Cart cart = cartService.findUserCart(user.getId());
+		List<CartItem> cartItems =  (List<CartItem>) cart.getCartItems();
+		UserAddress address = addressService.findUserAddressByUserId(user.getId());
+		
+		
+		
+		model.addAttribute("cart", cart);
+		model.addAttribute("user", user);
+		model.addAttribute("address", address);
+		
+		return "checkout";
 	}
 }

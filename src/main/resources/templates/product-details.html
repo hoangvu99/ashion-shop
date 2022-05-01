@@ -109,7 +109,7 @@
                         <h3 th:text="${product.name}"> </h3>
                         <p id="productId" style="display: none;" th:text="${product.id}"></p>
                         
-                        <div class="product__details__price" th:text="${product.price+' VNĐ'}"> <span>$ 83.0</span></div>
+                        <div class="product__details__price" th:text="${#numbers.formatCurrency(product.priceInNum)}"> <span>$ 83.0</span></div>
                         <p th:text="${product.description}"></p>
                         <div class="product__details__button">
                             <div class="quantity">

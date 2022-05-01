@@ -18,24 +18,15 @@ public class CartItemDTO {
 	private String sizeName;
 	private String imageName;
 	private String productName;
-	private String price;
+	private long price;
 	private int quantity;
-	private String total;
+	private long total;
 
-	
-	
-	public void convertTotal( NumberFormat numberFormat) {
-		String[] priceArr = this.price.split(",");
-		String priceText="";
-		for (int i = 0; i < priceArr.length; i++) {
-			priceText+=priceArr[i];
-		}
-		long priceNum = Long.valueOf(priceText);
-		long totalNum = priceNum*this.quantity;
-		String totalText = numberFormat.format(totalNum);
-		
-		this.total = totalText;
+	public void calSubTotal() {
+		this.total = this.quantity*this.price;
 	}
+	
+	
 	
 	
 }

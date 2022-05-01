@@ -11,8 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.example.model.order.Order;
-import com.example.model.order.OrderItem;
+
 import com.example.model.promotion.Promotion;
 import com.example.model.user.User;
 import com.example.model.user.UserAddress;

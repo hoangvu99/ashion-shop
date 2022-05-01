@@ -14,7 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.example.model.order.Order;
+
 import com.example.model.order.Orders;
 
 import lombok.AllArgsConstructor;

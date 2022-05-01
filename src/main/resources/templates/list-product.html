@@ -69,13 +69,13 @@
                 	</thead>
                 	<tbody>
                 		<tr th:each="product : ${listProduct}">
-                			<td th:utext="${product.id}"></td>
-                			<td th:utext="${product.name}"></td>
-                			<td th:utext="${product.category.categoryName}"></td>
-                			<td th:utext="${product.price}"></td>
-                			<td th:utext="${product.description}"></td>
-                			<td th:each="size : ${product.productSizes}" th:utext="${size.quantity}" ></td>
-                			<td th:utext="${product.createdAt}"></td>
+                			<td th:text="${product.id}"></td>
+                			<td th:text="${product.name}"></td>
+                			<td th:text="${product.category.categoryName}"></td>
+                			<td th:text="${#numbers.formatCurrency(product.priceInNum)}">123</td>
+                			<td th:text="${product.description}"></td>
+                			<td th:each="size : ${product.productSizes}" th:text="${size.quantity}" ></td>
+                			<td th:text="${product.createdAt}"></td>
                 			<td > <img th:src="@{${'img/products/'+ product.thumnail}}" width="120"/>  </td>
                 			<td> <a th:href="@{${'/view-product?id='+ product.id}}"> <span class="fa fa-eye"></span></a> </td>
                 		</tr>

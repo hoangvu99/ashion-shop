@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dao.OrderDao;
-import com.example.model.order.Order;
+
 import com.example.model.order.Orders;
 import com.example.service.OrderService;
 @Service

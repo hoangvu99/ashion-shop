@@ -36,8 +36,7 @@ import com.example.dto.ProductDTO;
 import com.example.model.cart.Cart;
 import com.example.model.cart.CartItem;
 import com.example.model.category.Category;
-import com.example.model.order.Order;
-import com.example.model.order.OrderItem;
+
 import com.example.model.order.OrderItems;
 import com.example.model.order.Orders;
 import com.example.model.product.Product;
@@ -130,7 +129,7 @@ public class MainController {
 					
 					if(checkExist) {
 						cartItems.get(index).setQuantity(cartItems.get(index).getQuantity() +itemDTOs.get(i).getQuantity());
-						cartItems.get(index).convertTotal(numberFormat);
+						cartItems.get(index).calSubTotal();
 						cartItems.get(index).setUpdatedAt(formatDate);
 						
 					}else {
@@ -140,7 +139,7 @@ public class MainController {
 					}															
 				}
 				cart.setCartItems(cartItems);										
-				cart.calculatorCartTotal(numberFormat);
+				cart.calTotal();
 			}			
 			cartService.saveCart(cart);
 		}		
@@ -152,52 +151,17 @@ public class MainController {
 		return "index";
 	}
 	
-	@RequestMapping(value = "/shop")
-	public String shopController(HttpSession httpSession) {	
-		
-		return "shop";
-	}
 	
-	@RequestMapping(value = "/blog")
-	public String blogController() {				
-		return "blog";
-	}
 	
-	@RequestMapping(value = "/blog-details")
-	public String blogDetailsController() {				
-		return "blog-details";
-	}
-	@RequestMapping(value = "/checkout")
-	public String checkoutDetailsController(HttpSession httpSession, Model model) {	
-		
-		
-		String date = dateFormat.format(new Date());
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user = userService.findUserByEmail(((UserDetails) principal).getUsername());
-		Cart cart = cartService.findUserCart(user.getId());
-		List<CartItem> cartItems =  (List<CartItem>) cart.getCartItems();
-		
-		
-		
-		
-		model.addAttribute("cart", cart);
-		model.addAttribute("user", user);
-		
-		return "checkout";
-	}
+	
+	
 	@RequestMapping(value = "/contact")
 	public String contactDetailsController( HttpSession httpSession) {		
 		
 		return "contact";
 	}
 	
-	@RequestMapping(value = "/product-details")
-	public String productDetailsController(@RequestParam(name="id")long id, Model model, HttpSession httpSession) {			
-		
-		model.addAttribute("product", productService.findProductById(id));
-		
-		return "product-details";
-	}
+	
 	
 	
 	

@@ -36,7 +36,7 @@ public class CartItem {
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
 	private int quantity;
-	private String subTotal;
+	private long subTotal;
 	private String createdAt;
 	private String updatedAt;
 	
@@ -44,21 +44,13 @@ public class CartItem {
 	@JoinColumn(name="product_size_id")
 	ProductSize productSize;
 	
-	private String price;
+	private long price;
 	
-	public void convertTotal( NumberFormat numberFormat) {
-		String[] priceArr = this.price.split(",");
-		String priceText="";
-		for (int i = 0; i < priceArr.length; i++) {
-			priceText+=priceArr[i];
-		}
-		long priceNum = Long.valueOf(priceText);
-		long totalNum = priceNum*this.quantity;
-		String totalText = numberFormat.format(totalNum);
-		
-		this.subTotal = totalText;
+	public void calSubTotal() {
+		this.subTotal = this.quantity*this.price;
 	}
-
+	
+	
 	
 	
 }

@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.example.model.category.Category;
-import com.example.model.order.OrderItem;
+
 import com.example.model.order.OrderItems;
 import com.example.model.promotion.ProductPromotion;
 import com.example.model.size.ProductSize;
@@ -43,12 +43,11 @@ public class Product {
 	private String createdBy;				
 	private String updatedAt;
 	private String deletedAt;
-	private Long priceInNum;
+	private long priceInNum;
 	@Column(columnDefinition = "varchar(2000)")
 	private String detailsContent;
 	
-	private String price;
-	private String oldPrice;
+	private long oldPrice;
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Collection<ProductPromotion> productPromotions;

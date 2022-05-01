@@ -14,22 +14,14 @@ public class CartDTO {
 	
 	private List<CartItemDTO>cartItemDTOs;
 	private int counter;
-	private String cartTotal;
+	private long cartTotal;
 	
-	public void calculatorCartTotal(NumberFormat numberFormat) {
-		String cartTotalText = "";
-		long cartTotalNum =0;
+	public void calTotal() {
+		long total = 0;
 		for (int i = 0; i < this.cartItemDTOs.size(); i++) {
-			if(this.cartItemDTOs.get(i).getTotal() != null) {
-				String[] arr = this.cartItemDTOs.get(i).getTotal().split(",");
-				String t = "";
-				for (int j = 0; j < arr.length; j++) {
-					t +=arr[j];
-				} 
-				cartTotalNum += Long.valueOf(t);
-			}
+			total += this.cartItemDTOs.get(i).getTotal();
 		}
-		this.cartTotal = numberFormat.format(cartTotalNum);
 		
+		this.cartTotal= total;
 	}
 }
