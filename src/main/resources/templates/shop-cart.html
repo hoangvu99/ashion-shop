@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="zxx" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    
-
-    
+<head> 
     <th:block th:replace="fragments/css-component :: meta"></th:block>
-    <th:block th:replace="fragments/css-component :: google-font"></th:block>
-
-    
-    <th:block th:replace="fragments/css-component :: css"></th:block>
-    
+    <th:block th:replace="fragments/css-component :: google-font"></th:block>   
+    <th:block th:replace="fragments/css-component :: css"></th:block>   
 </head>
 
 <body>
@@ -160,16 +153,7 @@
     <!-- Search End -->
 
     <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/main.js"></script>
+    <th:block th:replace="fragments/js-component :: js"></th:block>
     <script src="js/cart.js"></script>
 </body>
 

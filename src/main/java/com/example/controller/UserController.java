@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dto.UserDTO;
+import com.example.dto.UserEditDTO;
 import com.example.model.user.User;
 import com.example.service.CartItemService;
 import com.example.service.CartService;
@@ -62,14 +63,16 @@ public class UserController {
 		return "user/account";
 	}
 	
-	@RequestMapping(value ="/account/edit")
+	@RequestMapping(value ="/edit")
 	public String editAccountView(Model model) {
 			
 			String email ="vun64111@gmail.com";
 			User user = userService.findUserByEmail(email);
+			UserEditDTO editDTO = new UserEditDTO();
+			editDTO.setUserName(user.getUserName());
 			
 			model.addAttribute("user", user);
-			return "user/account";
+			return "user/edit-account";
 		}
 	
 	@RequestMapping(value ="/sign-up", method = RequestMethod.POST)
