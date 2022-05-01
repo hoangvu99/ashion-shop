@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 public class UserEditDTO {
 	
 	private String email;
-	private String password;
+	
 	private long phone;
 	private String userName;
 	private String province;
-	private String distric;
-	private String comne;
+	private String district;
+	private String commune;
 	private String addressDetail;
 	
 }

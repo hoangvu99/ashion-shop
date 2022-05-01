@@ -35,11 +35,9 @@ public class User {
 	private String password;
 	private long phone;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Collection<UserAddress> userAddresses;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Collection<UserReview> userReviews;
+	
+	
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Collection<Orders>orders;

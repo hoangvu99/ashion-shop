@@ -18,4 +18,6 @@ public interface UserService {
 	public void sendResetPassToMail(String email) throws MessagingException;
 	
 	public void resetPass(String email, String pass);
+	
+	public void updateUserInfo(User user);
 }

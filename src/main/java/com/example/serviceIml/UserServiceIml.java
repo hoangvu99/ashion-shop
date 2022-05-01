@@ -169,4 +169,10 @@ public class UserServiceIml  implements UserService{
 		userDao.resetPassword(u.getId(), encodePass);
 		
 	}
+	
+	@Override
+	public void updateUserInfo(User user) {
+		userDao.saveAndFlush(user);
+		
+	}
 }

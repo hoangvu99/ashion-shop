@@ -94,8 +94,8 @@ public class OrderController {
 		order.setNote("Ghi chú");
 		order.setOrderTotal(cart.getTotal());
 		order.setPhoneNumber(user.getPhone());
-		List<UserAddress>addresses = (List<UserAddress>) user.getUserAddresses();
-		order.setDeliveryAddress(addresses.get(0).getAddressName());
+		
+		
 		try {
 			orderService.saveOrder(order);
 			

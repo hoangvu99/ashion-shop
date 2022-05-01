@@ -6,17 +6,20 @@ import java.text.SimpleDateFormat;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dto.UserDTO;
 import com.example.dto.UserEditDTO;
 import com.example.model.user.User;
+import com.example.model.user.UserAddress;
 import com.example.service.CartItemService;
 import com.example.service.CartService;
 import com.example.service.CategoryService;
@@ -25,12 +28,19 @@ import com.example.service.ProductService;
 import com.example.service.ProductSizeService;
 import com.example.service.SizeService;
 import com.example.service.UploadFileService;
+import com.example.service.UserAddressService;
 import com.example.service.UserService;
 
 @Controller
 public class UserController {
 	@Autowired
 	UserService userService;
+	
+	@Autowired 
+	UserAddressService addressService;
+	
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	OrderService orderService;
@@ -58,8 +68,9 @@ public class UserController {
 		
 		String email ="vun64111@gmail.com";
 		User user = userService.findUserByEmail(email);
-		
+		UserAddress address = addressService.findUserAddressByUserId(user.getId());
 		model.addAttribute("user", user);
+		model.addAttribute("userAddress", address);
 		return "user/account";
 	}
 	
@@ -70,9 +81,49 @@ public class UserController {
 			User user = userService.findUserByEmail(email);
 			UserEditDTO editDTO = new UserEditDTO();
 			editDTO.setUserName(user.getUserName());
+			editDTO.setPhone(user.getPhone());
+			editDTO.setEmail(user.getEmail());
 			
-			model.addAttribute("user", user);
+			UserAddress address = addressService.findUserAddressByUserId(user.getId());
+			if(address != null) {
+				editDTO.setProvince(address.getProvince());
+				editDTO.setDistrict(address.getDistrict());
+				editDTO.setCommune(address.getCommune());
+				editDTO.setAddressDetail(address.getAddressDetail());
+			}
+			
+			
+			model.addAttribute("user", editDTO);
+			model.addAttribute("avatar", user.getAvatarURL());
 			return "user/edit-account";
+		}
+	@RequestMapping(value ="/edit", method = RequestMethod.POST)
+	public String editAccountSubmit(@ModelAttribute UserEditDTO u, Model model,RedirectAttributes redirectAttributes) {
+			
+			String email ="vun64111@gmail.com";
+			User user = userService.findUserByEmail(email);
+			UserAddress address = addressService.findUserAddressByUserId(user.getId());
+			
+			user.setUserName(u.getUserName());						
+			user.setPhone(u.getPhone());
+			if(address == null ) {
+				address = new UserAddress();
+			}
+			address.setDistrict(u.getDistrict());
+			address.setCommune(u.getCommune());
+			address.setProvince(u.getProvince());
+			address.setAddressDetail(u.getAddressDetail());
+			
+			address.setUser(user);
+			
+			
+			
+			userService.updateUserInfo(user);
+			addressService.saveAddress(address);
+			
+			
+			redirectAttributes.addFlashAttribute("user", user);
+			return "redirect:/account";
 		}
 	
 	@RequestMapping(value ="/sign-up", method = RequestMethod.POST)

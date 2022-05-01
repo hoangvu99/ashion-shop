@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,13 +22,15 @@ public class UserAddress {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private String addressName;
+	private String addressDetail;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	
+	private String district;
+	private String province;
+	private String commune;
 	
 	
 	private String createdAt;
