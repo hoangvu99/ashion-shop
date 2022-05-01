@@ -1,6 +1,10 @@
 package com.example.service;
 
+import java.io.IOException;
+
 import javax.mail.MessagingException;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.dto.UserDTO;
 import com.example.model.user.User;
@@ -20,4 +24,6 @@ public interface UserService {
 	public void resetPass(String email, String pass);
 	
 	public void updateUserInfo(User user);
+	
+	public void saveUserAvatar(MultipartFile file, long userId) ;
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dto.UserDTO;
@@ -44,6 +45,11 @@ public class UserController {
 	
 	@Autowired
 	OrderService orderService;
+	
+	@Autowired
+	UploadFileService uploader;
+	
+	
 	@RequestMapping(value = "/login")
 	public String loginController(@RequestParam(name="emailRegisted", defaultValue = "", required = false) String emailRegisted ,Model model) {
 		
@@ -97,6 +103,36 @@ public class UserController {
 			model.addAttribute("avatar", user.getAvatarURL());
 			return "user/edit-account";
 		}
+	@RequestMapping(value ="/reset-avatar", method = RequestMethod.GET)
+	public String changeAvatar(Model model) {
+			
+			
+		
+			String email ="vun64111@gmail.com";
+			User user = userService.findUserByEmail(email);
+			
+			model.addAttribute("userName", user.getUserName());
+			model.addAttribute("avatar", user.getAvatarURL());
+			return "user/reset-avatar";
+		}
+	
+	@RequestMapping(value ="/reset-avatar", method = RequestMethod.POST, consumes = "multipart/form-data")
+	public String changeAvatarSubmit(RedirectAttributes model, @RequestParam(name = "avatar") MultipartFile file) {
+			
+			
+			
+			String email ="vun64111@gmail.com";
+			User user = userService.findUserByEmail(email);
+			userService.saveUserAvatar(file, user.getId());
+			
+			UserAddress address = addressService.findUserAddressByUserId(user.getId());
+			user.setAvatarURL(file.getOriginalFilename());
+			userService.updateUserInfo(user);
+			
+			
+			return "redirect:/account";
+		}
+	
 	@RequestMapping(value ="/edit", method = RequestMethod.POST)
 	public String editAccountSubmit(@ModelAttribute UserEditDTO u, Model model,RedirectAttributes redirectAttributes) {
 			

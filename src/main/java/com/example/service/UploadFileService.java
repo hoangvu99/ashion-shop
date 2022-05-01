@@ -13,7 +13,7 @@ public interface UploadFileService {
 	
 	
 	
-	 void saveUploadFile(MultipartFile file,String name) throws IOException;
+	 void saveUploadFile(MultipartFile file,String folder,String name) throws IOException;
 		
 	
 }

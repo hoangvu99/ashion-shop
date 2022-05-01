@@ -25,9 +25,9 @@ public class UploadFileServiceIml implements UploadFileService{
 	String rootLocation;
 	
 	@Override
-	public void saveUploadFile(MultipartFile file, String name) throws IOException {
+	public void saveUploadFile(MultipartFile file,String folder, String name) throws IOException {
 		try {
-			Path path = Paths.get(rootLocation+"products/"+name);
+			Path path = Paths.get(rootLocation+folder+"/"+name);
 			Files.createFile(path);
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (Exception e) {

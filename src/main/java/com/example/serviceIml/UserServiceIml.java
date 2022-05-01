@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.dao.RoleDao;
 import com.example.dao.UserDao;
@@ -44,6 +45,9 @@ public class UserServiceIml  implements UserService{
 	
 	@Autowired
 	JavaMailSender javaMailSender;
+	
+	@Autowired
+	UploadFileServiceIml uploader;
 	
 	@Override
 	public void saveUser(UserDTO userDTO) {
@@ -173,6 +177,16 @@ public class UserServiceIml  implements UserService{
 	@Override
 	public void updateUserInfo(User user) {
 		userDao.saveAndFlush(user);
+		
+	}
+	@Override
+	public void saveUserAvatar(MultipartFile file,long userId) {
+		
+		try {
+			uploader.saveUploadFile(file, "user", file.getOriginalFilename());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 }

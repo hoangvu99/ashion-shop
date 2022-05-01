@@ -66,11 +66,11 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img th:src="@{${'img/user/' + avatarURL}}" class="rounded-circle" width="150">
+                    <img th:src="@{${'img/user/' + avatar}}" class="rounded-circle" width="150">
                     <div class="mt-3">
                       <h4 th:text="${user.userName}"></h4>
                       <br>
-                      <button class="btn btn-primary">Thay ảnh đại diện</button>
+                       <a th:href="@{/reset-avatar}"><button class="btn btn-primary">Thay ảnh đại diện</button></a>
                       
                     </div>
                   </div>
@@ -82,7 +82,7 @@
               <div class="card mb-3">
                 <div class="card-body">
                   
-                  <form th:object="${user}" th:method="post" th:action="@{/edit}">
+                  <form class="form"th:object="${user}" th:method="post" th:action="@{/edit}">
 	                  <div class="form-group">
 	                  		<label>Email</label>
 	                  		<input th:field="*{email}" class="form-control" readonly>

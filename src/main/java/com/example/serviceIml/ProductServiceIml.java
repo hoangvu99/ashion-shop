@@ -92,7 +92,7 @@ public class ProductServiceIml implements ProductService{
 		if(productDTO.getThumnail().getOriginalFilename() != "") {
 			product.setThumnail(fileName+".jpg");
 			try {
-				uploadFileService.saveUploadFile(productDTO.getThumnail(),fileName+".jpg");
+				uploadFileService.saveUploadFile(productDTO.getThumnail(),"products",fileName+".jpg");
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -115,7 +115,7 @@ public class ProductServiceIml implements ProductService{
 			}else {
 				productImages.setUrl(fileName+"dt-"+i+".jpg");
 				try {
-					uploadFileService.saveUploadFile(filesDTO.get(i), fileName+"dt-"+i+".jpg");
+					uploadFileService.saveUploadFile(filesDTO.get(i), "products",fileName+"dt-"+i+".jpg");
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
@@ -213,7 +213,7 @@ public class ProductServiceIml implements ProductService{
 			if(productDTO.getThumnail().getOriginalFilename() !="") {
 				product.setThumnail(fileName+".jpg");
 				try {
-					uploadFileService.saveUploadFile(productDTO.getThumnail(),fileName+".jpg");
+					uploadFileService.saveUploadFile(productDTO.getThumnail(), "products",fileName+".jpg");
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
@@ -226,7 +226,7 @@ public class ProductServiceIml implements ProductService{
 					images.get(i).setUrl(fileName+"dt-"+i+".jpg");
 					images.get(i).setCreatedAt(fomattedDate);
 					try {
-						uploadFileService.saveUploadFile(filesDTO.get(i), fileName+"dt-"+i+".jpg");
+						uploadFileService.saveUploadFile(filesDTO.get(i), "products", fileName+"dt-"+i+".jpg");
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
