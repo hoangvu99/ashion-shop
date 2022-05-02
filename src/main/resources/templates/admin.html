@@ -43,7 +43,7 @@
                   <div class="col-12 col-md-auto">
                     <div class="d-flex align-items-center"><img src="assets/img/icons/illustrations/4.png" alt="" height="46" width="46">
                       <div class="ms-3">
-                        <h4 class="mb-0">57 new orders</h4>
+                        <h4 class="mb-0" th:text="${newOrderCount+' đơn hàng mới'}"></h4>
                         <p class="text-800 fs--1 mb-0">Awating processing</p>
                       </div>
                     </div>
@@ -51,18 +51,13 @@
                   <div class="col-12 col-md-auto">
                     <div class="d-flex align-items-center"><img src="assets/img/icons/illustrations/2.png" alt="" height="46" width="46">
                       <div class="ms-3">
-                        <h4 class="mb-0">5 orders</h4>
-                        <p class="text-800 fs--1 mb-0">On hold</p>
+                         <h4 class="mb-0" th:text="${acceptedOrderCount+' đơn hàng '}"></h4>
+                        <p class="text-800 fs--1 mb-0">Đang chờ xử lý</p>
                       </div>
                     </div>
                   </div>
                   <div class="col-12 col-md-auto">
-                    <div class="d-flex align-items-center"><img src="assets/img/icons/illustrations/3.png" alt="" height="46" width="46">
-                      <div class="ms-3">
-                        <h4 class="mb-0">15 products</h4>
-                        <p class="text-800 fs--1 mb-0">Out of stock</p>
-                      </div>
-                    </div>
+                    
                   </div>
                 </div>
                 <hr class="bg-200 mb-6 mt-4">

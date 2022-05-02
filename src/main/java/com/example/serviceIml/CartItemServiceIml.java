@@ -22,7 +22,7 @@ public class CartItemServiceIml implements CartItemService{
 	@Transactional
 	public void deleteCartItem(long cartItemId) {
 		
-		cartItemDao.deleteById(cartItemId);
+		cartItemDao.deleteCartItem(cartItemId);
 		
 	}
 	

@@ -80,7 +80,7 @@
                                     <td class="cart__product__item">
                                         <img style="width: 100px; height: 100px;" th:src="@{${'img/products/'+ c.imageName}}" alt="">
                                         <div class="cart__product__item__title">
-                                            <h6 th:text="${c.productName}"></h6>
+                                            <a th:href="@{${'/product-details?id='+c.productId}}"><h6 th:text="${c.productName}"></h6></a>
                                             
                                         </div>
                                     </td>

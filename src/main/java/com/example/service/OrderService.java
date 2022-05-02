@@ -23,4 +23,10 @@ public interface OrderService {
 	public List<Orders> refusedOrders();
 	
 	public List<Orders> listUserOrder(long userId);
+	
+	public void deleteOrder(long orderId);
+	
+	public int countNewOrders();
+	
+	public int countAcceptedOrders();
 }	

@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.dto.CartDTO;
@@ -135,13 +136,16 @@ public class OrderController {
 				httpSession.setAttribute("CartDTO", cartDTO);
 			}
 			
-			cartItems.stream().forEach(i -> {
-				cartItemService.deleteCartItem(i.getId());
-			});
-			cartItems =new ArrayList<CartItem>();
+			for (int j = 0; j < cartItems.size(); j++) {
+				cartItemService.deleteCartItem(cartItems.get(j).getId());
+				cartItems.remove(j);
+			}
+			
+			
 			cart.setTotal(0);
 			cart.setCounter(0);
 			cart.setCartItems(cartItems);
+			httpSession.setAttribute("counterCart", 0);
 			cartService.saveCart(cart);
 			
 		}catch (Exception e) {
@@ -168,5 +172,11 @@ public class OrderController {
 		model.addAttribute("checkOut", checkOutDTO);
 		
 		return "checkout";
+	}
+	
+	@RequestMapping(value="/cancel-order")
+	public String de(@RequestParam(name="id")long id) {
+		orderService.deleteOrder(id);
+		return "redirect:/account";
 	}
 }

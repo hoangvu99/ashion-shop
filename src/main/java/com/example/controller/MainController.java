@@ -142,7 +142,7 @@ public class MainController {
 				cart.calTotal();
 			}			
 			
-			httpSession.setAttribute("counterCart",1);
+			httpSession.setAttribute("counterCart",cart.getCounter());
 			cartService.saveCart(cart);
 		}		
 		List<Product>lastestProducts = productService.lastestProducts();

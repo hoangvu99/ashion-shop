@@ -262,5 +262,16 @@ public class UserController {
 		return "user/reset-password";
 	}
 	
+	@RequestMapping(value="/order-details")
+	public String orderDetail(@RequestParam(name = "orderId") long orderId, Model model) {
+		
+		Orders orders = orderService.findOrderById(orderId);
+		
+		model.addAttribute("order", orders);
+		
+		return "user/order-detail";
+	}
+	
+	
 	
 }

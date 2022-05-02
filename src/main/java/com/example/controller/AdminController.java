@@ -75,9 +75,10 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/admin")
-	public String add() {			
+	public String add( Model model) {			
 		
-		
+		model.addAttribute("newOrderCount", orderService.countNewOrders());
+		model.addAttribute("acceptedOrderCount", orderService.countAcceptedOrders());
 		return "admin";
 	}
 	
@@ -198,6 +199,13 @@ public class AdminController {
 		return "redirect:/list-product";
 	}
 	
+	
+	@RequestMapping("/new-orders")
+	public String newOrders(Model model) {
+		List<Orders>orders = orderService.newOrders();
+		model.addAttribute("orders", orders);
+		return "list-order";
+	}
 	
 	
 	

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="fragments/css-component :: meta"></th:block>
+    <th:block th:replace="fragments/css-component :: google-font"></th:block>   
+    <th:block th:replace="fragments/css-component :: css"></th:block>
+    
+    <link rel="stylesheet" th:href="@{/css/account.css}" type="text/css">
+    
+</head>
+
+<body>
+    
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__close">+</div>
+        <ul class="offcanvas__widget">
+            <li><span class="icon_search search-switch"></span></li>
+            <li><a href="#"><span class="icon_heart_alt"></span>
+                <div class="tip">2</div>
+            </a></li>
+            <li><a href="#"><span class="icon_bag_alt"></span>
+                <div class="tip">2</div>
+            </a></li>
+        </ul>
+        <div class="offcanvas__logo">
+            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__auth">
+            <a href="#">Login</a>
+            <a href="#">Register</a>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header th:replace="fragments/header :: header"></header>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Begin -->
+    <div class="container">
+    <div class="main-body">
+    
+          <!-- Breadcrumb -->
+          <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <span>Account</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+          <!-- /Breadcrumb -->
+    
+          <br>
+          <br>
+          <div class="row">
+          	<div class="col-12">
+          		<h3>Chi tiết đơn hàng</h3>
+          		<br>
+          		<table class="table table-bordered table-striped">
+				  		<thead class="">
+				  			<th>Ảnh</th>
+				  			<th>Tên sản phẩm</th>
+				  			
+				  			<th>Size</th>
+				  			
+				  			<th>Số lượng</th>
+				  			<th>Đơn giá</th>
+				  			<th>Thành tiền</th>
+				  			
+				  			
+				  		</thead>
+				  		<tbody>
+				  			<tr th:each="p : ${order.orderItems}" >
+				  				<td > <img style ="width: 150px; height: 150px;"th:src="@{${'img/products/'+ p.product.thumnail}}"> </td>
+				  				<td th:text="${p.product.name}"> </td>
+				  				<td th:text="${p.productSize.size.sizeName}"> </td>
+				  				
+				  				<td th:text="${p.quantity}" > </td>
+				  				<td th:text="${#numbers.formatCurrency(p.price)}" > </td>
+				  				<td th:text="${#numbers.formatCurrency(p.total)}" > </td>
+				  				
+				  			</tr>
+				  			<tr class="">
+				  				<td colspan="5">Tổng tiền</td>
+				  				
+				  				<td th:text="${#numbers.formatCurrency(order.orderTotal)}"></td>
+				  			</tr>
+				  		</tbody>
+				  	</table>
+          	</div>
+          </div>
+
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!--  Section Begin -->
+    	<section>
+    			<div class="container">
+    				
+    			</div>
+    	</section>
+    <!-- Section End -->
+	
+    <!-- Instagram Begin -->
+<div th:replace="fragments/instagram :: instagram"></div>
+<!-- Instagram End -->
+
+<!-- Footer Section Begin -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+	<th:block th:replace="fragments/js-component :: js"></th:block>
+    <!-- Js Plugins -->
+    
+</body>
+
+</html>

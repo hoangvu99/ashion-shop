@@ -142,14 +142,27 @@
           			<thead>
           				<th>STT</th>
           				<th>Ngày mua</th>
+          				<th>Thành tiền</th>
           				<th>Trạng thái đơn hàng</th>
           				<th>Trạng thái thanh toán</th>
-          				<th>Thành tiền</th>
+          				
+          				<th></thd>
+          				<th></th>
           			</thead>
           			<tbody>
           				<tr th:each="order, ite : ${orders}">
           					<td th:text="${ite.index+1}"></td>
           					<td th:text="${order.createdAt}"></td>
+          					<td th:text="${#numbers.formatCurrency(order.orderTotal)}" style="color: red;"></td>
+          					<td th:if="${order.status == 0}">Đang chờ xử lí</td>
+          					<td th:if="${order.status == 1}">Đang giao</td>
+          					<td th:if="${order.status == 2}">Đã giao</td>
+          					<td th:if="${order.status == 3}">Đã hủy</td>
+          					
+          					<td th:if="${order.isPaid == 0}">Chưa thanh toán</td>
+          					<td th:if="${order.isPaid == 1}">Đã thanh toán</td>
+          					<td> <a th:href="@{${'/order-details?orderId='+order.id}}">Xem chi tiết</a> </td>
+          					<td th:if="${order.status == 0}" > <a style="color: red;" th:href="@{${'/cancel-order?id='+order.id}}">Hủy đơn</a> </td>
           					
           				 </tr>
           			</tbody>

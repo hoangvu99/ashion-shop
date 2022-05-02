@@ -70,7 +70,7 @@
                 		<tr th:each="o : ${orders}">
                 			<td th:text="${o.id}"></td>
                 			<td th:text="${o.user.userName}"></td>               			
-                			<td th:text="${o.orderTotal}"></td>
+                			<td style="color: red;" th:text="${#numbers.formatCurrency(o.orderTotal)}"></td>
                 			<td th:text="${o.createdAt}"></td>
                 			<td th:if="${o.status == 0}">Chưa được phê duyệt</td>
                 			<td th:if="${o.status == 1}">Đã phê duyệt</td>
