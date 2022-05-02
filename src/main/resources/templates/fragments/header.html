@@ -13,9 +13,13 @@
                 <div class="col-xl-6 col-lg-7">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="./">Home</a></li>                           
-                            <li><a href="/shop">Shop</a></li>
-                            
+                            <li class="active"><a th:href="@{/}">Home</a></li>                           
+                            <li><a th:href="@{/shop}">Shop</a></li>
+                            <li><a th:href="@{/shop?c=1}">Áo</a></li>
+                            <li><a th:href="@{/shop?c=2}">Quần</a></li>
+                            <li><a th:href="@{/shop?c=3}">Váy</a></li>
+                            <li><a th:href="@{/blog}">Blog</a></li>
+                            <li><a th:href="@{/contact}">Liên lạc</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -35,10 +39,10 @@
                         <ul class="header__right__widget">
                         		
                
-            				<li sec:authorize="isAuthenticated() == true"><span class="icon_profile"></span>
-            					
+            				<li sec:authorize="isAuthenticated() == true">
+            					<a th:href="@{/account}"><span  class="icon_profile"></span></a>
             				</li>
-            				<li sec:authorize="isAuthenticated() == true"><a href="/logout" ><span class="fa fa-sign-out"></a></span>
+            				<li sec:authorize="isAuthenticated() == true"><a th:href="@{/logout}" ><span class="fa fa-sign-out"></a></span>
             					
             				</li>
             				

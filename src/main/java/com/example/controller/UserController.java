@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.mail.MessagingException;
 
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dto.UserDTO;
 import com.example.dto.UserEditDTO;
+import com.example.model.order.Orders;
 import com.example.model.user.User;
 import com.example.model.user.UserAddress;
 import com.example.service.CartItemService;
@@ -83,7 +85,10 @@ public class UserController {
 		
 		User user = userService.findUserByEmail(email);
 		UserAddress address = addressService.findUserAddressByUserId(user.getId());
+		List<Orders> userOrders = orderService.listUserOrder(user.getId());
+		
 		model.addAttribute("user", user);
+		model.addAttribute("orders", userOrders);
 		model.addAttribute("userAddress", address);
 		return "user/account";
 	}

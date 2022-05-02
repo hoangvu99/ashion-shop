@@ -16,4 +16,11 @@ public interface OrderService {
 	public Orders findOrderById(long orderId);
 	
 	public void acceptOrder(long orderId);
+	
+	public List<Orders> newOrders();
+	public List<Orders> acceptedOrders();
+	public List<Orders> successOrders();
+	public List<Orders> refusedOrders();
+	
+	public List<Orders> listUserOrder(long userId);
 }	

@@ -67,7 +67,7 @@ public class ProductController {
 		}
 		int lastPage = (page == 1)? 1: page-1;
 		
-		System.out.println(products.size());
+		
 		
 		model.addAttribute("lastPage","?page="+lastPage+param);
 		model.addAttribute("page", page);

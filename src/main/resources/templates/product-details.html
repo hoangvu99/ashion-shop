@@ -133,7 +133,7 @@
                                     <div class="size__btn">
                                           <form id="size-form">
                                           	<input onclick="selectOnlyThis(this.id)" class="size-checkbox" style="margin-left: 20px;" 
-                                          	type="radio" th:each="s: ${product.productSizes}" th:value="${s.size.id}" 
+                                          	type="radio" th:each="s: ${product.productSizes}" th:if="${s.quantity > 0}" th:value="${s.size.id}" 
                                           	th:text="${s.size.sizeName}" th:id="${s.size.id}" >
                                           </form>
                                          <br>

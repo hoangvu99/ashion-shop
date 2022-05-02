@@ -136,7 +136,7 @@
           </div>
           <div class="row">
           	<div class="col-12">
-          		<h3>Danh sách đơn hàng đang chờ giao</h3>
+          		<h3>Lịch sử mua hàng</h3>
           		<br>
           		<table class="table">
           			<thead>
@@ -146,6 +146,13 @@
           				<th>Trạng thái thanh toán</th>
           				<th>Thành tiền</th>
           			</thead>
+          			<tbody>
+          				<tr th:each="order, ite : ${orders}">
+          					<td th:text="${ite.index+1}"></td>
+          					<td th:text="${order.createdAt}"></td>
+          					
+          				 </tr>
+          			</tbody>
           		</table>
           	</div>
           </div>

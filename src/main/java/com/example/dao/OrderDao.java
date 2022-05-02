@@ -1,5 +1,7 @@
 package com.example.dao;
 
+import java.util.List;
+
 import javax.persistence.criteria.Order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +18,18 @@ public interface OrderDao extends JpaRepository<com.example.model.order.Orders, 
 	
 	@Query(nativeQuery = true, value = "update orders set status = 1 where id = ?1")
 	public void acceptOrder(Long orderId);
+	
+	@Query(value = "select * from orders where status = 0", nativeQuery = true)
+	public List<Orders>newOrders();
+	@Query(value = "select * from orders where status = 1", nativeQuery = true)
+	public List<Orders>acceptedOrders();
+	
+	@Query(value = "select * from orders where status = 2", nativeQuery = true)
+	public List<Orders>successOrders();
+	
+	@Query(value = "select  * from orders where status = 3", nativeQuery = true)
+	public List<Orders>refusedOrders();
+	
+	@Query(value ="select * from orders where user_id = ?1", nativeQuery = true)
+	public List<Orders> listUserOrder(long userId);
 }
