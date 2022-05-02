@@ -76,31 +76,39 @@
 				  
 				  <div class="form-group row">
 				    <label>Giá tiền:</label>
+				    
 				    <div class="sub-group-form">
-							<div class="sub-item">
-								<label>Hàng Triệu</label>
-							</div>
-							<div class="sub-item">
-								<label>Hàng Trăm</label>
-							</div>
-							<div class="sub-item">
-								<label>Hàng Nghìn</label>
-							</div>
-							
-							
-					</div>
-				    <div class="sub-group-form">
-							<div class="sub-item" th:each="p, itemStat : *{priceInNum}">								
-								<input type="text" class="form-control" min"1" max="999"  th:field="*{priceInNum[__${itemStat.index}__]}"></input>
+							<div class="sub-item" >								
+								<input type="number" style="text-align:right!important" class="form-control"   th:value="${productDTO.price}"></input>
 								
 							</div>
+							<div class="sub-item" >								
+								
+								<input type="text" style="width: 110px;" class="form-control" value="000 VNĐ" readOnly></input>
+							</div>
 							
 							
 					</div>
 				  </div>
-				  <div class="form-group">
-				  	<label th:text="'Thành tiền: '+ *{price} + ' VND'"></label>
+				  <div class="form-group row">
+				    <label>Giá mới:</label>
+				    
+				    <div class="sub-group-form">
+							<div class="sub-item" >								
+								<input type="number" style="text-align:right!important" class="form-control"   th:field="*{price}"></input>
+								
+							</div>
+							<div class="sub-item" >								
+								
+								<input type="text" style="width: 110px;" class="form-control" value="000 VNĐ" readOnly></input>
+							</div>
+							
+							
+					</div>
 				  </div>
+				  
+				  
+				  
 				  
 				  
 				  <div class="form-group row">
@@ -114,6 +122,15 @@
 							</div>
 							
 						</div>
+						</div>
+						
+				</div>
+				<div class="form-group">
+				  		<label>Nhập số lượng theo phụ kiện</label>
+				  		<br>
+						<div class="sub-group-form">
+							
+							
 						</div>
 						
 				</div>

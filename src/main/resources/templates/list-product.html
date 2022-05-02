@@ -55,16 +55,12 @@
                 			<th >Tên</th>
                 			<th >Loại</th>
                 			<th >Giá tiền</th>
-                			<th >Giới thiệu</th>
-                			<th >Size XS</th>
-                			<th >Size S</th>
-                			<th >Size M</th>
-                			<th >Size L</th>
-                			<th >Size XL</th>
+                			<th >Giới thiệu</th>              			
                 			<th > Ngày thêm </th>
                 			
                 			<th> Ảnh </th>
                 			<th> Xem hoặc chỉnh sửa</th>
+                			<th> Không hiển thị sản phẩn</th>
                 			
                 	</thead>
                 	<tbody>
@@ -74,10 +70,11 @@
                 			<td th:text="${product.category.categoryName}"></td>
                 			<td th:text="${#numbers.formatCurrency(product.priceInNum)}">123</td>
                 			<td th:text="${product.description}"></td>
-                			<td th:each="size : ${product.productSizes}" th:text="${size.quantity}" ></td>
+                			
                 			<td th:text="${product.createdAt}"></td>
                 			<td > <img th:src="@{${'img/products/'+ product.thumnail}}" width="120"/>  </td>
-                			<td> <a th:href="@{${'/view-product?id='+ product.id}}"> <span class="fa fa-eye"></span></a> </td>
+                			<td> <a th:href="@{${'/view-product?id='+ product.id}}"> <span >Xem</span></a> </td>
+                			<td> <a th:href="@{${'/delete-product?id='+ product.id}}" > <span style="color: red;">Xóa</span></a> </td>
                 		</tr>
                 		
                 	</tbody>
@@ -85,10 +82,10 @@
                 	
                 </table>
                 <div class="page-button">
-                	<button class="btn btn-danger"> <a style="color:white"  th:href="@{${'list-product?page='+ lastPage}}"> <span class="fa fa-arrow-left"></span></a> </button>
+                	 <a style="color:white"  th:href="@{${'list-product?page='+ lastPage}}"><button class="btn btn-danger"> <span class="fa fa-arrow-left"></span> </button></a>
                 	<input class="page-number"  id="page-number" th:value="${page}" style="width: 30px;"></input>
                 	<button class="go btn btn-danger" id="go">Go</button>
-                	<button class="btn btn-danger"> <a style="color:white" th:href="@{${'list-product?page='+ nextPage}}"> <span class="fa fa-arrow-right"></span></a> </button>
+                	<a style="color:white" th:href="@{${'list-product?page='+ nextPage}}"><button class="btn btn-danger">  <span class="fa fa-arrow-right"></span></button></a> 
                 	
                  </div>
                 

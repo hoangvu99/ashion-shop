@@ -20,11 +20,16 @@ public interface ProductService {
 		
 	List<Product>getListProduct();
 	
-	Page<Product> getPageProduct(int page);
+	List<Product> getPageProduct(int limit,int page);
 	
 	List<Product> searchProductByName(String name);
 	
 	void saveProduct(Product p);
 	
 	List<Product> lastestProducts();
+	
+	public void deleteProduct(long id);
+	
+	public List<Product> listProductByCategory(int category, int limit, int offset);
+	public List<Product> listProductByName(String s, int limit, int offset);
 }

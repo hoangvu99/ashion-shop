@@ -44,6 +44,7 @@ public class Product {
 	private String updatedAt;
 	private String deletedAt;
 	private long priceInNum;
+	private int isDeleted;
 	@Column(columnDefinition = "varchar(2000)")
 	private String detailsContent;
 	

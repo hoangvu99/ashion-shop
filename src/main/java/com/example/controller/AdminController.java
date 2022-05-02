@@ -64,7 +64,7 @@ public class AdminController {
 				model.addAttribute("lastPage", lastPage);
 				model.addAttribute("page", page);
 				model.addAttribute("nextPage", page+1);
-				model.addAttribute("listProduct", productService.getPageProduct(page));
+				model.addAttribute("listProduct", productService.getPageProduct(5,page));
 				
 			}else {
 				model.addAttribute("s", s);
@@ -134,7 +134,7 @@ public class AdminController {
 		
 		
 		
-		
+		productDTO.setPrice(p.getPriceInNum()/1000);
 		productDTO.setSizes(sizeDTOs);
 		
 		model.addAttribute("product", p);
@@ -190,6 +190,12 @@ public class AdminController {
 		model.addAttribute("order", orders);
 		model.addAttribute("message","Phê duyệt thành công");
 		return "view-order";
+	}
+	
+	@RequestMapping("/delete-product")
+	public String deleteProduct(@RequestParam(name="id")long id) {
+		productService.deleteProduct(id);
+		return "redirect:/list-product";
 	}
 	
 	

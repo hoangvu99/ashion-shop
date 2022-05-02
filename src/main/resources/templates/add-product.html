@@ -53,19 +53,22 @@
 				  </div>
 				  <div class="form-group" enctype="multipart/form-data">
 				   
-				    <input type="text" class="form-control" id="" required   name="productName" th:field="*{productName}" placeholder="Tên sản phẩm">
+				    <input type="text" class="form-control" id="" oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required   name="productName" th:field="*{productName}" placeholder="Tên sản phẩm">
 			   
 				  </div>
 				  <div class="form-group">
 				   
-				    <input type="text" class="form-control" id="" th:field="*{description}" name="description" placeholder="Mô tả sản phẩm">
+				    <input type="text" class="form-control" id="" oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required th:field="*{description}" name="description" placeholder="Mô tả sản phẩm">
 				  </div>
 				  <div class="form-group row">
 				    <label>Giá tiền:</label>
 				    
 				    <div class="sub-group-form">
 							<div class="sub-item" >								
-								<input type="number" style="text-align:right!important" class="form-control" min"1" max="999"  th:field="*{price}"></input>
+								<input type="number" style="" oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required class="form-control" min"1" max="999"  th:field="*{price}"></input>
 								
 							</div>
 							<div class="sub-item" >								
@@ -77,23 +80,28 @@
 					</div>
 				  </div>
 				  
+				  
 				  <div class="form-group">
 				  		<label>Nhập số lượng theo size</label>
 				  		<br>
 						<div class="sub-group-form">
 							<div class="sub-item" th:each="s, itemStat : *{sizes}">
 								<label th:field="*{sizes[__${itemStat.index}__].sizeName}" th:text="${s.sizeName}" ></label>
-								<input type="number" th:field="*{sizes[__${itemStat.index}__].quantity}"  class="form-control"></input>
+								<input oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required type="number" th:field="*{sizes[__${itemStat.index}__].quantity}"  class="form-control"></input>
 								
 							</div>
+							<lable>*Dành cho phụ kiện</lable>
 							
 						</div>
 						
 				</div>
+				
 				  
 				  <div class="form-group">
 				    <label>Chọn ảnh đại diện cho sản phẩm</label>
-				    <input type="file" class="form-control" id="" accept=".jpg" name="thumnail" placeholder="Chọn ảnh đại diện" th:field="*{thumnail}">
+				    <input oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required type="file" class="form-control" id="" accept=".jpg" name="thumnail" placeholder="Chọn ảnh đại diện" th:field="*{thumnail}">
 				  </div>
 				  <div class="form-group" id="image-group">
 				   	<label>Chọn thêm ảnh chi tiết</label>
@@ -105,7 +113,8 @@
 				  
 				  <div class="form-group">
 				  <label>Thêm chi tiết cho sản phẩm</label>
-				  	<textarea name="detail" th:field="*{detail}">Thêm chi tiết sản phẩm</textarea>
+				  	<textarea oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required name="detail" th:field="*{detail}">Thêm chi tiết sản phẩm</textarea>
 				  </div>
 				  <div class="form-group">
 				  	<button type="submit" class="btn btn-primary">Lưu sản phẩm</button>

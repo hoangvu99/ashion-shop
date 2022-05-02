@@ -153,8 +153,8 @@ public class ProductServiceIml implements ProductService{
 	}
 
 	@Override
-	public Page<Product> getPageProduct(int page) {
-		Page<Product>p = productDao.findAll(PageRequest.of(page-1, 5, Sort.by("id").descending()));
+	public List<Product> getPageProduct(int limit,int page) {
+		List<Product>p = productDao.getPageProduct(limit,(page-1)*5);
 		return p;
 	}
 	
@@ -191,8 +191,8 @@ public class ProductServiceIml implements ProductService{
 			product.setName(productDTO.getProductName());
 			
 			if(product.getPriceInNum() != productDTO.getPrice()) {
-				product.setOldPrice(product.getPriceInNum());
-				product.setPriceInNum(productDTO.getPrice());
+				product.setOldPrice(product.getPriceInNum()*1000);
+				product.setPriceInNum(productDTO.getPrice()*1000);
 				
 			}
 			
@@ -238,6 +238,12 @@ public class ProductServiceIml implements ProductService{
 			for (int i = 0; i < sizes.size(); i++) {
 				ProductSize productSize = productSizeDao.findProductSize(id,i+1);
 				
+				if(productSize == null) {
+					productSize = new ProductSize();
+					productSize.setCreatedAt(fomattedDate);
+					productSize.setProduct(product);
+					productSize.setSize(sizes.get(i));
+				}
 				productSize.setUpdatedAt(fomattedDate);
 				productSize.setQuantity(productDTO.getSizes().get(i).getQuantity());
 				productSizes.add(productSize);
@@ -259,6 +265,24 @@ public class ProductServiceIml implements ProductService{
 	public List<Product> lastestProducts() {
 		// TODO Auto-generated method stub
 		return productDao.listLastestProduct();
+	}
+	
+	@Override
+	public void deleteProduct(long id) {
+		productDao.deleteProduct(id);
+		
+	}
+	
+	@Override
+	public List<Product> listProductByCategory(int category, int limit, int offset) {
+		
+		return productDao.productsByCategory(category, limit, (offset -1 )*5);
+	}
+	
+	@Override
+	public List<Product> listProductByName(String s, int limit, int offset) {
+		// TODO Auto-generated method stub
+		return productDao.productsByName(s, limit,  (offset -1 )*5);
 	}
 
 }
