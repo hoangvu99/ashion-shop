@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         .authorizeRequests()
         .antMatchers("/", "/shop","/blog","/blog-details/**","/contact","/product-details/**","/sign-up","/user/confirm-email","/cart").permitAll()       
         .and()
-        .authorizeRequests().antMatchers("/account","/edit","/reset-avatar","/checkout").hasAnyRole("USER","ADMIN")
+        .authorizeRequests().antMatchers("/account","/edit","/reset-avatar","/checkout","/place-order").hasAnyRole("USER","ADMIN")
         .and()
         .authorizeHttpRequests().antMatchers("/admin","/list-product","/view-product/**").hasRole("ADMIN")             
         .and()
@@ -62,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         .and()
         .exceptionHandling().accessDeniedPage("/403")
         .and()
-        .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+        .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).invalidateHttpSession(false)
         .logoutSuccessUrl("/")
         .invalidateHttpSession(true);
    

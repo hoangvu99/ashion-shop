@@ -83,7 +83,7 @@
                     
                 </div>
             </div>
-            <form th:action="@{/place-order}" class="checkout__form" >
+            <form th:action="@{/place-order}" class="checkout__form" th:method="post" th:object="${checkOut}">
                 <div class="row">
                     <div class="col-lg-8">
                         <h5>Billing detail</h5>
@@ -109,8 +109,8 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
-                                    <p>Sử Số điện thoại nhận hàng khác<span></span></p>
-                                    <input type="number" placeholder="SDT khác" >
+                                    <p>Sử dụng Số điện thoại nhận hàng khác<span></span></p>
+                                    <input type="number" placeholder="SDT khác" th:field="*{otherPhone}">
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -127,8 +127,8 @@
                             <div class="col-lg-12">
                                
                                 <div class="checkout__form__input">
-                                    <p>Địa chỉ nhận hàng <span></span></p>
-                                    <input type="text" placeholder="Sử dụng địa chỉ khác" ></input>
+                                    <p>Địa chỉ nhận hàng khác<span></span></p>
+                                    <input type="text" placeholder="Sử dụng địa chỉ khác" th:field="*{otherAddress}"></input>
                                     
                                 </div>
                                 
@@ -148,7 +148,7 @@
                                     <div class="checkout__form__input">
                                         <p>Ghi chú <span>*</span></p>
                                         <input type="text"
-                                        placeholder="" >
+                                        placeholder="" th:field="*{note}">
                                     </div>
                                 </div>
                             </div>

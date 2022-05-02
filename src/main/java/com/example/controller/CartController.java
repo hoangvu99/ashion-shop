@@ -90,6 +90,7 @@
 					List<CartItem>items = (List<CartItem>) cart.getCartItems();
 					
 					for (int i = 0; i < items.size(); i++) {
+						
 						CartItemDTO cartItemDTO = new CartItemDTO();
 						cartItemDTO.setImageName(items.get(i).getProduct().getThumnail());
 						cartItemDTO.setPrice(items.get(i).getPrice());
@@ -105,6 +106,8 @@
 					}
 					
 					cartDTO.setCartItemDTOs(itemDTOs);
+					httpSession.setAttribute("counterCart", cart.getCounter());
+					
 					model.addAttribute("cartDTO", cartDTO);
 					
 				}else {
@@ -166,11 +169,12 @@
 					cartItem.setQuantity(quantity);
 					cartItem.calSubTotal();
 					cartItems.add(cartItem);
+					cart.setCounter(cart.getCounter()+1);
 				}
-				
+				cart.calTotal();
 				cart.setCartItems(cartItems);
 				cartService.saveCart(cart);
-				
+				httpSession.setAttribute("counterCart", cart.getCounter());
 				
 			}else {								
 				CartDTO cartDTO = (CartDTO) httpSession.getAttribute("CartDTO");
@@ -221,17 +225,30 @@
 		public String deleteProductFromCart(@RequestParam(name = "productId")long productId, @RequestParam(name="sizeId" )int sizeId, HttpSession httpSession) {
 			
 			if(checkIsAuthenticated()) {
-				try {
+					Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+					User user = userService.findUserByEmail(((UserDetails) principal).getUsername());
+					
+					
 					long productSizeId = productSizeService.findProductSizeByProductId(productId, sizeId).getId();
-					Cart cart = cartService.findUserCart(productSizeId);
-					CartItem cartItem = cartItemService.findCartItem(productId, productSizeId);
+					Cart cart = cartService.findUserCart(user.getId());
+					List<CartItem>cartItems = cart.getCartItems();
+					
+					
+					CartItem cartItem = cartItems.stream().filter(i -> i.getProduct().getId() == productId 
+							&& i.getProductSize().getId() == productSizeId ).collect(Collectors.toList()).get(0);
+					cartItems.remove(cartItem);
 					
 					cartItemService.deleteCartItem(cartItem.getId());
+					
+					
+					
+					
+					cart.setCartItems(cartItems);
 					cart.calTotal();
+					cart.setCounter(cart.getCounter()-1);
 					cartService.saveCart(cart);
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
+					httpSession.setAttribute("counterCart", cart.getCounter());
+				
 			}else {
 				CartDTO cartDTO = (CartDTO) httpSession.getAttribute("CartDTO");
 				List<CartItemDTO>itemDTOs = cartDTO.getCartItemDTOs();
@@ -248,6 +265,7 @@
 		@RequestMapping(value="/updateCart", method = RequestMethod.POST)
 		@ResponseBody
 		public String updateCart(@RequestBody String[] data, HttpSession httpSession, Model model) {
+			String date = dateFormat.format(new Date());
 			if(checkIsAuthenticated()) {
 				Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 				User user = userService.findUserByEmail(((UserDetails) principal).getUsername());
@@ -258,10 +276,12 @@
 					if(quantity != cartItems.get(i).getQuantity()) {
 						cartItems.get(i).setQuantity(quantity);
 						cartItems.get(i).calSubTotal();
+						cartItems.get(i).setUpdatedAt(date);
 					}
 				}
 				cart.calTotal();
 				cartService.saveCart(cart);
+				httpSession.setAttribute("counterCart", cart.getCounter());
 			}else {
 				CartDTO cartDTO = (CartDTO) httpSession.getAttribute("CartDTO");
 				List<CartItemDTO>itemDTOs = cartDTO.getCartItemDTOs();
