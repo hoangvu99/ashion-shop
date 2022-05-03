@@ -6,7 +6,7 @@
     <th:block th:replace="fragments/css-component :: meta"></th:block>
     <th:block th:replace="fragments/css-component :: google-font"></th:block>   
     <th:block th:replace="fragments/css-component :: css"></th:block>
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{/css/account.css}" type="text/css">
     
 </head>
@@ -159,8 +159,8 @@
           					<td th:if="${order.status == 2}">Đã giao</td>
           					<td th:if="${order.status == 3}">Đã hủy</td>
           					
-          					<td th:if="${order.isPaid == 0}">Chưa thanh toán</td>
-          					<td th:if="${order.isPaid == 1}">Đã thanh toán</td>
+          					<td th:if="${order.isPaid == 0}"><i class="fa-solid fa-xmark" style="color: red;"></i> Chưa thanh toán</td>
+          					<td th:if="${order.isPaid == 1}"> <i class="fa-solid fa-check" style="color: green;" > Đã thanh toán</i></td>
           					<td> <a th:href="@{${'/order-details?orderId='+order.id}}">Xem chi tiết</a> </td>
           					<td th:if="${order.status == 0}" > <a style="color: red;" th:href="@{${'/cancel-order?id='+order.id}}">Hủy đơn</a> </td>
           					

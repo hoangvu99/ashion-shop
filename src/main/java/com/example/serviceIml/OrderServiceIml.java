@@ -47,20 +47,20 @@ public class OrderServiceIml implements OrderService{
 	}
 	
 	@Override
-	public List<Orders> acceptedOrders() {
+	public List<Orders> acceptedOrders(int limit, int offset) {
 		// TODO Auto-generated method stub
-		return orderDao.acceptedOrders();
+		return orderDao.acceptedOrders(limit,offset);
 	}
 	
 	@Override
-	public List<Orders> newOrders() {
+	public List<Orders> newOrders(int limit, int offset) {
 		// TODO Auto-generated method stub
-		return orderDao.newOrders();
+		return orderDao.newOrders( limit, offset);
 	}
 	@Override
-	public List<Orders> successOrders() {
+	public List<Orders> successOrders(int limit, int offset) {
 		// TODO Auto-generated method stub
-		return orderDao.successOrders();
+		return orderDao.successOrders(limit, offset);
 	}
 	@Override
 	public List<Orders> refusedOrders() {

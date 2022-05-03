@@ -136,11 +136,12 @@ public class OrderController {
 				httpSession.setAttribute("CartDTO", cartDTO);
 			}
 			
+			List<CartItem>removed = new ArrayList<CartItem>();
 			for (int j = 0; j < cartItems.size(); j++) {
 				cartItemService.deleteCartItem(cartItems.get(j).getId());
-				cartItems.remove(j);
+				removed.add(cartItems.get(j));
 			}
-			
+			cartItems.removeAll(removed);
 			
 			cart.setTotal(0);
 			cart.setCounter(0);

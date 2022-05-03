@@ -84,7 +84,13 @@
                 	
                 	
                 </table>
-                
+                <br>
+                <div class="page-button">
+                	 <a style="color:white"  th:href="@{${'/new-orders?page='+ lastPage}}"><button class="btn btn-danger"> <span class="fa fa-arrow-left"></span> </button></a>
+                	
+                	<a style="color:white" th:href="@{${'/new-orders?page='+ nextPage}}"><button class="btn btn-danger">  <span class="fa fa-arrow-right"></span></button></a> 
+                	
+                 </div>
                 
               </div>
               

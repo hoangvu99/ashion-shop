@@ -1,5 +1,6 @@
 package com.example.model.order;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -31,7 +32,7 @@ public class Orders {
 	private int status;
 	
 	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
-	private Collection<OrderItems> orderItems;
+	private List<OrderItems> orderItems;
 	private String createdAt;
 	private String updatedAt;
 	private long orderTotal;
@@ -45,5 +46,13 @@ public class Orders {
 	private String deliveryAddress;
 	private long phoneNumber;
 	
+	public void calTotal() {
+		long total = 0;
+		for (int i = 0; i < this.orderItems.size(); i++) {
+			total +=  this.orderItems.get(i).getTotal();
+		}
+		
+		this.orderTotal= total;
+	}
 	
 }

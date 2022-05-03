@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.dao.OrderItemDao;
 import com.example.dto.ProductDTO;
 import com.example.dto.SizeDTO;
 
@@ -201,10 +202,42 @@ public class AdminController {
 	
 	
 	@RequestMapping("/new-orders")
-	public String newOrders(Model model) {
-		List<Orders>orders = orderService.newOrders();
+	public String newOrders(Model model,@RequestParam(name="page", defaultValue = "1") int page) {
+		List<Orders>orders = orderService.newOrders(5,(page-1)*5);
 		model.addAttribute("orders", orders);
+		int lastPage = (page == 1)? 1: page-1;
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("page", page);
+		model.addAttribute("nextPage", page+1);
 		return "list-order";
+	}
+	
+	@RequestMapping("/accepted-orders")
+	public String acceptedOrders(Model model, @RequestParam(name="page", defaultValue = "1") int page) {
+		List<Orders>orders = orderService.acceptedOrders(5,(page-1)*5);
+		model.addAttribute("orders", orders);
+		int lastPage = (page == 1)? 1: page-1;
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("page", page);
+		model.addAttribute("nextPage", page+1);
+		return "accepted-orders";
+	}
+	@Autowired
+	OrderItemDao orderItemDao;
+	@RequestMapping("/delete-orderItem")
+	public String deleteOrderItem(@RequestParam(name="id"  )long id, @RequestParam(name="orderId" ) long orderId) {
+		orderItemDao.deleteOrderItem(id);
+		Orders order = orderService.findOrderById(orderId);
+		order.calTotal();
+		orderService.saveOrder(order);
+		return "redirect:/view-order?id="+orderId;
+	}
+	
+	@RequestMapping("/delete-order")
+	public String deleteOrder( @RequestParam(name="id" ) long orderId) {
+		orderService.deleteOrder(orderId);
+		
+		return "redirect:/new-orders";
 	}
 	
 	

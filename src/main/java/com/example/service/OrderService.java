@@ -17,9 +17,9 @@ public interface OrderService {
 	
 	public void acceptOrder(long orderId);
 	
-	public List<Orders> newOrders();
-	public List<Orders> acceptedOrders();
-	public List<Orders> successOrders();
+	public List<Orders> newOrders(int limit, int offset);
+	public List<Orders> acceptedOrders(int limit, int offset);
+	public List<Orders> successOrders(int limit, int offset);
 	public List<Orders> refusedOrders();
 	
 	public List<Orders> listUserOrder(long userId);

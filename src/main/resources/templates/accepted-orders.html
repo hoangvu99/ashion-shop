@@ -36,14 +36,14 @@
             <div class="row g-5">
               <div class="col-12 col-xxl-6 table-responsive">
                 <div class="mb-8">
-                  <h2 class="mb-2">Danh sách sản phẩm</h2>
+                  <h2 class="mb-2">Danh sách đơn hàng</h2>
                   
                 </div>
                 
                 <hr class="bg-200 mb-6 mt-4">
                 <form  class="form" style="margin-left: 15px;">
                 	<div class="form-group row ">
-                		<input  id="search-inp"class="form-control" type="search" style="width: 200px;" placeholder="Tìm sản phẩm" th:value="${s}">
+                		<input  id="search-inp"class="form-control" type="search" style="width: 200px;" placeholder="Tìm đơn hàng theo tên" th:value="${s}">
                 		<button type="button" id="search-btn" style="width: 50px; display: flex;justify-content: center;align-items: center;" class="form-control"> <span class="fa fa-search"></span> </button>
                 	</div>
                 </form>
@@ -52,40 +52,43 @@
                 	<thead class="table-dark">
                 		
                 			<th >ID</th>
-                			<th >Tên</th>
-                			<th >Loại</th>
-                			<th >Giá tiền</th>
-                			<th >Giới thiệu</th>              			
-                			<th > Ngày thêm </th>
+                			<th >Người mua</th>
                 			
-                			<th> Ảnh </th>
-                			<th> Xem hoặc chỉnh sửa</th>
-                			<th> Không hiển thị sản phẩn</th>
+                			
+                			
+                			<th> Tổng tiền</th>
+                			<th > Ngày tạo </th>
+                			<th>Trạng thái đơn hàng</th>
+                			
+                			<th>Phương thức thanh toán</th>
+				  			<th>Trạng thái thanh toán</th>
+				  			<th>Chi tiết đơn hàng</th>
+                			
                 			
                 	</thead>
                 	<tbody>
-                		<tr th:each="product : ${listProduct}">
-                			<td th:text="${product.id}"></td>
-                			<td th:text="${product.name}"></td>
-                			<td th:text="${product.category.categoryName}"></td>
-                			<td th:text="${#numbers.formatCurrency(product.priceInNum)}">123</td>
-                			<td th:text="${product.description}"></td>
-                			
-                			<td th:text="${product.createdAt}"></td>
-                			<td > <img th:src="@{${'img/products/'+ product.thumnail}}" width="120"/>  </td>
-                			<td> <a th:href="@{${'/view-product?id='+ product.id}}"> <span >Xem</span></a> </td>
-                			<td> <a th:href="@{${'/delete-product?id='+ product.id}}" > <span style="color: red;">Xóa</span></a> </td>
+                		<tr th:each="o : ${orders}">
+                			<td th:text="${o.id}"></td>
+                			<td th:text="${o.user.userName}"></td>               			
+                			<td style="color: red;" th:text="${#numbers.formatCurrency(o.orderTotal)}"></td>
+                			<td th:text="${o.createdAt}"></td>
+                			<td th:if="${o.status == 0}">Chưa được phê duyệt</td>
+                			<td th:if="${o.status == 1}">Đã phê duyệt</td>
+                			<td th:if="${o.paymentMethod == 0}" >Thanh toán trực tiếp </td>
+                			<td th:if="${o.isPaid == 0}" >Chưa thanh toán </td>
+                			<td th:if="${o.isPaid == 1}" >Đã thanh toán </td>
+                			<td> <a th:href="@{${'/view-order?id='+o.id}}">Xem chi tiết đơn hàng</a> </td>
                 		</tr>
                 		
                 	</tbody>
                 	
                 	
                 </table>
+                <br>
                 <div class="page-button">
-                	 <a style="color:white"  th:href="@{${'/list-product?page='+ lastPage}}"><button class="btn btn-danger"> <span class="fa fa-arrow-left"></span> </button></a>
-                	<input class="page-number"  id="page-number" th:value="${page}" style="width: 30px;"></input>
-                	<button class="go btn btn-danger" id="go">Go</button>
-                	<a style="color:white" th:href="@{${'/list-product?page='+ nextPage}}"><button class="btn btn-danger">  <span class="fa fa-arrow-right"></span></button></a> 
+                	 <a style="color:white"  th:href="@{${'/accepted-orders?page='+ lastPage}}"><button class="btn btn-danger"> <span class="fa fa-arrow-left"></span> </button></a>
+                	
+                	<a style="color:white" th:href="@{${'/accepted-orders?page='+ nextPage}}"><button class="btn btn-danger">  <span class="fa fa-arrow-right"></span></button></a> 
                 	
                  </div>
                 

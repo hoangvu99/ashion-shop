@@ -86,7 +86,7 @@
 				  			<th>Số lượng</th>
 				  			<th>Đơn giá</th>
 				  			<th>Thành tiền</th>
-				  			
+				  			<th></th>
 				  			
 				  		</thead>
 				  		<tbody>
@@ -96,10 +96,10 @@
 				  				<td th:text="${p.productSize.size.sizeName}"> </td>
 				  				<td th:if="${p.productSize.quantity > 0}" > Còn hàng</td>
 				  				<td th:if="${p.productSize.quantity < 0}" style="color: red;"> Hết hàng</td>
-				  				<td th:text="${p.quantity}" > </td>
+				  				<td  >  <input class="form-control" type="number" th:value="${p.quantity}"> </td>
 				  				<td th:text="${#numbers.formatCurrency(p.price)}" > </td>
 				  				<td th:text="${#numbers.formatCurrency(p.total)}" > </td>
-				  				
+				  				<td th:if="${order.status == 0}"> <a th:href="@{${'/delete-orderItem?id='+p.id+'&orderId='+order.id}}">Xóa </a> </td>
 				  			</tr>
 				  			<tr class="table-primary">
 				  				<td colspan="6">Tổng tiền</td>
@@ -126,8 +126,9 @@
 				  
 				  
 				  <div class="form-group">
-				  	<a th:href="@{${'/acceptOrder?id='+order.id}}"><button type="button" class="btn btn-primary">Phê duyệt đơn hàng</button></a>
-				  	<a th:href="@{${'/refuseOrder?id='+order.id}}"><button type="button" class="btn btn-danger">Xóa đơn hàng</button></a>
+				  	<a th:if="${order.status == 0}" th:href="@{${'/acceptOrder?id='+order.id}}"><button type="button" class="btn btn-primary">Phê duyệt đơn hàng</button></a>
+				  	<a th:if="${order.status == 1}" th:href="@{${'/acceptOrder?id='+order.id}}"><button type="button" class="btn btn-primary">Giao hàng thành công</button></a>
+				  	<a th:if="${order.status == 0}" th:href="@{${'/delete-order?id='+order.id}}"><button type="button" class="btn btn-danger">Xóa đơn hàng</button></a>
 				  </div>
 				</form>
                 
