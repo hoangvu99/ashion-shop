@@ -127,5 +127,23 @@ public class OrderServiceIml implements OrderService{
 		// TODO Auto-generated method stub
 		return orderDao.countAcceptedOrders();
 	}
+	
+	@Override
+	public List<Orders> userAcceptedOrders(long userId) {
+		// TODO Auto-generated method stub
+		return orderDao.userAcceptedOrders(userId);
+	}
+	
+	@Override
+	public List<Orders> userNewOrders(long userId) {
+		// TODO Auto-generated method stub
+		return orderDao.userNewOrders(userId);
+	}
+	
+	@Override
+	public List<Orders> userSuccessOrders(long userId) {
+		// TODO Auto-generated method stub
+		return orderDao.userSuccessOrders(userId);
+	}
 
 }

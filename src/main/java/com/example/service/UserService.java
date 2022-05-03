@@ -30,5 +30,9 @@ public interface UserService {
 	
 	public List<User> getListUser(int limit, int offset);
 	
+	public List<User> searchUserByName(String name);
+	
+	public User findUserByid(long id);
+	
 	
 }

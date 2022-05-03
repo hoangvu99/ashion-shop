@@ -195,4 +195,16 @@ public class UserServiceIml  implements UserService{
 		// TODO Auto-generated method stub
 		return userDao.getPageUser(limit, offset);
 	}
+	
+	@Override
+	public List<User> searchUserByName(String name) {
+		// TODO Auto-generated method stub
+		return userDao.findUserByName(name);
+	}
+	
+	@Override
+	public User findUserByid(long id) {
+		// TODO Auto-generated method stub
+		return userDao.findUserById(id);
+	}
 }

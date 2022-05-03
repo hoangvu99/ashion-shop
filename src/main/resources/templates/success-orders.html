@@ -87,9 +87,10 @@
                 </table>
                 <br>
                 <div class="page-button">
-                	 <a style="color:white"  th:href="@{${'/accepted-orders?page='+ lastPage}}"><button class="btn btn-danger"> <span class="fa fa-arrow-left"></span> </button></a>
-                	
-                	<a style="color:white" th:href="@{${'/accepted-orders?page='+ nextPage}}"><button class="btn btn-danger">  <span class="fa fa-arrow-right"></span></button></a> 
+                	 <a th:if="${lastPage != null}" style="color:white"  th:href="@{${'/success-orders?page='+ lastPage}}"><button class="btn btn-danger"> <span class="fa fa-arrow-left"></span> </button></a>
+                	<input th:if="${lastPage != null}" class="page-number"  id="page-number" th:value="${page}" style="width: 30px;"></input>
+                	<button th:if="${lastPage != null}" class="go btn btn-danger" id="go">Go</button>
+                	<a th:if="${nextPage != null}" style="color:white" th:href="@{${'/success-orders?page='+ nextPage}}"><button class="btn btn-danger">  <span class="fa fa-arrow-right"></span></button></a>
                 	
                  </div>
                 
@@ -110,7 +111,7 @@
     </main>
     <script src="assets/js/phoenix.js"></script>
     <script src="assets/js/ecommerce-dashboard.js"></script>
-    <script src="js/list-product.js" > </script>
+    <script src="js/success-order.js" > </script>
   </body>
 
 </html>

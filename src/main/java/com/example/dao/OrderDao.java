@@ -46,5 +46,18 @@ public interface OrderDao extends JpaRepository<com.example.model.order.Orders, 
 	@Query(value ="select count(*) from orders where status = 1", nativeQuery = true)
 	public int countAcceptedOrders();
 	
+	@Query(value="select * from orders where user_id = ?1", nativeQuery = true)
+	public List<Orders>listOrderByUserId(long userId);
+	
+	@Query(value = "select * from orders where status = 0 and user_id = ?1", nativeQuery = true)
+	public List<Orders>userNewOrders(long userId);
+	@Query(value = "select * from orders where status = 1 and user_id = ?1", nativeQuery = true)
+	public List<Orders>userAcceptedOrders(long userId);
+	
+	@Query(value = "select * from orders where status = 2 and user_id = ?1", nativeQuery = true)
+	public List<Orders>userSuccessOrders(long userId);
+	
+	
+	
 	
 }

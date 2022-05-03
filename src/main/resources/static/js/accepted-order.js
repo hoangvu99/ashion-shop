@@ -3,7 +3,7 @@ let page = document.getElementById('page-number')
 
 if(goBtn != null){
 	go.addEventListener('click', function(){
-	window.location.href = window.location.origin+"/list-product?page="+page.value;
+	window.location.href = window.location.origin+"/accepted-orders?page="+page.value;
 } );
 }
 
@@ -12,9 +12,9 @@ let searchInput = document.getElementById('search-inp');
 
 searchBtn.addEventListener('click', () => {
 	if(searchInput.value.length==0){
-		window.location.href = window.location.origin+"/list-product";
+		window.location.href = window.location.origin+"/accepted-orders";
 	}else{
-		window.location.href = window.location.origin+"/list-product?s="+searchInput.value;
+		window.location.href = window.location.origin+"/accepted-orders?s="+searchInput.value;
 	}
 	
 });

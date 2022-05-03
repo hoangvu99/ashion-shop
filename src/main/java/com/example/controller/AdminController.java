@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dao.OrderItemDao;
+import com.example.dao.UserAddressDao;
 import com.example.dto.CartDTO;
 import com.example.dto.CartItemDTO;
 import com.example.dto.ProductDTO;
@@ -35,12 +36,14 @@ import com.example.model.order.Orders;
 import com.example.model.product.Product;
 import com.example.model.size.Size;
 import com.example.model.user.User;
+import com.example.model.user.UserAddress;
 import com.example.service.CategoryService;
 import com.example.service.OrderService;
 import com.example.service.ProductService;
 import com.example.service.ProductSizeService;
 import com.example.service.SizeService;
 import com.example.service.UploadFileService;
+import com.example.service.UserAddressService;
 import com.example.service.UserService;
 
 @Controller
@@ -66,6 +69,9 @@ public class AdminController {
 	
 	@Autowired
 	SizeService sizeService;
+	
+	@Autowired
+	UserAddressService addressService;
 	
 	@RequestMapping("/list-product")
 	public String listProductView(Model model, @RequestParam(name = "s", defaultValue = "") String s, @RequestParam(name="page", defaultValue = "1") int page) {
@@ -224,35 +230,77 @@ public class AdminController {
 	
 	
 	@RequestMapping("/new-orders")
-	public String newOrders(Model model,@RequestParam(name="page", defaultValue = "1") int page) {
-		List<Orders>orders = orderService.newOrders(5,(page-1)*5);
-		model.addAttribute("orders", orders);
-		int lastPage = (page == 1)? 1: page-1;
-		model.addAttribute("lastPage", lastPage);
-		model.addAttribute("page", page);
-		model.addAttribute("nextPage", page+1);
+	public String newOrders(Model model,@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="s", defaultValue = "") String s) {
+		
+		if(s.equalsIgnoreCase("")) {
+			List<Orders>orders = orderService.newOrders(5,(page-1)*5);
+			model.addAttribute("orders", orders);
+			int lastPage = (page == 1)? 1: page-1;
+			model.addAttribute("lastPage", lastPage);
+			model.addAttribute("page", page);
+			model.addAttribute("nextPage", page+1);
+		}else {
+			model.addAttribute("s", s);
+			List<User> users = userService.searchUserByName(s);
+			List<Orders>list = new ArrayList<Orders>();
+			if(users != null) {
+				for (int i = 0; i < users.size(); i++) {
+					list = orderService.userNewOrders(users.get(i).getId());
+				}
+			}
+			model.addAttribute("orders",list);
+		}
 		return "list-order";
 	}
 	
 	@RequestMapping("/accepted-orders")
-	public String acceptedOrders(Model model, @RequestParam(name="page", defaultValue = "1") int page) {
-		List<Orders>orders = orderService.acceptedOrders(5,(page-1)*5);
-		model.addAttribute("orders", orders);
-		int lastPage = (page == 1)? 1: page-1;
-		model.addAttribute("lastPage", lastPage);
-		model.addAttribute("page", page);
-		model.addAttribute("nextPage", page+1);
+	public String acceptedOrders(Model model, @RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="s", defaultValue = "") String s) {
+		
+		
+		
+		if(s.equalsIgnoreCase("")) {
+			List<Orders>orders = orderService.acceptedOrders(5,(page-1)*5);
+			model.addAttribute("orders", orders);
+			int lastPage = (page == 1)? 1: page-1;
+			model.addAttribute("lastPage", lastPage);
+			model.addAttribute("page", page);
+			model.addAttribute("nextPage", page+1);
+		}else {
+			model.addAttribute("s", s);
+			List<User> users = userService.searchUserByName(s);
+			List<Orders>list = new ArrayList<Orders>();
+			if(users != null) {
+				for (int i = 0; i < users.size(); i++) {
+					list = orderService.userAcceptedOrders(users.get(i).getId());
+				}
+			}
+			model.addAttribute("orders",list);
+		}
 		return "accepted-orders";
 	}
 	
 	@RequestMapping("/success-orders")
-	public String successOrders(Model model, @RequestParam(name="page", defaultValue = "1") int page) {
-		List<Orders>orders = orderService.successOrders(5,(page-1)*5);
-		model.addAttribute("orders", orders);
-		int lastPage = (page == 1)? 1: page-1;
-		model.addAttribute("lastPage", lastPage);
-		model.addAttribute("page", page);
-		model.addAttribute("nextPage", page+1);
+	public String successOrders(Model model, @RequestParam(name="page", defaultValue = "1") int page,  @RequestParam(name="s", defaultValue = "") String s) {
+		
+		
+		if(s.equalsIgnoreCase("")) {
+			List<Orders>orders = orderService.successOrders(5,(page-1)*5);
+			model.addAttribute("orders", orders);
+			int lastPage = (page == 1)? 1: page-1;
+			model.addAttribute("lastPage", lastPage);
+			model.addAttribute("page", page);
+			model.addAttribute("nextPage", page+1);
+		}else {
+			model.addAttribute("s", s);
+			List<User> users = userService.searchUserByName(s);
+			List<Orders>list = new ArrayList<Orders>();
+			if(users != null) {
+				for (int i = 0; i < users.size(); i++) {
+					list = orderService.userSuccessOrders(users.get(i).getId());
+				}
+			}
+			model.addAttribute("orders",list);
+		}
 		return "success-orders";
 	}
 	
@@ -305,15 +353,43 @@ public class AdminController {
 	}
 	
 	@RequestMapping("/list-users")
-	public String listUser(Model model, @RequestParam(name = "page", defaultValue = "1") int page) {
+	public String listUser(Model model, @RequestParam(name = "page", defaultValue = "1") int page,@RequestParam(name="s", defaultValue = "")String s) {
 		
-		List<User> users = userService.getListUser(5, (page-1)*5);
-		int lastPage = (page == 1)? 1: page-1;
-		model.addAttribute("lastPage", lastPage);
-		model.addAttribute("page", page);
-		model.addAttribute("nextPage", page+1);
-		model.addAttribute("users", users);
+		if(s.equalsIgnoreCase("")) {
+			List<User> users = userService.getListUser(5, (page-1)*5);
+			int lastPage = (page == 1)? 1: page-1;
+			model.addAttribute("lastPage", lastPage);
+			model.addAttribute("page", page);
+			model.addAttribute("nextPage", page+1);
+			model.addAttribute("users", users);
+		}else {
+			model.addAttribute("s", s);
+			model.addAttribute("users", userService.searchUserByName(s));
+		}
+		
+		
 		return "list-users";
+	}
+	
+	@RequestMapping("/view-user")
+	public String viewUser(@RequestParam(name="id")long id, Model model) {
+		
+		User user = userService.findUserByid(id);
+		UserAddress address = addressService.findUserAddressByUserId(user.getId());
+		List<Orders>orders = (List<Orders>) user.getOrders();
+		model.addAttribute("user", user);
+		model.addAttribute("address", address);
+		model.addAttribute("orders", orders);
+		return "view-user";
+	}
+	
+	@RequestMapping("/view-order-details")
+	public String viewOrderDeetails(@RequestParam(name="orderId")long id, Model model) {
+		
+		Orders orders = orderService.findOrderById(id);
+	
+		model.addAttribute("order", orders);
+		return "view-order-detail";
 	}
 	
 	

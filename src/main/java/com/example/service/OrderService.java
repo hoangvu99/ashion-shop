@@ -2,6 +2,7 @@ package com.example.service;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 
 import com.example.model.order.Orders;
 
@@ -33,4 +34,13 @@ public interface OrderService {
 	public void setSuccessOrder(long orderId);
 	
 	public void setRollBackOrder(long orderId);
+	
+	public List<Orders>userNewOrders(long userId);
+	
+	public List<Orders>userAcceptedOrders(long userId);
+	
+	
+	public List<Orders>userSuccessOrders(long userId);
+	
+	
 }	
