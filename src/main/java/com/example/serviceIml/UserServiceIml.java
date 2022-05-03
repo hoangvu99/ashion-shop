@@ -189,4 +189,10 @@ public class UserServiceIml  implements UserService{
 		}
 		
 	}
+	
+	@Override
+	public List<User> getListUser(int limit, int offset) {
+		// TODO Auto-generated method stub
+		return userDao.getPageUser(limit, offset);
+	}
 }

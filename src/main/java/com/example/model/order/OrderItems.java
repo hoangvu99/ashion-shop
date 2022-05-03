@@ -43,4 +43,8 @@ public class OrderItems {
 	private String createdAt;
 	private String updatedAt;
 	private String deletedAt;
+	
+	public void calSubTotal() {
+		this.total = this.quantity*this.price;
+	}
 }

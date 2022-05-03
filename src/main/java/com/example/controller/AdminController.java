@@ -3,13 +3,19 @@ package com.example.controller;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,12 +24,17 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dao.OrderItemDao;
+import com.example.dto.CartDTO;
+import com.example.dto.CartItemDTO;
 import com.example.dto.ProductDTO;
 import com.example.dto.SizeDTO;
-
+import com.example.model.cart.Cart;
+import com.example.model.cart.CartItem;
+import com.example.model.order.OrderItems;
 import com.example.model.order.Orders;
 import com.example.model.product.Product;
 import com.example.model.size.Size;
+import com.example.model.user.User;
 import com.example.service.CategoryService;
 import com.example.service.OrderService;
 import com.example.service.ProductService;
@@ -35,7 +46,8 @@ import com.example.service.UserService;
 @Controller
 public class AdminController {
 	
-	
+	@Autowired
+	UserService userService;
 	
 	@Autowired
 	CategoryService categoryService;
@@ -188,10 +200,20 @@ public class AdminController {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		Orders orders = orderService.findOrderById(id);
-		model.addAttribute("order", orders);
-		model.addAttribute("message","Phê duyệt thành công");
-		return "view-order";
+		
+		
+		return "redirect:/new-orders";
+	}
+	
+	@RequestMapping(value ="/successOrder")
+	public String successOrder(@RequestParam(name = "id") long id, Model model) {
+		try {
+			orderService.setSuccessOrder(id);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return "redirect:/accepted-orders";
 	}
 	
 	@RequestMapping("/delete-product")
@@ -222,6 +244,18 @@ public class AdminController {
 		model.addAttribute("nextPage", page+1);
 		return "accepted-orders";
 	}
+	
+	@RequestMapping("/success-orders")
+	public String successOrders(Model model, @RequestParam(name="page", defaultValue = "1") int page) {
+		List<Orders>orders = orderService.successOrders(5,(page-1)*5);
+		model.addAttribute("orders", orders);
+		int lastPage = (page == 1)? 1: page-1;
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("page", page);
+		model.addAttribute("nextPage", page+1);
+		return "success-orders";
+	}
+	
 	@Autowired
 	OrderItemDao orderItemDao;
 	@RequestMapping("/delete-orderItem")
@@ -238,6 +272,48 @@ public class AdminController {
 		orderService.deleteOrder(orderId);
 		
 		return "redirect:/new-orders";
+	}
+	@Autowired
+	SimpleDateFormat dateFormat;
+	
+	
+	@RequestMapping(value="/updateOrder", method = RequestMethod.POST)
+	@ResponseBody
+	public String updateCart(@RequestBody String[] data, HttpSession httpSession, Model model) {
+		String date = dateFormat.format(new Date());
+		
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		Orders orders = orderService.findOrderById(Long.valueOf(data[0]));
+		
+		List<OrderItems>orderItems = orders.getOrderItems();
+		for (int i = 1; i < data.length; i++) {
+				int quantity = Integer.valueOf(data[i]);
+				if(quantity != orderItems.get(i-1).getQuantity()) {
+					orderItems.get(i-1).setQuantity(quantity);
+					orderItems.get(i-1).calSubTotal();
+					orderItems.get(i-1).setUpdatedAt(date);
+				}
+			}
+			orders.setOrderItems(orderItems);
+			orders.calTotal();
+			orderService.saveOrder(orders);
+			
+		
+		
+		return data[0];
+	}
+	
+	@RequestMapping("/list-users")
+	public String listUser(Model model, @RequestParam(name = "page", defaultValue = "1") int page) {
+		
+		List<User> users = userService.getListUser(5, (page-1)*5);
+		int lastPage = (page == 1)? 1: page-1;
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("page", page);
+		model.addAttribute("nextPage", page+1);
+		model.addAttribute("users", users);
+		return "list-users";
 	}
 	
 	

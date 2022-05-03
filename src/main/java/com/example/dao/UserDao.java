@@ -1,5 +1,7 @@
 package com.example.dao;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,5 +29,7 @@ public interface UserDao extends JpaRepository<User, Long>{
 	@org.springframework.transaction.annotation.Transactional
 	public void resetPassword(@Param(value ="id")long userId,@Param(value = "pass") String pass);
 	
+	@Query(value ="select * from user order by id desc limit ?1 offset ?2", nativeQuery = true)
+	public List<User> getPageUser(int limit, int offset);
 	
 }

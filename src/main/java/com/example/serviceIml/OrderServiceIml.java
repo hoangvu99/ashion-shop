@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.dao.OrderDao;
 import com.example.dao.OrderItemDao;
+import com.example.dao.ProductSizeDao;
 import com.example.model.order.OrderItems;
 import com.example.model.order.Orders;
+import com.example.model.size.ProductSize;
 import com.example.service.OrderService;
 @Service
 public class OrderServiceIml implements OrderService{
@@ -42,6 +44,31 @@ public class OrderServiceIml implements OrderService{
 	public void acceptOrder(long orderId) {
 		Orders orders = findOrderById(orderId);
 		orders.setStatus(1);
+		orderDao.save(orders);
+		
+	}
+	
+	@Autowired
+	ProductSizeDao productSizeDao;
+	
+	@Override
+	public void setSuccessOrder(long orderId) {
+		Orders orders = findOrderById(orderId);
+		orders.setStatus(2);
+		
+		List<OrderItems>orderItems = orders.getOrderItems();
+		orderItems.stream().forEach(i ->{
+			productSizeDao.updateQuantity(i.getProductSize().getId(), i.getProductSize().getQuantity() - i.getQuantity());
+		});
+		
+		orderDao.save(orders);
+		
+	}
+	
+	@Override
+	public void setRollBackOrder(long orderId) {
+		Orders orders = findOrderById(orderId);
+		orders.setStatus(3);
 		orderDao.save(orders);
 		
 	}

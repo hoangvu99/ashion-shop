@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.mail.MessagingException;
 
@@ -26,4 +27,8 @@ public interface UserService {
 	public void updateUserInfo(User user);
 	
 	public void saveUserAvatar(MultipartFile file, long userId) ;
+	
+	public List<User> getListUser(int limit, int offset);
+	
+	
 }

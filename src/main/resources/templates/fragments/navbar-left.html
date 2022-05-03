@@ -17,13 +17,11 @@
                     </div>
                   </a>
                   <ul class="nav collapse parent" id="errors">
-                    <li class="nav-item"><a class="nav-link" href="pages/errors/404.html" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text">404</span></div>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/list-users}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text">Danh sách người dùng</span></div>
                       </a>
                       </li>
-                    <li class="nav-item"><a class="nav-link" href="pages/errors/500.html" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text">500</span></div>
-                      </a></li>
+                    
                   </ul><a class="nav-link dropdown-indicator" href="#authentication" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="authentication">
                     <div class="d-flex align-items-center">
                       <div class="dropdown-indicator-icon d-flex flex-center"><span class="fas fa-caret-right fs-0"></span></div><span class="nav-link-icon"><span data-feather="lock"></span></span><span class="nav-link-text">Quản lí đơn hàng</span>
@@ -36,9 +34,7 @@
                     <li class="nav-item"><a class="nav-link" href="/accepted-orders" data-bs-toggle="" aria-expanded="false">
                         <div class="d-flex align-items-center"><span class="nav-link-text">Đơn hàng đã phê duyệt</span></div>
                       </a></li>
-                    <li class="nav-item"><a class="nav-link" href="/shipping-orders" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text">Đơn hàng đang giao</span></div>
-                      </a></li>
+                    
                      <li class="nav-item"><a class="nav-link" href="success-orders" data-bs-toggle="" aria-expanded="false">
                         <div class="d-flex align-items-center"><span class="nav-link-text">Đơn hàng giao thành công</span></div>
                       </a></li>

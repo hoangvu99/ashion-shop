@@ -18,8 +18,8 @@ public interface OrderDao extends JpaRepository<com.example.model.order.Orders, 
 	@Query(nativeQuery = true, value = "select * from orders where id= ?1")
 	public Orders findOrderByOrderId(long id);
 	
-	@Query(nativeQuery = true, value = "update orders set status = 1 where id = ?1")
-	public void acceptOrder(Long orderId);
+	@Query(nativeQuery = true, value = "update orders set status = ?2 where id = ?1")
+	public void updateStatusOrder(Long orderId, int id);
 	
 	@Query(value = "select * from orders where status = 0 limit ?1 offset ?2", nativeQuery = true)
 	public List<Orders>newOrders(int limit, int offset);

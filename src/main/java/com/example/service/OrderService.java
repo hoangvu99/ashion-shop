@@ -29,4 +29,8 @@ public interface OrderService {
 	public int countNewOrders();
 	
 	public int countAcceptedOrders();
+	
+	public void setSuccessOrder(long orderId);
+	
+	public void setRollBackOrder(long orderId);
 }	
