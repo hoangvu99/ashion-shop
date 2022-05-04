@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -390,6 +391,14 @@ public class AdminController {
 	
 		model.addAttribute("order", orders);
 		return "view-order-detail";
+	}
+	
+	@RequestMapping("/delete-user")
+	public String deleteUser(@RequestParam(name="id")long id) {
+		User u = userService.findUserByid(id);
+		u.setDeletedAt(dateFormat.format(new Date()));
+		userService.updateUserInfo(u);
+		return "redirect:/list-users";
 	}
 	
 	

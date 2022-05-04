@@ -93,6 +93,8 @@ public class MainController {
 	
 	@RequestMapping(value = "/")
 	public String homeController(HttpSession httpSession, Model model) {
+		
+		
 		String formatDate = dateFormat.format(new Date());
 		CartDTO cartDTO = (CartDTO) httpSession.getAttribute("CartDTO");
 		

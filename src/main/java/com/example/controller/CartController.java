@@ -245,8 +245,10 @@
 					
 					cart.setCartItems(cartItems);
 					cart.calTotal();
+					
 					cart.setCounter(cart.getCounter()-1);
 					cartService.saveCart(cart);
+					
 					httpSession.setAttribute("counterCart", cart.getCounter());
 				
 			}else {

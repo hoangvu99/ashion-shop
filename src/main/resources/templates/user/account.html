@@ -160,7 +160,7 @@
           					<td th:if="${order.status == 3}">Đã hủy</td>
           					
           					<td th:if="${order.isPaid == 0}"><i class="fa-solid fa-xmark" style="color: red;"></i> Chưa thanh toán</td>
-          					<td th:if="${order.isPaid == 1}"> <i class="fa-solid fa-check" style="color: green;" > Đã thanh toán</i></td>
+          					<td th:if="${order.isPaid == 1}"> <i class="fa-solid fa-check" style="color: green;" > </i> Đã thanh toán</td>
           					<td> <a th:href="@{${'/order-details?orderId='+order.id}}">Xem chi tiết</a> </td>
           					<td th:if="${order.status == 0}" > <a style="color: red;" th:href="@{${'/cancel-order?id='+order.id}}">Hủy đơn</a> </td>
           					
