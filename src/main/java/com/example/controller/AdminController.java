@@ -397,6 +397,7 @@ public class AdminController {
 	public String deleteUser(@RequestParam(name="id")long id) {
 		User u = userService.findUserByid(id);
 		u.setDeletedAt(dateFormat.format(new Date()));
+		u.setIsDeleted(1);
 		userService.updateUserInfo(u);
 		return "redirect:/list-users";
 	}

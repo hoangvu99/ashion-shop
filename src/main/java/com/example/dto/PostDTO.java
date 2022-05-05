@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class PostDTO {
 	
 	private String title;
+	private String thumnail;
 	private String body;
 }

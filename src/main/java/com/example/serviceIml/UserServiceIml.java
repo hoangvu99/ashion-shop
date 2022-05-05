@@ -75,7 +75,7 @@ public class UserServiceIml  implements UserService{
 		UserRole userRole = new UserRole();
 		userRole.setRole(roleUser);
 		userRole.setUser(user);
-		
+		user.setIsDeleted(0);
 		List<UserRole>userRoles = new ArrayList<UserRole>();
 		userRoles.add(userRole);
 		user.setUserRoles(userRoles);

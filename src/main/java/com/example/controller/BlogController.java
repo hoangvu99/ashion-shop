@@ -7,13 +7,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BlogController {
 	
 	
-	@RequestMapping(value = "/blog")
-	public String blogController() {				
-		return "blog";
-	}
 	
-	@RequestMapping(value = "/blog-details")
-	public String blogDetailsController() {				
-		return "blog-details";
-	}
 }

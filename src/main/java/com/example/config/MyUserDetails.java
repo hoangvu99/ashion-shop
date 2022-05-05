@@ -61,9 +61,11 @@ public class MyUserDetails implements UserDetails{
 
 	@Override
 	public boolean isAccountNonLocked() {
+		if(user.getIsDeleted() == 0) {
+			return true;
+		}
 		
-		
-		return user.getDeletedAt().equalsIgnoreCase("");
+		return false;
 	}
 
 	@Override

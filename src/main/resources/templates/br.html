@@ -7,8 +7,8 @@
 	
 	<div class="container" id="file-explorer" style="display: inline;">
 		<div class="row">
-			<div  class="col-2 thumnail"  th:each="f : ${paths}" style="">
-				<img th:id="${f.fileName}" th:src="@{${'/img/upload/' + f.fileName}}" style="width: 100%; height: 100%;">
+			<div  class="col-2 thumnail"  th:each="f : ${paths}" style="cursor: pointer;">
+				<img th:id="${f.fileName}" th:src="@{${'/img/blog/' + f.fileName}}" style="width: 100%; height: 100%;">
 			</div>
 		</div>
 	</div>
@@ -30,7 +30,7 @@
 			img[i].addEventListener('click', function(e){
 			var funcNum = getUrlParam('CKEditorFuncNum');
 			
-			var fileUrl = '/img/upload/'+e.target.id;
+			var fileUrl = '/img/blog/'+e.target.id;
 			window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
 			window.close();
 		})

@@ -23,7 +23,7 @@ public class Post {
 	@Column(columnDefinition = "varchar(2000)")
 	public String body;
 	private String title;
-	
+	private String thumnail;
 	public String createdAt;
 	public String updatedAt;
 }

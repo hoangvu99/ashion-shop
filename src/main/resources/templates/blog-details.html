@@ -68,7 +68,7 @@
                     <div class="breadcrumb__links">
                         <a href="./index.html"><i class="fa fa-home"></i> Home</a>
                         <a href="./blog.html">Blog</a>
-                        <span>Being seen: how is age diversity effecting change in fashion and beauty?</span>
+                        <span th:text="${blog.title}"></span>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                             <img src="img/blog/details/blog-details.jpg" alt="">
                             <div class="blog__details__item__title">
                                 <span class="tip">Street style</span>
-                                <h4>Being seen: how is age diversity effecting change in fashion and beauty?</h4>
+                                <h4 th:text="${blog.title}"></h4>
                                 <ul>
                                     <li>by <span>Ema Timahe</span></li>
                                     <li>Seb 17, 2019</li>
@@ -94,35 +94,12 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="blog__details__desc">
-                            <p>Afashion season can be defined as much by the people on the catwalk as it can by the
-                                clothes they are wearing. This time around, a key moment came at the end of Marc Jacobs’
-                                New York show, when an almost makeup-free Christy Turlington made a rare return to the
-                                catwalk, aged 50 (she also stars, with the designer himself, in the label’s AW ad
-                            campaign), where the average catwalk model is around 18.</p>
-                            <p>A few days later, Simone Rocha arguably upped the ante. The 32-year-old’s show – in part
-                                inspired by Louise Bourgeois, who lived until she was 98 – featured models in their 30s
-                            and 40s, including cult favourite Jeny Howorth and actor Chloë Sevigny.</p>
+                        <div class="blog__details__desc" th:utext="${blog.body}">
+                           
                         </div>
-                        <div class="blog__details__quote">
-                            <div class="icon"><i class="fa fa-quote-left"></i></div>
-                            <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore magna
-                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                            aliquip ex ea commodo consequat.</p>
-                        </div>
-                        <div class="blog__details__desc">
-                            <p>Occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                                laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                            dolor in reprehenderit in voluptate.</p>
-                        </div>
-                        <div class="blog__details__tags">
-                            <a href="#">Fashion</a>
-                            <a href="#">Street style</a>
-                            <a href="#">Diversity</a>
-                            <a href="#">Beauty</a>
-                        </div>
+                        
+                        
+                        
                         <div class="blog__details__btns">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
@@ -137,55 +114,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="blog__details__comment">
-                            <h5>3 Comment</h5>
-                            <a href="#" class="leave-btn">Leave a comment</a>
-                            <div class="blog__comment__item">
-                                <div class="blog__comment__item__pic">
-                                    <img src="img/blog/details/comment-1.jpg" alt="">
-                                </div>
-                                <div class="blog__comment__item__text">
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Duis voluptatum. Id vis consequat consetetur dissentiet, ceteros commune perpetua
-                                    mei et. Simul viderer facilisis egimus tractatos splendi.</p>
-                                    <ul>
-                                        <li><i class="fa fa-clock-o"></i> Seb 17, 2019</li>
-                                        <li><i class="fa fa-heart-o"></i> 12</li>
-                                        <li><i class="fa fa-share"></i> 1</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="blog__comment__item blog__comment__item--reply">
-                                <div class="blog__comment__item__pic">
-                                    <img src="img/blog/details/comment-2.jpg" alt="">
-                                </div>
-                                <div class="blog__comment__item__text">
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Consequat consetetur dissentiet, ceteros commune perpetua mei et. Simul viderer
-                                    facilisis egimus ulla mcorper.</p>
-                                    <ul>
-                                        <li><i class="fa fa-clock-o"></i> Seb 17, 2019</li>
-                                        <li><i class="fa fa-heart-o"></i> 12</li>
-                                        <li><i class="fa fa-share"></i> 1</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="blog__comment__item">
-                                <div class="blog__comment__item__pic">
-                                    <img src="img/blog/details/comment-3.jpg" alt="">
-                                </div>
-                                <div class="blog__comment__item__text">
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Duis voluptatum. Id vis consequat consetetur dissentiet, ceteros commune perpetua
-                                    mei et. Simul viderer facilisis egimus tractatos splendi.</p>
-                                    <ul>
-                                        <li><i class="fa fa-clock-o"></i> Seb 17, 2019</li>
-                                        <li><i class="fa fa-heart-o"></i> 12</li>
-                                        <li><i class="fa fa-share"></i> 1</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4">
@@ -249,13 +178,7 @@
                 </div>
             </div>
         </div>
-        <p><img alt="" src="/img/upload/shop-1.jpg" style="height:360px; width:270px" /></p>
-
-<p>Afashion season can be defined as much by the people on the catwalk as it can by the clothes they are wearing. This time around, a key moment came at the end of Marc Jacobs&rsquo; New York show, when an almost makeup-free Christy Turlington made a rare return to the catwalk, aged 50 (she also stars, with the designer himself, in the label&rsquo;s AW ad campaign), where the average catwalk model is around 18.</p>
-
-<p>A few days later, Simone Rocha arguably upped the ante. The 32-year-old&rsquo;s show &ndash; in part inspired by Louise Bourgeois, who lived until she was 98 &ndash; featured models in their 30s and 40s, including cult favourite Jeny Howorth and actor Chlo&euml; Sevigny.</p>
-
-<p>&nbsp;</p>
+        
     </section>
     <!-- Blog Details Section End -->
 

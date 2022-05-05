@@ -55,7 +55,8 @@
                 			<th>Title</th>
                 			<th>Ngày tạo</th>
                 			
-                			<th>xem</th>
+                			<th>Xem</th>
+                			<th>Xóa</th>
                 			
                 	</thead>
                 	<tbody>
@@ -65,6 +66,7 @@
                 			<td th:text="${p.createdAt}"></td>
                 		
                 			<td > <a th:href="@{${'/view-post?id='+p.id}}">Xem chi tiết</a> </td>
+                			<td > <a th:href="@{${'/delete-post?id='+p.id}}" style="color: red;">Xóa bài viết</a> </td>
                 		</tr>
                 		
                 	</tbody>

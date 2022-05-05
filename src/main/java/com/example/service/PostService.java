@@ -13,4 +13,6 @@ public interface PostService {
 	public Post findPostById(long id);
 	
 	public List<Post> listPosts();
+	
+	public void deletePost(long id);
 }

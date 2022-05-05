@@ -45,7 +45,7 @@ public class User {
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Collection<UserRole>userRoles;
-	
+	private int isDeleted;
 	private String createdAt;
 	
 	private String updatedAt;

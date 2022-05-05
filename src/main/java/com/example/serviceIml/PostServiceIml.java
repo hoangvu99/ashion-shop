@@ -41,6 +41,12 @@ public class PostServiceIml implements PostService{
 		return postDao.findAll();
 	}
 	
+	@Override
+	public void deletePost(long id) {
+		postDao.deleteById(id);
+		
+	}
+	
 		
 	
 }

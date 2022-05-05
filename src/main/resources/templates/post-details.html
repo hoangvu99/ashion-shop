@@ -50,6 +50,15 @@
                 	</div>
 				  
 				  <div class="form-group">
+				  <label>Thêm ảnh thumail</label>
+				 	<textarea name="thumnail" id="cont" rows="20" cols="80" th:field="*{thumnail}" 
+				 	 oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required
+				 	></textarea>
+				  	
+				  </div>
+				  <div class="form-group">
+				  <label>Thêm chi tiết bài viết</label>
 				 	<textarea name="body" id="cont" rows="10" cols="80" th:field="*{body}" 
 				 	 oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
   							oninput="this.setCustomValidity('')" required
@@ -83,6 +92,10 @@
 
     <script>
                         CKEDITOR.replace( 'body', {
+								filebrowserUploadUrl : '/upload-ckeditor',
+								filebrowserBrowseUrl : '/file-browse'
+} );
+			 CKEDITOR.replace( 'thumnail', {
 								filebrowserUploadUrl : '/upload-ckeditor',
 								filebrowserBrowseUrl : '/file-browse'
 } );

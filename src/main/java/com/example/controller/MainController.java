@@ -195,36 +195,7 @@ public class MainController {
 	
 	
 	
-	@RequestMapping(value = "/upload-ckeditor", method = RequestMethod.POST,produces = {
-			MimeTypeUtils.APPLICATION_JSON_VALUE
-	})
-	public ResponseEntity<JSONFileUpload> uploadFile(@RequestParam(name = "upload") MultipartFile file) {
-		
-		try {
-			Path path = Paths.get("src/main/resources/static/img/upload/"+file.getOriginalFilename());
-			Files.createFile(path);
-			Files.copy(file.getInputStream(),path, StandardCopyOption.REPLACE_EXISTING);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		return new ResponseEntity<JSONFileUpload>(new JSONFileUpload("src/main/resources/static/img/upload/"+file.getOriginalFilename()), HttpStatus.OK);
-	}
 	
-	@RequestMapping(  value="/file-browse",method = RequestMethod.GET)
-	public String imageBrowser(Model model) {
-		try {
-			
-			List<Path> paths =  Files.walk(Paths.get("src/main/resources/static/img/upload/")).filter(Files::isRegularFile).collect(Collectors.toList());
-			
-			model.addAttribute("paths", paths);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return "br";
-	}
 	
 	
 	
