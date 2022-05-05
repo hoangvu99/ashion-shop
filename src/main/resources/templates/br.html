@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		 <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+	</head>
+	<body>
+	
+	<div class="container" id="file-explorer" style="display: inline;">
+		<div class="row">
+			<div  class="col-2 thumnail"  th:each="f : ${paths}" style="">
+				<img th:id="${f.fileName}" th:src="@{${'/img/upload/' + f.fileName}}" style="width: 100%; height: 100%;">
+			</div>
+		</div>
+	</div>
+	<script src="ckeditor/ckeditor.js"></script>
+	<script>
+		
+		var img = document.getElementsByClassName("thumnail");
+		
+		
+		function getUrlParam(paramName)
+		{
+		  var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
+		  var match = window.location.search.match(reParam) ;
+		
+		  return (match && match.length > 1) ? match[1] : '' ;
+		}
+		
+		for(var i = 0; i < img.length; i++){
+			img[i].addEventListener('click', function(e){
+			var funcNum = getUrlParam('CKEditorFuncNum');
+			
+			var fileUrl = '/img/upload/'+e.target.id;
+			window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+			window.close();
+		})
+		}
+		
+	</script>
+</body> 
+</html>

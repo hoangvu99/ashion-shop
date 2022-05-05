@@ -1,6 +1,11 @@
 package com.example.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,12 +19,15 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -187,19 +195,39 @@ public class MainController {
 	
 	
 	
-	
-	
-	public long convertTotalTextToNumber(String[] arr) {
+	@RequestMapping(value = "/upload-ckeditor", method = RequestMethod.POST,produces = {
+			MimeTypeUtils.APPLICATION_JSON_VALUE
+	})
+	public ResponseEntity<JSONFileUpload> uploadFile(@RequestParam(name = "upload") MultipartFile file) {
 		
-		String totalText = "";
-		for (int i = 0; i < arr.length; i++) {
-			totalText+=i;
+		try {
+			Path path = Paths.get("src/main/resources/static/img/upload/"+file.getOriginalFilename());
+			Files.createFile(path);
+			Files.copy(file.getInputStream(),path, StandardCopyOption.REPLACE_EXISTING);
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 		
-		
-		
-		return Long.valueOf(totalText);
+		return new ResponseEntity<JSONFileUpload>(new JSONFileUpload("src/main/resources/static/img/upload/"+file.getOriginalFilename()), HttpStatus.OK);
 	}
+	
+	@RequestMapping(  value="/file-browse",method = RequestMethod.GET)
+	public String imageBrowser(Model model) {
+		try {
+			
+			List<Path> paths =  Files.walk(Paths.get("src/main/resources/static/img/upload/")).filter(Files::isRegularFile).collect(Collectors.toList());
+			
+			model.addAttribute("paths", paths);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "br";
+	}
+	
+	
+	
 	
 	public boolean checkIsAuthenticated() {
 		
@@ -226,21 +254,7 @@ public class MainController {
 	
 	
 	
-	public List checkExist(Product p, Size s, List<CartItem>cartItems) {
-		boolean checkExist = false;
-		int index=0;
-		for (int j = 0; j < cartItems.size(); j++) {
-			if(p.getId() == cartItems.get(j).getProduct().getId() && s.getId() == cartItems.get(j).getProductSize().getSize().getId()) {
-				checkExist = true;
-				index=j;
-				break;
-			}
-		}
-		List l = new ArrayList();
-		l.add(checkExist);
-		l.add(index);
-		return l;
-	}
+	
 	
 	
 	
