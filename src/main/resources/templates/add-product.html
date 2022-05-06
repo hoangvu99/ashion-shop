@@ -81,22 +81,51 @@
 				  </div>
 				  
 				  
-				  <div class="form-group">
-				  		<label>Nhập số lượng theo size</label>
+				  <div class="form-group" style="border: 1px solid black ; padding: 10px;">
+				  		<h3  class="text-danger">Nhập số lượng theo size chữ</h3>
 				  		<br>
 						<div class="sub-group-form">
 							<div class="sub-item" th:each="s, itemStat : *{sizes}">
 								<label th:field="*{sizes[__${itemStat.index}__].sizeName}" th:text="${s.sizeName}" ></label>
-								<input oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
-  							oninput="this.setCustomValidity('')" required type="number" th:field="*{sizes[__${itemStat.index}__].quantity}"  class="form-control"></input>
+								<input  oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required type="number" th:field="*{sizes[__${itemStat.index}__].quantity}"  class="form-control size-text"></input>
 								
 							</div>
-							<lable>*Dành cho phụ kiện</lable>
+							  
 							
 						</div>
 						
 				</div>
-				
+				 <div class="form-group" style="border: 1px solid black ; padding: 10px;">
+				  		<h3  class="text-danger">Nhập số lượng theo size giày</h3>
+				  		<br>
+						<div class="sub-group-form">
+							<div class="sub-item" th:each="s, itemStat : *{sizesInNum}">
+								<label th:field="*{sizesInNum[__${itemStat.index}__].sizeName}" th:text="${s.sizeName}" ></label>
+								<input oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required type="number" th:field="*{sizesInNum[__${itemStat.index}__].quantity}"  class="form-control size-num"></input>
+								
+							</div>
+							  
+							
+						</div>
+						
+				</div>
+				<div class="form-group" style="border: 1px solid black ; padding: 10px;">
+				  		<h3 class="text-danger">Nhập số lượng theo phụ kiện</h3>
+				  		<br>
+						<div class="sub-group-form">
+							<div class="sub-item" >
+								
+								<input oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required type="number" th:field="*{freeSize}"  class="form-control free-size"></input>
+								
+							</div>
+							  
+							
+						</div>
+						
+				</div>
 				  
 				  <div class="form-group">
 				    <label>Chọn ảnh đại diện cho sản phẩm</label>

@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,12 +70,57 @@ public class ProductServiceIml implements ProductService{
 
 	@Override
 	public void saveProduct(ProductDTO productDTO) {
+		Product product = new Product();	
 		String fomattedDate = simpleDateFormat.format(new Date());
 		String fileName = fomattedDate.replaceAll("[:\\s]+", "-");
 		
 		Category category = categoryService.findCategoryById(Integer.valueOf(productDTO.getCategory()));
+		List<Size> sizes = sizeDao.findAll();
+		List<ProductSize>productSizes = new ArrayList<ProductSize>();
 		
-		Product product = new Product();		
+		
+		
+		if(category.getId() == 3) {
+			List<Size>sizeNum = getSize(sizes, 6, 19);
+			for (int i = 0; i < productDTO.getSizesInNum().size(); i++) {
+				ProductSize productSize = new ProductSize();
+				productSize.setProduct(product);
+				productSize.setSize(sizeNum.get(i));
+				productSize.setCreatedAt(fomattedDate);
+				productSize.setQuantity(productDTO.getSizesInNum().get(i).getQuantity());
+				productSizes.add(productSize);
+				
+			}
+			
+		}else if(category.getId() == 5) {
+			ProductSize productSize = new ProductSize();
+			productSize.setProduct(product);
+			productSize.setSize(sizes.get(19));
+			productSize.setCreatedAt(fomattedDate);
+			productSize.setQuantity(productDTO.getFreeSize());
+			productSizes.add(productSize);
+		}else {
+			List<Size>sizeText = getSize(sizes, 0, 6);
+			for (int i = 0; i < sizes.size(); i++) {
+				ProductSize productSize = new ProductSize();
+				productSize.setProduct(product);
+				productSize.setSize(sizeText.get(i));
+				productSize.setCreatedAt(fomattedDate);
+				productSize.setQuantity(productDTO.getSizes().get(i).getQuantity());
+				productSizes.add(productSize);
+				
+			}
+		}
+		
+		
+		
+		product.setProductSizes(productSizes);
+		
+		
+		
+		
+		
+			
 		product.setCategory(category);
 		product.setName(productDTO.getProductName());
 		
@@ -102,7 +148,7 @@ public class ProductServiceIml implements ProductService{
 			productImages.setProduct(product);
 			
 			if(filesDTO.get(i).getOriginalFilename() =="") {
-				System.out.println("ảnh chi tiết null");
+				
 				productImages.setUrl("null.jpg");
 			}else {
 				productImages.setUrl(fileName+"dt-"+i+".jpg");
@@ -121,22 +167,7 @@ public class ProductServiceIml implements ProductService{
 		
 		product.setProductImages(images);
 		
-		List<Size> sizes = sizeDao.findAll();
-		List<ProductSize>productSizes = new ArrayList<ProductSize>();
 		
-		
-		
-		for (int i = 0; i < sizes.size(); i++) {
-			ProductSize productSize = new ProductSize();
-			productSize.setProduct(product);
-			productSize.setSize(sizes.get(i));
-			productSize.setCreatedAt(fomattedDate);
-			productSize.setQuantity(productDTO.getSizes().get(i).getQuantity());
-			productSizes.add(productSize);
-			
-		}
-		
-		product.setProductSizes(productSizes);
 		
 		product.setDescription(productDTO.getDescription());
 		product.setDetailsContent(productDTO.getDetail());
@@ -179,13 +210,32 @@ public class ProductServiceIml implements ProductService{
 			Product product = productDao.findProductById(id);
 			
 			
-			if(productDTO.getCategory().equalsIgnoreCase("0") != true) {
+			
 				
+			
+			List<ProductSize>productSizes = productSizeDao.findProductSizeByProductId(product.getId());
+			if(product.getCategory().getId() == 3) {
 				
-				Category category = categoryService.findCategoryById(Integer.valueOf(productDTO.getCategory()));
-				product.setCategory(category);
+				for (int i = 0; i < productSizes.size(); i++) {
+					productSizes.get(i).setQuantity(productDTO.getSizesInNum().get(i).getQuantity());
+					productSizes.get(i).setUpdatedAt(fomattedDate);
+					
+				}
+				
+			}else if(product.getCategory().getId() == 5) {
+				for (int i = 0; i < productSizes.size(); i++) {
+					productSizes.get(i).setQuantity(productDTO.getFreeSize());
+					productSizes.get(i).setUpdatedAt(fomattedDate);
+					
+				}
+			}else {
+				for (int i = 0; i < productSizes.size(); i++) {
+					productSizes.get(i).setQuantity(productDTO.getSizes().get(i).getQuantity());
+					productSizes.get(i).setUpdatedAt(fomattedDate);
+					
+				}
 			}
-				
+			product.setProductSizes(productSizes);
 			
 			
 			product.setName(productDTO.getProductName());
@@ -233,23 +283,7 @@ public class ProductServiceIml implements ProductService{
 			product.setProductImages(images);
 //			
 //			
-			List<Size> sizes = sizeDao.findAll();
-			List<ProductSize>productSizes = new ArrayList<ProductSize>();
-			for (int i = 0; i < sizes.size(); i++) {
-				ProductSize productSize = productSizeDao.findProductSize(id,i+1);
-				
-				if(productSize == null) {
-					productSize = new ProductSize();
-					productSize.setCreatedAt(fomattedDate);
-					productSize.setProduct(product);
-					productSize.setSize(sizes.get(i));
-				}
-				productSize.setUpdatedAt(fomattedDate);
-				productSize.setQuantity(productDTO.getSizes().get(i).getQuantity());
-				productSizes.add(productSize);
-				
-			}
-			product.setProductSizes(productSizes);
+			
 			
 			product.setDescription(productDTO.getDescription());
 			product.setDetailsContent(productDTO.getDetail());
@@ -284,5 +318,16 @@ public class ProductServiceIml implements ProductService{
 		// TODO Auto-generated method stub
 		return productDao.productsByName(s, limit,  (offset -1 )*5);
 	}
+	
+	@Override
+	public List<Size> getSize(List<Size>s,int begin, int end) {
+		List<Size> sizes = new ArrayList<Size>();
+		for (int i = begin; i < end; i++) {
+			sizes.add(s.get(i));
+		}
+		
+		return sizes;
+	}
+	
 
 }

@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -52,6 +53,9 @@ public class UserController {
 	
 	@Autowired
 	UploadFileService uploader;
+	
+	@Autowired
+	SimpleDateFormat dateFormat;
 	
 	
 	@RequestMapping(value = "/login")
@@ -272,6 +276,46 @@ public class UserController {
 		return "user/order-detail";
 	}
 	
+	@RequestMapping("/view-user")
+	public String viewUser(@RequestParam(name="id")long id, Model model) {
+		
+		User user = userService.findUserByid(id);
+		UserAddress address = addressService.findUserAddressByUserId(user.getId());
+		List<Orders>orders = (List<Orders>) user.getOrders();
+		model.addAttribute("user", user);
+		model.addAttribute("address", address);
+		model.addAttribute("orders", orders);
+		return "view-user";
+	}
+	
+	
+	
+	@RequestMapping("/delete-user")
+	public String deleteUser(@RequestParam(name="id")long id) {
+		User u = userService.findUserByid(id);
+		u.setDeletedAt(dateFormat.format(new Date()));
+		u.setIsDeleted(1);
+		userService.updateUserInfo(u);
+		return "redirect:/list-users";
+	}
+	@RequestMapping("/list-users")
+	public String listUser(Model model, @RequestParam(name = "page", defaultValue = "1") int page,@RequestParam(name="s", defaultValue = "")String s) {
+		
+		if(s.equalsIgnoreCase("")) {
+			List<User> users = userService.getListUser(5, (page-1)*5);
+			int lastPage = (page == 1)? 1: page-1;
+			model.addAttribute("lastPage", lastPage);
+			model.addAttribute("page", page);
+			model.addAttribute("nextPage", page+1);
+			model.addAttribute("users", users);
+		}else {
+			model.addAttribute("s", s);
+			model.addAttribute("users", userService.searchUserByName(s));
+		}
+		
+		
+		return "list-users";
+	}
 	
 	
 }

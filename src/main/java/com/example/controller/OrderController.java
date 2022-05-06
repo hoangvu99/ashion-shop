@@ -14,11 +14,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.dao.OrderItemDao;
 import com.example.dto.CartDTO;
 import com.example.dto.CartItemDTO;
 import com.example.dto.CheckOutDTO;
@@ -180,4 +182,152 @@ public class OrderController {
 		orderService.deleteOrder(id);
 		return "redirect:/account";
 	}
+	
+	
+	@RequestMapping("/list-order")
+	public String listOrder(Model model) {
+		List<Orders>orders = orderService.findAllOrders();
+		model.addAttribute("orders", orders);
+		return "list-order";
+	}
+	
+	
+	
+	@RequestMapping(value ="/view-order")
+	public String viewOrder(@RequestParam(name = "id") long id, Model model) {
+		Orders orders = orderService.findOrderById(id);
+		model.addAttribute("order", orders);
+		return "view-order";
+	}
+	
+	@RequestMapping(value ="/acceptOrder")
+	public String acceptOrder(@RequestParam(name = "id") long id, Model model) {
+		try {
+			orderService.acceptOrder(id);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+		return "redirect:/new-orders";
+	}
+	
+	@RequestMapping(value ="/successOrder")
+	public String successOrder(@RequestParam(name = "id") long id, Model model) {
+		try {
+			orderService.setSuccessOrder(id);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return "redirect:/accepted-orders";
+	}
+	
+	@RequestMapping("/accepted-orders")
+	public String acceptedOrders(Model model, @RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="s", defaultValue = "") String s) {
+		
+		
+		
+		if(s.equalsIgnoreCase("")) {
+			List<Orders>orders = orderService.acceptedOrders(5,(page-1)*5);
+			model.addAttribute("orders", orders);
+			int lastPage = (page == 1)? 1: page-1;
+			model.addAttribute("lastPage", lastPage);
+			model.addAttribute("page", page);
+			model.addAttribute("nextPage", page+1);
+		}else {
+			model.addAttribute("s", s);
+			List<User> users = userService.searchUserByName(s);
+			List<Orders>list = new ArrayList<Orders>();
+			if(users != null) {
+				for (int i = 0; i < users.size(); i++) {
+					list = orderService.userAcceptedOrders(users.get(i).getId());
+				}
+			}
+			model.addAttribute("orders",list);
+		}
+		return "accepted-orders";
+	}
+	
+	@RequestMapping("/success-orders")
+	public String successOrders(Model model, @RequestParam(name="page", defaultValue = "1") int page,  @RequestParam(name="s", defaultValue = "") String s) {
+		
+		
+		if(s.equalsIgnoreCase("")) {
+			List<Orders>orders = orderService.successOrders(5,(page-1)*5);
+			model.addAttribute("orders", orders);
+			int lastPage = (page == 1)? 1: page-1;
+			model.addAttribute("lastPage", lastPage);
+			model.addAttribute("page", page);
+			model.addAttribute("nextPage", page+1);
+		}else {
+			model.addAttribute("s", s);
+			List<User> users = userService.searchUserByName(s);
+			List<Orders>list = new ArrayList<Orders>();
+			if(users != null) {
+				for (int i = 0; i < users.size(); i++) {
+					list = orderService.userSuccessOrders(users.get(i).getId());
+				}
+			}
+			model.addAttribute("orders",list);
+		}
+		return "success-orders";
+	}
+	
+	@Autowired
+	OrderItemDao orderItemDao;
+	@RequestMapping("/delete-orderItem")
+	public String deleteOrderItem(@RequestParam(name="id"  )long id, @RequestParam(name="orderId" ) long orderId) {
+		orderItemDao.deleteOrderItem(id);
+		Orders order = orderService.findOrderById(orderId);
+		order.calTotal();
+		orderService.saveOrder(order);
+		return "redirect:/view-order?id="+orderId;
+	}
+	
+	@RequestMapping("/delete-order")
+	public String deleteOrder( @RequestParam(name="id" ) long orderId) {
+		orderService.deleteOrder(orderId);
+		
+		return "redirect:/new-orders";
+	}
+	
+	
+	
+	@RequestMapping(value="/updateOrder", method = RequestMethod.POST)
+	@ResponseBody
+	public String updateCart(@RequestBody String[] data, HttpSession httpSession, Model model) {
+		String date = dateFormat.format(new Date());
+		
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		Orders orders = orderService.findOrderById(Long.valueOf(data[0]));
+		
+		List<OrderItems>orderItems = orders.getOrderItems();
+		for (int i = 1; i < data.length; i++) {
+				int quantity = Integer.valueOf(data[i]);
+				if(quantity != orderItems.get(i-1).getQuantity()) {
+					orderItems.get(i-1).setQuantity(quantity);
+					orderItems.get(i-1).calSubTotal();
+					orderItems.get(i-1).setUpdatedAt(date);
+				}
+			}
+			orders.setOrderItems(orderItems);
+			orders.calTotal();
+			orderService.saveOrder(orders);
+			
+		
+		
+		return data[0];
+	}
+	
+	@RequestMapping("/view-order-details")
+	public String viewOrderDeetails(@RequestParam(name="orderId")long id, Model model) {
+		
+		Orders orders = orderService.findOrderById(id);
+	
+		model.addAttribute("order", orders);
+		return "view-order-detail";
+	}
+	
 }

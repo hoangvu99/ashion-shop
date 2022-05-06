@@ -47,16 +47,9 @@
                 <div class="form-group row ">
 				   	<div class="form-group-item">
 				   		<label for="catetories">Loại sản phẩm</label>
-				    	<input class="form-control" readonly th:value="${productDTO.category}" >
+				    	<input class="form-control" readonly th:field="*{category}" >
 				   	</div>
-					<div class="form-group-item">
-						<label for="catetories">Thay đổi loại sản phẩm</label>
 					
-					<select name="caterogy" class="form-select" id="category"  th:field="*{category}">
-						<option th:value="0" th:name="0">Chọn loại khác</option>
-					  <option th:each="c : ${listCategory}" th:value="${c.id}"  th:utext="${c.categoryName}"></option>
-					</select>
-					</div>
 				  </div>
 				  
 				  <div class="form-group row">
@@ -111,25 +104,47 @@
 				  
 				  
 				  
-				  <div class="form-group row">
-				  		<label>Nhập số lượng theo size</label>
+				  <div class="form-group" style="border: 1px solid black ; padding: 10px;">
+				  		<h3  class="text-danger">Nhập số lượng theo size chữ</h3>
 				  		<br>
 						<div class="sub-group-form">
-							<div class="sub-group-form">
 							<div class="sub-item" th:each="s, itemStat : *{sizes}">
-								<label th:field="*{sizes[__${itemStat.index}__].sizeName}" th:text="${s.sizeName}"></label>
-								<input type="number" th:field="*{sizes[__${itemStat.index}__].quantity}"  class="form-control"></input>
+								<label th:field="*{sizes[__${itemStat.index}__].sizeName}" th:text="${s.sizeName}" ></label>
+								<input  oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required type="number" th:field="*{sizes[__${itemStat.index}__].quantity}"  class="form-control size-text"></input>
+								
 							</div>
+							  
 							
-						</div>
 						</div>
 						
 				</div>
-				<div class="form-group">
-				  		<label>Nhập số lượng theo phụ kiện</label>
+				 <div class="form-group" style="border: 1px solid black ; padding: 10px;">
+				  		<h3 class="text-danger">Nhập số lượng theo phụ kiện</h3>
 				  		<br>
 						<div class="sub-group-form">
+							<div class="sub-item" th:each="s, itemStat : *{sizesInNum}">
+								<label th:field="*{sizesInNum[__${itemStat.index}__].sizeName}" th:text="${s.sizeName}" ></label>
+								<input oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required type="number" th:field="*{sizesInNum[__${itemStat.index}__].quantity}"  class="form-control size-num"></input>
+								
+							</div>
+							  
 							
+						</div>
+						
+				</div>
+				<div class="form-group" style="border: 1px solid black ; padding: 10px;">
+				  		<label>Nhập số lượng theo size phụ kiện</label>
+				  		<br>
+						<div class="sub-group-form">
+							<div class="sub-item" >
+								
+								<input oninvalid="this.setCustomValidity('Xin vui lòng không bỏ trống phần này')"
+  							oninput="this.setCustomValidity('')" required type="number" th:field="*{freeSize}"  class="form-control free-size"></input>
+								
+							</div>
+							  
 							
 						</div>
 						

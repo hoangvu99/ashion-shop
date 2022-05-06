@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.dto.ProductDTO;
 import com.example.model.product.Product;
+import com.example.model.size.Size;
 
 
 public interface ProductService {
@@ -32,4 +33,7 @@ public interface ProductService {
 	
 	public List<Product> listProductByCategory(int category, int limit, int offset);
 	public List<Product> listProductByName(String s, int limit, int offset);
+	
+	public List<Size> getSize(List<Size>s,int begin, int end );
+	
 }

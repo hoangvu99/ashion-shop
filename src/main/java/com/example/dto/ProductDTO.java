@@ -24,6 +24,8 @@ public class ProductDTO {
 	
 	private String detail;
 	private List<SizeDTO>sizes;
+	private int freeSize;
+	private List<SizeDTO>sizesInNum;
 	
 	
 	
