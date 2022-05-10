@@ -86,7 +86,7 @@
 				  			<th>Số lượng</th>
 				  			<th>Đơn giá</th>
 				  			<th>Thành tiền</th>
-				  			<th></th>
+				  			<th>Thao tác</th>
 				  			
 				  		</thead>
 				  		<tbody>
@@ -96,8 +96,8 @@
 				  				<td th:text="${p.productSize.size.sizeName}"> </td>
 				  				<td th:if="${p.productSize.quantity > 0}" > Còn hàng</td>
 				  				<td th:if="${p.productSize.quantity < 0}" style="color: red;"> Hết hàng</td>
-				  				<td th:if="${order.status == 0}" >  <input class="order-quantity-input form-control" type="number" th:value="${p.quantity}"> </td>
-				  				<td th:if="${order.status == 1}"  th:text="${p.quantity}">  </td>
+				  				<td th:if="${order.status != 2}" >  <input class="order-quantity-input form-control" type="number" th:value="${p.quantity}"> </td>
+				  				
 				  				<td th:text="${#numbers.formatCurrency(p.price)}" > </td>
 				  				<td th:text="${#numbers.formatCurrency(p.total)}" > </td>
 				  				<td th:if="${order.status == 0}"> <a th:href="@{${'/delete-orderItem?id='+p.id+'&orderId='+order.id}}">Xóa </a> </td>
@@ -130,11 +130,14 @@
 				  </div>
 				  
 				  
-				  
-				  <div class="form-group">
+				  <lable  th:if="${order.status != 2}" style="color:red">Cập nhập trạng thái đơn hàng</lable>
+				  <div  th:if="${order.status != 2}" class="form-group" style=" padding: 20px; border: 1px solid black;">
+				  	
 				  	<a th:if="${order.status == 0}" th:href="@{${'/acceptOrder?id='+order.id}}"><button type="button" class="btn btn-primary">Phê duyệt đơn hàng</button></a>
-				  	<a th:if="${order.status == 1}" th:href="@{${'/successOrder?id='+order.id}}"><button type="button" class="btn btn-primary">Giao hàng thành công</button></a>
+				  
 				  	<a th:if="${order.status == 0}" th:href="@{${'/delete-order?id='+order.id}}"><button type="button" class="btn btn-danger">Xóa đơn hàng</button></a>
+				  	<a th:if="${order.status == 1}" th:href="@{${'/successOrder?id='+order.id}}"><button type="button" class="btn btn-primary">Giao hàng thành công</button></a>
+				  	<a th:if="${order.status == 1}" th:href="@{${'/rollback-order?id='+order.id}}"><button type="button" class="btn btn-danger">Giao hàng thất bại</button></a>
 				  </div>
 				</form>
                 

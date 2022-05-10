@@ -74,7 +74,7 @@
                 			<td th:text="${o.createdAt}"></td>
                 			<td th:if="${o.status == 0}">Chưa được phê duyệt</td>
                 			<td th:if="${o.status == 1}">Đã phê duyệt</td>
-                			<td th:if="${o.status == 2}">Đã thanh toán</td>
+                			<td th:if="${o.status == 2}">Đã giao thành công</td>
                 			<td th:if="${o.paymentMethod == 0}" >Thanh toán trực tiếp </td>
                 			<td th:if="${o.isPaid == 0}" >Chưa thanh toán </td>
                 			<td th:if="${o.isPaid == 1}" >Đã thanh toán </td>

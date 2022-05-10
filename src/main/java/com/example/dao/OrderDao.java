@@ -32,7 +32,7 @@ public interface OrderDao extends JpaRepository<com.example.model.order.Orders, 
 	@Query(value = "select  * from orders where status = 3", nativeQuery = true)
 	public List<Orders>refusedOrders();
 	
-	@Query(value ="select * from orders where user_id = ?1", nativeQuery = true)
+	@Query(value ="select * from orders where user_id = ?1 order by id desc", nativeQuery = true)
 	public List<Orders> listUserOrder(long userId);
 	
 	@Modifying

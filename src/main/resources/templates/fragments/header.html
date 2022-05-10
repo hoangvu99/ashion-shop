@@ -17,7 +17,9 @@
                             <li><a th:href="@{/shop}">Shop</a></li>
                             <li><a th:href="@{/shop?c=1}">Áo</a></li>
                             <li><a th:href="@{/shop?c=2}">Quần</a></li>
-                            <li><a th:href="@{/shop?c=3}">Váy</a></li>
+                            <li><a th:href="@{/shop?c=3}">Giày</a></li>
+                            <li><a th:href="@{/shop?c=4}">Váy</a></li>
+                             <li><a th:href="@{/shop?c=5}">Phụ kiện</a></li>
                             <li><a th:href="@{/blog}">Blog</a></li>
                             <li><a th:href="@{/contact}">Liên lạc</a></li>
                         </ul>
@@ -47,7 +49,7 @@
             					
             				</li>
             				
-                            <li><span class="icon_search search-switch"></span></li>
+                            <li sec:authorize="hasRole('ADMIN')" ><a th:href="@{/admin}"><i class="fa fa-gear"></i></a></li>
                             
                             <li><a href="/cart"><span class="icon_bag_alt"></span>
                                 <div class="tip" sec:authorize="isAuthenticated() == false" id="cart-item-count" 	th:text="${session.CartDTO != null} ? ${session.CartDTO.counter} : 0"></div>

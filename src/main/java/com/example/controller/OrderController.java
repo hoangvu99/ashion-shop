@@ -291,6 +291,12 @@ public class OrderController {
 		
 		return "redirect:/new-orders";
 	}
+	@RequestMapping("/rollback-order")
+	public String rollBackOrder( @RequestParam(name="id" ) long orderId) {
+		orderService.setRollBackOrder(orderId);
+		
+		return "redirect:/accepted-orders";
+	}
 	
 	
 	

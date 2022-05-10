@@ -44,6 +44,10 @@ public class OrderServiceIml implements OrderService{
 	public void acceptOrder(long orderId) {
 		Orders orders = findOrderById(orderId);
 		orders.setStatus(1);
+		List<OrderItems>orderItems = orders.getOrderItems();
+		orderItems.stream().forEach(i ->{
+			productSizeDao.updateQuantity(i.getProductSize().getId(), i.getProductSize().getQuantity() - i.getQuantity());
+		});
 		orderDao.save(orders);
 		
 	}
@@ -56,10 +60,7 @@ public class OrderServiceIml implements OrderService{
 		Orders orders = findOrderById(orderId);
 		orders.setStatus(2);
 		
-		List<OrderItems>orderItems = orders.getOrderItems();
-		orderItems.stream().forEach(i ->{
-			productSizeDao.updateQuantity(i.getProductSize().getId(), i.getProductSize().getQuantity() - i.getQuantity());
-		});
+		
 		
 		orderDao.save(orders);
 		
@@ -69,6 +70,10 @@ public class OrderServiceIml implements OrderService{
 	public void setRollBackOrder(long orderId) {
 		Orders orders = findOrderById(orderId);
 		orders.setStatus(3);
+		List<OrderItems>orderItems = orders.getOrderItems();
+		orderItems.stream().forEach(i ->{
+			productSizeDao.updateQuantity(i.getProductSize().getId(), i.getProductSize().getQuantity() + i.getQuantity());
+		});
 		orderDao.save(orders);
 		
 	}

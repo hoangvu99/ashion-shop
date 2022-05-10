@@ -45,7 +45,7 @@
                  <h4 th:text="${message != null}? ${message}" class="text-danger"></h4>
                 <form id="add-product" class="form" th:object="${product}" th:method="POST" enctype="multipart/form-data" th:action="@{/add-product}">
                 <div class="form-group">
-				   	<label for="catetories">Chọn loại sản phẩm</label>
+				   <h4 class="text-danger">Chọn loại sản phẩm</h4>
 				    <select name="caterogy" class="form-select" id="category" form="add-product" th:field="*{category}">
 					  <option th:each="c : ${listCategory}" th:value="${c.id}" th:name="${c.id}" th:utext="${c.categoryName}"></option>
 					</select>
