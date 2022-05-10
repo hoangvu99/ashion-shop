@@ -81,10 +81,14 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value = "/product-details")
-	public String productDetailsController(@RequestParam(name="id")long id, Model model, HttpSession httpSession) {			
-		
-		model.addAttribute("product", productService.findProductById(id));
-		
+	public String productDetailsController(@RequestParam(name="id")long id, Model model, HttpSession httpSession) {	
+		Product p = productService.findProductById(id);
+		List<Product>related = productService.relatedProducts(p.getCategory().getId(), id);
+		if(related == null) {
+			related = new ArrayList<Product>();
+		}
+		model.addAttribute("product", p);
+		model.addAttribute("relatedProducts", related);
 		return "product-details";
 	}
 	

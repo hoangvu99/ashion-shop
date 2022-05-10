@@ -328,6 +328,11 @@ public class ProductServiceIml implements ProductService{
 		
 		return sizes;
 	}
+	@Override
+	public List<Product> relatedProducts(int categoryId, long productId) {
+		// TODO Auto-generated method stub
+		return productDao.getListRelatedProducts(categoryId, productId);
+	}
 	
 
 }

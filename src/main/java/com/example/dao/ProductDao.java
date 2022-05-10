@@ -35,5 +35,8 @@ public interface ProductDao extends JpaRepository<Product, Long>{
 	
 	@Query(value =" select * from product where name like %?1% and is_deleted = 0 limit ?2 offset ?3", nativeQuery = true)
 	public List<Product> productsByName(String s,int limit, int offset);
+	
+	@Query(value ="SELECT * FROM ashionshopdb.product where category_id = ?1 and not id = ?2 order by id desc limit 4", nativeQuery = true)
+	public List<Product> getListRelatedProducts(int categoryId, long productId);
 }
 

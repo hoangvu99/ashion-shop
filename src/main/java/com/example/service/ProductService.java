@@ -36,4 +36,6 @@ public interface ProductService {
 	
 	public List<Size> getSize(List<Size>s,int begin, int end );
 	
+	public List<Product> relatedProducts(int categoryId, long productId);
+	
 }

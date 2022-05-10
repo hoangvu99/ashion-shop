@@ -83,14 +83,14 @@
                 <div class="col-lg-8 col-md-8">
                     <div class="blog__details__content">
                         <div class="blog__details__item">
-                            <img src="img/blog/details/blog-details.jpg" alt="">
+                           
                             <div class="blog__details__item__title">
                                 <span class="tip">Street style</span>
                                 <h4 th:text="${blog.title}"></h4>
                                 <ul>
-                                    <li>by <span>Ema Timahe</span></li>
-                                    <li>Seb 17, 2019</li>
-                                    <li>39 Comments</li>
+                                   
+                                    <li th:text="${blog.createdAt}"></li>
+                                   
                                 </ul>
                             </div>
                         </div>
